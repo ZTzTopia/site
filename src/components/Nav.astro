@@ -1,0 +1,63 @@
+---
+import { Icon } from 'astro-icon/components'
+
+interface Item {
+    url: string;
+    title: string;
+    icon: string;
+}
+
+interface Props {
+    logoUrl: string;
+    title: string;
+    items: Item[];
+}
+
+const { logoUrl, title, items }: Props = Astro.props;
+---
+
+<nav class="bg-primary md:bg-transparent md:w-72 shrink-0">
+    <div class="max-w-screen-xl flex flex-wrap md:block items-center justify-between mx-auto p-4 md:p-0">
+        <a href="/" class="flex items-center space-x-3">
+            <span class="self-center text-2xl font-semibold whitespace-nowrap">{title}</span>
+        </a>
+        <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-muted rounded-lg md:hidden" aria-controls="navbar-default" aria-expanded="false">
+            <span class="sr-only">Open main menu</span>
+            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+            </svg>
+        </button>
+        <div class="hidden w-full md:block md:w-auto md:mt-8" id="navbar-default">
+            <div class="font-medium flex flex-col gap-x-4 md:gap-y-2 p-4 md:p-0 mt-4 md:flex-col md:mt-0 md:border-0 bg-transparent">
+                {
+                    items.map((item: Item) => {
+                        if (item.url.replace('/', '') === Astro.url.pathname.replace('/', '')) {
+                            return (
+                                <div class="flex flex-wrap items-center text-tx-accent md:font-bold">
+                                    <!--<Icon name={item.icon} class="w-5 h-5 mr-2"/>-->
+                                    <span class="block py-2 px-3 rounded md:p-0" aria-current="page">{item.title}</span>
+                                </div>
+                            )
+                        }
+
+                        return (
+                            <a href={item.url} class="flex flex-wrap items-center text-muted md:font-bold hover:text-tx-accent-hover">
+                                <!--<Icon name={item.icon} class="w-5 h-5 mr-2"/>-->
+                                <span class="block py-2 px-3 rounded md:border-0 md:p-0">{item.title}</span>
+                            </a>
+                        )
+                    })
+                }
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+    const navbar = document.querySelector('[data-collapse-toggle="navbar-default"]');
+    const navbarCollapse = document.querySelector('#navbar-default');
+
+    navbar.addEventListener('click', () => {
+        navbarCollapse.classList.toggle('hidden');
+    });
+</script>

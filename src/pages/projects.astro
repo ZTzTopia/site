@@ -1,0 +1,31 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Card from "../components/Card.astro";
+---
+
+<Layout title="ZTz - Projects">
+	<main>
+		<div class="grid gap-2 lg:grid-cols-3 md:auto-rows-fr">
+			<Card
+				title="GTProxy"
+				body="⚖️ A proxy for growtopia. NO SHADOW BAN!"
+				extraClass="rounded-xl lg:rounded-tl-xl lg:rounded-bl-sm lg:rounded-r-sm"
+			/>
+			<Card
+				title="HovLibrary"
+				body="🥈 LKS Kota Tangerang (2023)"
+				extraClass="rounded-xl lg:rounded-sm"
+			/>
+			<Card
+				title="LatieDiscordBot"
+				body="🤖 Discord Bot with Discord.js"
+				extraClass="rounded-xl lg:rounded-l-sm lg:rounded-r-xl"
+			/>
+			<Card
+				title="GTIntercherAndroid"
+				body="⚙️ Growtopia mod menu with ImGUI."
+				extraClass="rounded-xl lg:rounded-bl-xl lg:rounded-tl-sm lg:rounded-br-xl lg:rounded-tr-sm"
+			/>
+		</div>
+	</main>
+</Layout>
