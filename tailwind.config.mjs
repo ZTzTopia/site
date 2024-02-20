@@ -150,9 +150,6 @@ const obsidianColors = {
 		// 1: `hsl(${}, calc(80% * 1.02), calc(68% * 1.15))`,
 		// 2: `hsl(calc(254 - 5), calc(80% * 1.05), calc(68% * 1.29))`,
 	}
-// --color-accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
-// --color-accent-1: hsl(calc(var(--accent-h) - 3), calc(var(--accent-s) * 1.02), calc(var(--accent-l) * 1.15));
-// --color-accent-2: hsl(calc(var(--accent-h) - 5), calc(var(--accent-s) * 1.05), calc(var(--accent-l) * 1.29));
 }
 
 /** @type {import('tailwindcss').Config} */
@@ -221,6 +218,7 @@ export default {
 				'ui-normal': flexokiColors.base['900'],
 				'ui-hover': flexokiColors.base['850'],
 				'ui-active': flexokiColors.base['800'],
+				'selection': 'rgba(30, 95, 91, 0.3)'
 			},
 			'flexoki-light': {
 				'bg-primary': flexokiColors.base.paper,
@@ -233,6 +231,7 @@ export default {
 				'ui-normal': flexokiColors.base['100'],
 				'ui-hover': flexokiColors.base['150'],
 				'ui-active': flexokiColors.base['200'],
+				'selection': 'rgba(187, 220, 206, 0.3)'
 			},
 			'obsidian-dark': {
 				'bg-primary': obsidianColors.base['0'].DEFAULT,
@@ -244,7 +243,7 @@ export default {
 				'tx-muted': obsidianColors.base['70'].DEFAULT,
 				'ui-normal': obsidianColors.base['30'].DEFAULT,
 				'ui-hover': obsidianColors.base['35'].DEFAULT,
-				'ui-active': obsidianColors.base['40'].DEFAULT,
+				'ui-active': obsidianColors.base['40'].DEFAULT
 			},
 			'obsidian-light': {
 				'bg-primary': obsidianColors.base['0'].light,
@@ -256,8 +255,17 @@ export default {
 				'tx-muted': obsidianColors.base['70'].light,
 				'ui-normal': obsidianColors.base['30'].light,
 				'ui-hover': obsidianColors.base['35'].light,
-				'ui-active': obsidianColors.base['40'].light,
+				'ui-active': obsidianColors.base['40'].light
 			},
+		}, {
+			produceCssVariable: (colorName) => `--twc-${colorName}`,
+			produceThemeClass: (themeName) => `theme-${themeName}`,
+			produceThemeVariant: (themeName) => `theme-${themeName}`,
+			defaultTheme: {
+				light: 'flexoki-light',
+				dark: 'flexoki-dark'
+			},
+			strict: true
 		}),
 		require('@tailwindcss/typography'),
 		require('@catppuccin/tailwindcss')({

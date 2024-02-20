@@ -16,7 +16,7 @@ interface Props {
 const { logoUrl, title, items }: Props = Astro.props;
 ---
 
-<nav class="bg-primary md:bg-transparent md:w-72 shrink-0">
+<nav class="bg-bg-secondary md:bg-transparent md:w-72 shrink-0">
     <div class="max-w-screen-xl flex flex-wrap md:block items-center justify-between mx-auto p-4 md:p-0">
         <a href="/" class="flex items-center space-x-3">
             <span class="self-center text-2xl font-semibold whitespace-nowrap">{title}</span>
@@ -33,7 +33,7 @@ const { logoUrl, title, items }: Props = Astro.props;
                     items.map((item: Item) => {
                         if (item.url.replace('/', '') === Astro.url.pathname.replace('/', '')) {
                             return (
-                                <div class="flex flex-wrap items-center text-tx-accent md:font-bold">
+                                <div class="flex flex-wrap items-center text-tx-accent pointer-events-none md:font-bold">
                                     <!--<Icon name={item.icon} class="w-5 h-5 mr-2"/>-->
                                     <span class="block py-2 px-3 rounded md:p-0" aria-current="page">{item.title}</span>
                                 </div>
@@ -55,9 +55,8 @@ const { logoUrl, title, items }: Props = Astro.props;
 
 <script>
     const navbar = document.querySelector('[data-collapse-toggle="navbar-default"]');
-    const navbarCollapse = document.querySelector('#navbar-default');
-
-    navbar.addEventListener('click', () => {
-        navbarCollapse.classList.toggle('hidden');
+    navbar?.addEventListener('click', () => {
+        const navbarCollapse = document.querySelector('#navbar-default');
+        navbarCollapse?.classList.toggle('hidden');
     });
 </script>
