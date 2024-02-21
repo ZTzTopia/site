@@ -206,6 +206,7 @@ export default {
 		}
 	},
 	plugins: [
+		require('@tailwindcss/typography'),
 		createThemes({
 			'flexoki-dark': {
 				'bg-primary': flexokiColors.base.black,
@@ -266,11 +267,6 @@ export default {
 				dark: 'flexoki-dark'
 			},
 			strict: true
-		}),
-		require('@tailwindcss/typography'),
-		require('@catppuccin/tailwindcss')({
-			prefix: 'ctp',
-			defaultFlavour: 'mocha',
 		})
 	]
 }
