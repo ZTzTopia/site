@@ -160,47 +160,14 @@ export default {
 			typography: ({ theme }) => ({
 				DEFAULT: {
 					css: {
+						color: theme('colors.tx-normal'),
 						a: {
 							color: theme('colors.tx-accent'),
 							'&:hover': {
-								color: theme('colors.tx-accent-hover'),
-							},
-						},
-
-						'--tw-prose-body': theme('colors.tx-normal'),
-						'--tw-prose-headings': theme('colors.tx-normal'),
-						'--tw-prose-lead': theme('colors.tx-normal'),
-						'--tw-prose-links': theme('colors.tx-accent'),
-						'--tw-prose-bold': theme('colors.tx-normal'),
-						'--tw-prose-counters': theme('colors.tx-normal'),
-						'--tw-prose-bullets': theme('colors.tx-normal'),
-						'--tw-prose-hr': theme('colors.tx-normal'),
-						'--tw-prose-quotes': theme('colors.tx-normal'),
-						'--tw-prose-quote-borders': theme('colors.tx-normal'),
-						'--tw-prose-captions': theme('colors.tx-normal'),
-						'--tw-prose-code': theme('colors.tx-normal'),
-						'--tw-prose-pre-code': theme('colors.tx-normal'),
-						'--tw-prose-pre-bg': theme('colors.tx-normal'),
-						'--tw-prose-th-borders': theme('colors.tx-normal'),
-						'--tw-prose-td-borders': theme('colors.tx-normal'),
-
-						'--tw-prose-invert-body': theme('colors.tx-normal'),
-						'--tw-prose-invert-headings': theme('colors.tx-normal'),
-						'--tw-prose-invert-lead': theme('colors.tx-normal'),
-						'--tw-prose-invert-links': theme('colors.tx-accent'),
-						'--tw-prose-invert-bold': theme('colors.tx-normal'),
-						'--tw-prose-invert-counters': theme('colors.tx-normal'),
-						'--tw-prose-invert-bullets': theme('colors.tx-normal'),
-						'--tw-prose-invert-hr': theme('colors.tx-normal'),
-						'--tw-prose-invert-quotes': theme('colors.tx-normal'),
-						'--tw-prose-invert-quote-borders': theme('colors.tx-normal'),
-						'--tw-prose-invert-captions': theme('colors.tx-normal'),
-						'--tw-prose-invert-code': theme('colors.white'),
-						'--tw-prose-invert-pre-code': theme('colors.tx-normal'),
-						'--tw-prose-invert-pre-bg': 'rgb(0 0 0 / 50%)',
-						'--tw-prose-invert-th-borders': theme('colors.tx-normal'),
-						'--tw-prose-invert-td-borders': theme('colors.tx-normal'),
-					},
+								color: theme('colors.tx-accent-hover')
+							}
+						}
+					}
 				}
 			})
 		}
