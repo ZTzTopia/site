@@ -1,39 +1,62 @@
 ---
+import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="ZTz - Home">
-	<main class="prose max-w-none dark:prose-invert">
-		<h1 class="text-4xl font-extrabold">
-			👋 Hey, <span class="text-tx-accent">ZTz's</span> here!
-		</h1>
-		<div class="not-prose -mt-4">
-			<ul
-				class="flex flex-col lg:flex-row gap-1 lg:gap-10 ml-5 list-disc text-tx-muted"
-			>
-				<li>
-					Based in Tangerang, Indonesia <span class="ml-1">🇮🇩</span>
-				</li>
-				<li>Full-stack developer</li>
-				<!-- <li>Working remotely</li> -->
-			</ul>
-		</div>
-		<p>
-			I am a self-taught software engineer with a passion for coding and
-			continuous learning. I began my coding journey at the age of 12.
-			Specializing in full-stack development, I particularly enjoy working
-			with JavaScript, TypeScript, and C++. My expertise spans both
-			front-end and back-end development, and I have a keen interest in
-			open-source software.
-		</p>
-		<div class="border-t border-ui-normal mt-8 mb-7"></div>
-		<h2 class="text-2xl">📧 You can reach me at</h2>
-		<ul class="list-disc list-inside">
-			<li>
-				<a target="_blank" href="mailto:zentay36@gmail.com"
-					>Email zentay36@gmail.com</a
-				>
-			</li>
-		</ul>
-	</main>
+<Layout title="ztz0">
+  <div class="prose dark:prose-invert max-w-none">
+    <h1 class="font-medium transition-element">
+      <span class="block overflow-hidden group relative">
+        <span
+          class="inline-block transition-all duration-300 ease-in-out group-hover:-translate-y-full"
+        >
+          ztz0
+        </span>
+        <span
+          class="inline-block absolute left-0 top-0 transition-all duration-300 ease-in-out translate-y-full group-hover:translate-y-0"
+        >
+          Muhamad Zibrisky
+        </span>
+      </span>
+    </h1>
+    <p>
+      I'm a self-taught software engineer from Tangerang, Indonesia, passionate
+      about coding and continuous learning since I was 12. I'm also a <a
+        target="_blank"
+        href="https://ctftime.org/user/209558"
+        class="not-prose bg-ui-normal text-xs font-medium px-2.5 py-0.5 rounded"
+        ><Image
+          src="https://ctftime.org/favicon.png"
+          alt="CTFTime"
+          width={8}
+          height={8}
+          loading="eager"
+          class="inline-block mr-1"
+        />CTF</a
+      > player.
+    </p>
+    <h2 class="font-medium">Experiences</h2>
+    <div class="not-prose">
+      <div class="flex flex-col gap-2">
+        <div
+          class="flex flex-col bg-bg-secondary p-4 rounded-lg justify-center"
+        >
+          <div class="flex items-center gap-2">
+            <p class="font-medium">Wellmagic Media Digital</p>
+            <span
+              class="bg-ui-normal text-xs font-medium px-2.5 py-0.5 rounded"
+              >Jan 2022 - Mar 2022</span
+            >
+          </div>
+          <p class="text-sm">Internship</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </Layout>
+
+<style>
+  .transition-element {
+    view-transition-name: ztz0;
+  }
+</style>

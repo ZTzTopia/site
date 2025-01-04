@@ -1,0 +1,24 @@
+---
+interface Item {
+  url: string;
+  title: string;
+}
+
+interface Props {
+  items: Item[];
+}
+
+const { items }: Props = Astro.props;
+---
+
+<footer class="mt-12">
+  <div class="flex justify-center space-x-4">
+    {
+      items.map((item: Item) => (
+        <a target="_blank" href={item.url} class="hover:text-tx-accent-hover">
+          {item.title}
+        </a>
+      ))
+    }
+  </div>
+</footer>

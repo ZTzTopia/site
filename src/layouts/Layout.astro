@@ -1,21 +1,39 @@
 ---
+import Footer from "../components/Footer.astro";
 import Nav from "../components/Nav.astro";
 
 const navItems = [
-	{
-		url: "/",
-		title: "Home",
-		icon: "home",
-	},
-	{
-		url: "projects",
-		title: "Projects",
-		icon: "code-1",
-	},
+  {
+    url: "/",
+    title: "Home",
+  },
+  {
+    url: "projects",
+    title: "Projects",
+  },
+];
+
+const footerItems = [
+  {
+    url: "mailto:muhzib36@gmail.com",
+    title: "email",
+  },
+  {
+    url: "https://www.youtube.com/channel/ZTzTopia702",
+    title: "youtube",
+  },
+  {
+    url: "https://github.com/ZTzTopia",
+    title: "github",
+  },
+  {
+    url: "https://www.linkedin.com/in/muhamad-zibrisky-b6a861252/",
+    title: "linkedin",
+  },
 ];
 
 interface Props {
-	title: string;
+  title: string;
 }
 
 const { title } = Astro.props;
@@ -23,49 +41,49 @@ const { title } = Astro.props;
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Developer." />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body
-		class="bg-bg-primary text-tx-normal md:container md:mx-auto md:flex md:flex-row md:gap-x-4 md:py-16 md:px-14 md:max-w-7xl"
-	>
-		<Nav
-			logoUrl="https://flowbite.com/docs/images/logo.svg"
-			title="ZTzTopia"
-			items={navItems}
-		/>
-		<div class="px-8 mt-8 mb-8 md:flex md:flex-col md:p-0 md:mt-0">
-			<slot />
-		</div>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Developer." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="relative box-border flex h-fit min-h-screen flex-col gap-y-6 font-sans bg-bg-primary text-tx-normal antialiased">
+      <div class="relative flex flex-grow flex-col">
+        <header class="sticky top-0 z-10 bg-background/50 font-special backdrop-blur-md">
+          <Nav items={navItems} />
+        </header>
+        <main class="flex-grow">
+          <div class="mx-auto max-w-screen-sm px-4 mt-4 flex flex-col gap-y-6">
+            <slot />
+          </div>
+        </main>
+        <footer class="py-4">
+          <Footer items={footerItems} />
+        </footer>
+      </div>
+    </div>
+  </body>
+
+  <style is:global>
+    @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
+    body {
+      font-family: "Noto Sans", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 400;
+      font-style: normal;
+      font-variation-settings: "wdth" 100;
+    }
+
+    ::selection {
+      --tw-bg-opacity: 1;
+      background: hsl(
+        var(--twc-selection) /
+          var(--twc-selection-opacity, var(--tw-bg-opacity))
+      );
+    }
+  </style>
 </html>
-
-<style is:global>
-	@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
-	@import url("https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
-
-	:root {
-		color-scheme: dark;
-	}
-
-	body {
-		font-family: "Noto Sans", "Noto Color Emoji", sans-serif;
-		font-optical-sizing: auto;
-		font-weight: 400;
-		font-style: normal;
-		font-variation-settings: "wdth" 100;
-	}
-
-	::selection {
-		--tw-bg-opacity: 1;
-		background: hsl(
-			var(--twc-selection) /
-				var(--twc-selection-opacity, var(--tw-bg-opacity))
-		);
-	}
-</style>
