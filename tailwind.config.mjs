@@ -1,15 +1,3 @@
-const { createThemes } = require('tw-colors');
-
-function withOpacity(cssVariable) {
-	return ({ opacityValue }) => {
-		return opacityValue ? `rgba(var(${cssVariable}), ${opacityValue})` : `rgb(var(${cssVariable}))`
-	}
-}
-
-const flexokiColors = {
-	
-}
-
 /** @type {import('tailwindcss').Config} */
 export default {
 	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
