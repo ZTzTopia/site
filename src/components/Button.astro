@@ -1,0 +1,53 @@
+---
+interface Props {
+  variant: string;
+  href?: string;
+}
+
+const props: Props = Astro.props;
+---
+
+{
+  props.href 
+    ? <>
+        <a href={props.href}>
+          <button class={`btn btn-${props.variant} w-fit`}>
+            <slot />
+          </button>
+        </a>
+      </>
+    : <>
+        <button class={`btn btn-${props.variant} w-fit`}>
+          <slot />
+        </button>
+      </>
+}
+
+<style>
+  .btn {
+    min-height: auto;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background-color: hsl(var(--twc-tx-accent));
+    color: hsl(var(--twc-bg-primary));
+  }
+
+  .btn-primary:hover {
+    background-color: hsl(var(--twc-tx-accent-hover));
+  }
+
+  .btn-outline {
+    padding: calc(0.25rem - 1px) calc(0.75rem - 1px);
+    border: 1px solid hsl(var(--twc-tx-faint));
+    color: hsl(var(--twc-tx-normal));
+  }
+
+  .btn-outline:hover {
+    background-color: hsl(var(--twc-tx-faint));
+    color: hsl(var(--twc-bg-primary));
+  }
+</style>

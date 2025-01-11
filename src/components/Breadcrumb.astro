@@ -1,0 +1,26 @@
+---
+import { Icon } from 'astro-icon/components'
+
+const currentPath = Astro.url.pathname;
+const paths = currentPath.split("/").filter((path) => path !== "");
+---
+
+{currentPath !== "/" && (
+    <div class="flex gap-x-2 items-center">
+        <a href="/" class="hover:text-tx-accent-hover" aria-label="Home">
+            <Icon name="lucide:house" class="w-4 h-4" />
+        </a>
+        {paths.map((path, index) => (
+            <div class="flex gap-x-2 items-center">
+                <Icon name="lucide:chevron-right" class="w-4 h-4" />
+                {index === paths.length - 1 ? (
+                    <span>{decodeURIComponent(path)}</span>
+                ) : (
+                    <a href={`/${paths.slice(0, index + 1).join("/")}`} class="hover:text-tx-accent-hover">
+                        {decodeURIComponent(path)}
+                    </a>
+                )}
+            </div>
+        ))}
+    </div>
+)}

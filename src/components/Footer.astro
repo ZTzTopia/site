@@ -1,7 +1,11 @@
 ---
+import { Icon } from 'astro-icon/components';
+import ButtonIcon from './ButtonIcon.astro';
+
 interface Item {
   url: string;
-  title: string;
+  title?: string;
+  iconName?: string;
 }
 
 interface Props {
@@ -12,12 +16,15 @@ const { items }: Props = Astro.props;
 ---
 
 <footer class="mt-12">
-  <div class="flex justify-center space-x-4">
+  <div class="flex justify-center gap-2">
     {
       items.map((item: Item) => (
-        <a target="_blank" href={item.url} class="hover:text-tx-accent-hover">
-          {item.title}
-        </a>
+        <ButtonIcon variant="outline" href={item.url}>
+          <Icon name={item.iconName} />
+        </ButtonIcon>
+        // <a target="_blank" href={item.url} class="text-sm hover:text-tx-accent-hover">
+        //   {item.title}
+        // </a>
       ))
     }
   </div>

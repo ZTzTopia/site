@@ -1,19 +1,20 @@
 ---
 import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
+// import Experience from "../components/Experience.astro";
 ---
 
 <Layout title="ztz0">
   <div class="prose dark:prose-invert max-w-none">
-    <h1 class="font-medium transition-element">
+    <h1 class="font-medium">
       <span class="block overflow-hidden group relative">
         <span
-          class="inline-block transition-all duration-300 ease-in-out group-hover:-translate-y-full"
+          class="inline-block duration-300 ease-in-out group-hover:-translate-y-full"
         >
           ztz0
         </span>
         <span
-          class="inline-block absolute left-0 top-0 transition-all duration-300 ease-in-out translate-y-full group-hover:translate-y-0"
+          class="inline-block absolute left-0 top-0 duration-300 ease-in-out translate-y-full group-hover:translate-y-0"
         >
           Muhamad Zibrisky
         </span>
@@ -24,7 +25,7 @@ import Layout from "../layouts/Layout.astro";
       about coding and continuous learning since I was 12. I'm also a <a
         target="_blank"
         href="https://ctftime.org/user/209558"
-        class="not-prose bg-ui-normal text-xs font-medium px-2.5 py-0.5 rounded"
+        class="not-prose bg-flexoki-base-50 dark:bg-flexoki-base-950 text-xs font-medium px-2.5 py-0.5 rounded"
         ><Image
           src="https://ctftime.org/favicon.png"
           alt="CTFTime"
@@ -35,28 +36,17 @@ import Layout from "../layouts/Layout.astro";
         />CTF</a
       > player.
     </p>
-    <h2 class="font-medium">Experiences</h2>
+    <!-- <p>
+      I also have <a
+        target="_blank"
+        href=`garden.${Astro.url.host}`
+        class="not-prose bg-ui-normal text-xs font-medium px-2.5 py-0.5 rounded"
+        >🥬 Digital Garden</a
+      > for CTF notes and other notes.
+    </p> -->
+    <!-- <h2 class="font-medium">Experiences</h2>
     <div class="not-prose">
-      <div class="flex flex-col gap-2">
-        <div
-          class="flex flex-col bg-bg-secondary p-4 rounded-lg justify-center"
-        >
-          <div class="flex items-center gap-2">
-            <p class="font-medium">Wellmagic Media Digital</p>
-            <span
-              class="bg-ui-normal text-xs font-medium px-2.5 py-0.5 rounded"
-              >Jan 2022 - Mar 2022</span
-            >
-          </div>
-          <p class="text-sm">Internship</p>
-        </div>
-      </div>
-    </div>
+      <Experience />
+    </div> -->
   </div>
 </Layout>
-
-<style>
-  .transition-element {
-    view-transition-name: ztz0;
-  }
-</style>

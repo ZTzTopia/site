@@ -1,0 +1,39 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import Button from "../../components/Button.astro";
+import Layout from "../../layouts/Layout.astro";
+import type { Page } from "astro";
+import Card from "../../components/Card.astro";
+
+export async function getStaticPaths({ paginate }: { paginate: (paths: any[], options: { pageSize: number }) => any }) {
+  const eventCollections = await getCollection('events');
+  const paths = eventCollections.map((event: CollectionEntry<"events">) => {
+      const slugs = event.id.split('/');
+      return {
+        name: event.data.title,
+        slug: slugs[0]
+      }
+  });
+  
+  return paginate(paths, { pageSize: 8 });
+}
+
+const props: { page: Page } = Astro.props;
+---
+
+<Layout title="ztz0">
+  <div class="grid grid-cols-2 gap-2">
+    {
+      [...props.page.data].map((event) => (
+        <a href={`/writeups/${event.slug}`}>
+          <Card title={event.name} />
+        </a>
+      ))
+    }
+  </div>
+
+  <div class="flex gap-2 justify-center">
+    {props.page.url.prev && <Button variant="outline" href={props.page.url.prev}>Previous</Button>}
+    {props.page.url.next && <Button variant="outline" href={props.page.url.next}>Next</Button>}
+  </div>
+</Layout>

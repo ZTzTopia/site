@@ -1,0 +1,22 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  class?: string;
+}
+
+const props: Props = Astro.props;
+---
+
+<div class=`${props.class || ''} flex flex-col bg-flexoki-base-50 dark:bg-flexoki-base-950 p-4 rounded-lg justify-center`>
+  {props.title ? (
+    <h1 class="font-medium">{props.title}</h1>
+  ) : (
+    <slot name="title" />
+  )}
+  {props.description ? (
+    <p class="text-sm">{props.description}</p>
+  ) : (
+    <slot name="description" />
+  )}
+</div>

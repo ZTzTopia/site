@@ -1,0 +1,18 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import CardLink from "./CardLink.astro";
+
+type Project = CollectionEntry<"projects">;
+const projects: Project[] = await getCollection("projects");
+---
+
+<div class="grid md:grid-cols-2 gap-2">
+  {
+    projects.map((project: Project) => (
+      <CardLink
+        href={project.data.url}
+        title={project.data.title}
+        description={project.data.description} />
+    ))
+  }
+</div>

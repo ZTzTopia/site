@@ -1,14 +1,25 @@
 ---
+import Breadcrumb from "../components/Breadcrumb.astro";
 import Footer from "../components/Footer.astro";
 import Nav from "../components/Nav.astro";
+import CommonHead from "../components/CommonHead.astro";
+import ClientRouter from "astro/components/ClientRouter.astro";
 
 const navItems = [
   {
     url: "/",
     title: "Home",
   },
+  // {
+  //   url: "/blog",
+  //   title: "Blog",
+  // },
+  // {
+  //   url: "/writeups",
+  //   title: "Writeups",
+  // },
   {
-    url: "projects",
+    url: "/projects",
     title: "Projects",
   },
 ];
@@ -16,19 +27,19 @@ const navItems = [
 const footerItems = [
   {
     url: "mailto:muhzib36@gmail.com",
-    title: "email",
+    iconName: "lucide:mail",
   },
   {
     url: "https://www.youtube.com/channel/ZTzTopia702",
-    title: "youtube",
+    iconName: "lucide:youtube",
   },
   {
     url: "https://github.com/ZTzTopia",
-    title: "github",
+    iconName: "lucide:github",
   },
   {
     url: "https://www.linkedin.com/in/muhamad-zibrisky-b6a861252/",
-    title: "linkedin",
+    iconName: "lucide:linkedin",
   },
 ];
 
@@ -36,27 +47,62 @@ interface Props {
   title: string;
 }
 
-const { title } = Astro.props;
+const props: Props = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content="Developer." />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    <CommonHead title={props.title} />
+
+    <style is:global>
+      @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
+      @font-face {
+        font-family: "Monaspace Neon";
+        src: url("/fonts/MonaspaceNeonVarVF[wght,wdth,slnt].woff2")
+          format("woff2");
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      body {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+      }
+
+      ::selection {
+        --tw-bg-opacity: 0.25;
+        background: rgb(36, 131, 123, var(--tw-bg-opacity));
+      }
+
+      @media (prefers-color-scheme: dark) {
+        ::selection {
+          --tw-bg-opacity: 0.25;
+          background: rgba(58, 169, 159, var(--tw-bg-opacity));
+        }
+      }
+    </style>
+
+    <ClientRouter />
   </head>
   <body>
-    <div class="relative box-border flex h-fit min-h-screen flex-col gap-y-6 font-sans bg-bg-primary text-tx-normal antialiased">
+    <div
+      class="relative box-border flex h-fit min-h-screen flex-col gap-y-6 bg-flexoki-base-paper dark:bg-flexoki-base-black text-flexoki-base-black dark:text-flexoki-base-200 antialiased"
+    >
       <div class="relative flex flex-grow flex-col">
-        <header class="sticky top-0 z-10 bg-background/50 font-special backdrop-blur-md">
+        <header
+          class="sticky top-0 z-10 bg-background/50 font-special backdrop-blur-md"
+        >
           <Nav items={navItems} />
         </header>
         <main class="flex-grow">
           <div class="mx-auto max-w-screen-sm px-4 mt-4 flex flex-col gap-y-6">
+            <Breadcrumb />
             <slot />
           </div>
         </main>
@@ -66,24 +112,4 @@ const { title } = Astro.props;
       </div>
     </div>
   </body>
-
-  <style is:global>
-    @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
-
-    body {
-      font-family: "Noto Sans", sans-serif;
-      font-optical-sizing: auto;
-      font-weight: 400;
-      font-style: normal;
-      font-variation-settings: "wdth" 100;
-    }
-
-    ::selection {
-      --tw-bg-opacity: 1;
-      background: hsl(
-        var(--twc-selection) /
-          var(--twc-selection-opacity, var(--tw-bg-opacity))
-      );
-    }
-  </style>
 </html>

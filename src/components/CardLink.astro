@@ -1,0 +1,30 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  href: string;
+  title?: string;
+  description?: string;
+  class?: string;
+}
+
+const props: Props = Astro.props;
+---
+
+<a target="_blank" href={props.href} class="group">
+  <div class=`${props.class || ''} flex flex-col bg-flexoki-base-50 dark:bg-flexoki-base-950 p-4 rounded-lg justify-center`>
+    <div class="flex items-center justify-between">
+      {props.title ? (
+        <h1 class="font-medium">{props.title}</h1>
+      ) : (
+        <slot name="title" />
+      )}
+      <Icon name="lucide:arrow-up-right" class="w-4 h-4 duration-100 ease-in-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+    </div>
+    {props.description ? (
+      <p class="text-sm">{props.description}</p>
+    ) : (
+      <slot name="description" />
+    )}
+  </div>
+</a>

@@ -1,0 +1,29 @@
+---
+interface Props {
+  variant: string;
+  href?: string;
+}
+
+const props: Props = Astro.props;
+
+let classes: string = 'p-3 rounded-lg bg-flexoki-base-50';
+if (props.variant === 'outline') {
+  classes = 'p-3 rounded-lg border border-flexoki-base-100 dark:border-flexoki-base-900 hover:bg-flexoki-base-150 dark:hover:bg-flexoki-base-850';
+}
+---
+
+{
+  props.href 
+    ? <>
+        <a href={props.href}>
+          <button class={`${classes} w-fit`}>
+            <slot />
+          </button>
+        </a>
+      </>
+    : <>
+        <button class={`${classes} w-fit`}>
+          <slot />
+        </button>
+      </>
+}
