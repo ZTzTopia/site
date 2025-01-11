@@ -1,6 +1,8 @@
 {
   "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
   "exclude": [
+    "dist",
     "src/data/events/**/*.ts",
     "src/data/events/**/*.tsx",
     "src/data/events/**/*.js",
