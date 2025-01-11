@@ -1,0 +1,38 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Card from "../components/Card.astro";
+import CardLink from "../components/CardLink.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import Button from "../components/Button.astro";
+import ButtonIcon from "../components/ButtonIcon.astro";
+import Project from "../components/Project.astro";
+import Experience from "../components/Experience.astro";
+import Dropdown from "../components/Dropdown.astro";
+import TableOfContent from "../components/TableOfContent.astro";
+---
+
+<Layout title="Components">
+    <Card>
+        Test
+    </Card>
+    <CardLink href="https://example.com">
+        Test
+    </CardLink>
+    <Breadcrumb />
+    <Button>Test</Button>
+    <ButtonIcon icon="lucide:home"></ButtonIcon>
+    <Button variant="outline">Test</Button>
+    <ButtonIcon variant="outline" icon="lucide:home"></ButtonIcon>
+    <Project />
+    <!-- <Experience /> -->
+    <Dropdown dropdownId="asd">
+        Test
+    </Dropdown>
+    <Dropdown dropdownId="asds" position="right">
+        Test
+    </Dropdown>
+    <TableOfContent headings={[
+        { depth: 1, slug: "test", text: "Test" },
+        { depth: 2, slug: "test2", text: "Test 2" },
+    ]} />
+</Layout>

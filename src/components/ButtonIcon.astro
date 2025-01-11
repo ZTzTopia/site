@@ -1,29 +1,53 @@
 ---
-interface Props {
-  variant: string;
-  href?: string;
+import { Icon } from "astro-icon/components";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props
+  extends HTMLAttributes<"button">,
+    Omit<HTMLAttributes<"a">, "type"> {
+  variant?: "primary" | "secondary" | "outline" | "ghost" | undefined;
+  icon: string;
 }
 
-const props: Props = Astro.props;
-
-let classes: string = 'p-3 rounded-lg bg-flexoki-base-50';
-if (props.variant === 'outline') {
-  classes = 'p-3 rounded-lg border border-flexoki-base-100 dark:border-flexoki-base-900 hover:bg-flexoki-base-150 dark:hover:bg-flexoki-base-850';
-}
+const { variant = "primary", icon, ...rest } = Astro.props as Props;
 ---
 
 {
-  props.href 
-    ? <>
-        <a href={props.href}>
-          <button class={`${classes} w-fit`}>
-            <slot />
-          </button>
-        </a>
-      </>
-    : <>
-        <button class={`${classes} w-fit`}>
-          <slot />
-        </button>
-      </>
+  rest.href ? (
+    <a class:list={["button-icon", `variant-${variant}`]} {...rest}>
+      <div class="flex items-center gap-2">
+        <Icon name={icon} />
+        <slot />
+      </div>
+    </a>
+  ) : (
+    <button class:list={["button-icon", `variant-${variant}`]} {...rest}>
+      <div class="flex items-center gap-2">
+        <Icon name={icon} />
+        <slot />
+      </div>
+    </button>
+  )
 }
+
+<style>
+  .button-icon {
+    @apply p-3 rounded-md w-fit;
+
+    &.variant-primary {
+      @apply bg-flexoki-cyan-600 dark:bg-flexoki-cyan-400 text-flexoki-base-paper dark:text-flexoki-base-black;
+
+      &:hover {
+        @apply bg-flexoki-cyan-400 dark:bg-flexoki-cyan-600;
+      }
+    }
+
+    &.variant-outline {
+      @apply border border-flexoki-base-100 dark:border-flexoki-base-900 text-flexoki-base-black dark:text-flexoki-base-paper;
+
+      &:hover {
+        @apply bg-flexoki-base-150 dark:bg-flexoki-base-850;
+      }
+    }
+  }
+</style>

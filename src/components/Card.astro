@@ -1,22 +1,17 @@
 ---
-interface Props {
-  title?: string;
-  description?: string;
-  class?: string;
-}
+import type { HTMLAttributes } from "astro/types";
 
-const props: Props = Astro.props;
+interface Props extends HTMLAttributes<"div"> {}
+
+const { ...rest } = Astro.props as Props;
 ---
 
-<div class=`${props.class || ''} flex flex-col bg-flexoki-base-50 dark:bg-flexoki-base-950 p-4 rounded-lg justify-center`>
-  {props.title ? (
-    <h1 class="font-medium">{props.title}</h1>
-  ) : (
-    <slot name="title" />
-  )}
-  {props.description ? (
-    <p class="text-sm">{props.description}</p>
-  ) : (
-    <slot name="description" />
-  )}
+<div class:list={["card"]} {...rest}>
+  <slot />
 </div>
+
+<style>
+  .card {
+    @apply flex flex-col justify-center p-4 rounded-lg bg-flexoki-base-50 dark:bg-flexoki-base-950 border border-flexoki-base-100 dark:border-flexoki-base-900;
+  }
+</style>

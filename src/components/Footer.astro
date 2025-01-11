@@ -15,17 +15,17 @@ interface Props {
 const { items }: Props = Astro.props;
 ---
 
-<footer class="mt-12">
+<footer class="py-4 mt-12">
   <div class="flex justify-center gap-2">
-    {
+    <!-- {
       items.map((item: Item) => (
-        <ButtonIcon variant="outline" href={item.url}>
-          <Icon name={item.iconName} />
-        </ButtonIcon>
+        // <ButtonIcon variant="outline" href={item.url}>
+        //   <Icon name={item.iconName} />
+        // </ButtonIcon>
         // <a target="_blank" href={item.url} class="text-sm hover:text-tx-accent-hover">
         //   {item.title}
         // </a>
       ))
-    }
+    } -->
   </div>
 </footer>

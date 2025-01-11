@@ -1,0 +1,67 @@
+---
+type Heading = {
+  depth: number;
+  slug: string;
+  text: string;
+};
+
+type Props = {
+  headings: Heading[];
+};
+
+const props: Props = Astro.props;
+
+// Helper function to render nested lists
+function renderHeadings(headings: Heading[]) {
+  const result: string[] = [];
+
+  headings.forEach((heading, index) => {
+    const { depth, slug, text } = heading;
+
+    // Open a new list if the depth increases
+    if (index === 0 || headings[index - 1].depth < depth) {
+      result.push(`<ul class="ml-${depth * 4}">`);
+    }
+
+    // Close the current list if the depth decreases
+    if (index > 0 && headings[index - 1].depth > depth) {
+      const difference = headings[index - 1].depth - depth;
+      for (let i = 0; i < difference; i++) {
+        result.push(`</ul>`);
+      }
+    }
+
+    // Add the list item
+    result.push(
+      `<li>
+        <a href="#${slug}" class="text-blue-500 hover:underline">${text}</a>
+      </li>`
+    );
+
+    // Close any remaining lists at the end
+    if (index === headings.length - 1) {
+      const remainingDepth = depth;
+      for (let i = 0; i < remainingDepth; i++) {
+        result.push(`</ul>`);
+      }
+    }
+  });
+
+  return result.join('');
+}
+---
+
+<div class="prose dark:prose-invert">
+  <h2 class="text-lg font-bold mb-2">Table of Contents</h2>
+  <Fragment set:html={renderHeadings(props.headings)} />
+</div>
+
+<style>
+  ul {
+    @apply list-none;
+  }
+
+  li {
+    @apply mb-1;
+  }
+</style>

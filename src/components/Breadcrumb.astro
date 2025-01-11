@@ -6,17 +6,20 @@ const paths = currentPath.split("/").filter((path) => path !== "");
 ---
 
 {currentPath !== "/" && (
-    <div class="flex gap-x-2 items-center">
-        <a href="/" class="hover:text-tx-accent-hover" aria-label="Home">
-            <Icon name="lucide:house" class="w-4 h-4" />
+    <div class="flex gap-x-1 items-center">
+        <a href="/">
+            <Icon name="lucide:house" class="text-sm hover:text-flexoki-cyan-600 dark:hover:text-flexoki-cyan-400" />
         </a>
         {paths.map((path, index) => (
-            <div class="flex gap-x-2 items-center">
-                <Icon name="lucide:chevron-right" class="w-4 h-4" />
+            <div class="flex gap-x-1 items-center">
+                <Icon name="lucide:chevron-right" class="text-sm" />
                 {index === paths.length - 1 ? (
-                    <span>{decodeURIComponent(path)}</span>
+                    <span class="text-sm uppercase">{decodeURIComponent(path)}</span>
                 ) : (
-                    <a href={`/${paths.slice(0, index + 1).join("/")}`} class="hover:text-tx-accent-hover">
+                    <a
+                        href={`/${paths.slice(0, index + 1).join("/")}`}
+                        class="text-sm uppercase hover:text-flexoki-cyan-600 dark:hover:text-flexoki-cyan-400"
+                    >
                         {decodeURIComponent(path)}
                     </a>
                 )}

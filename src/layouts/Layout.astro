@@ -3,7 +3,6 @@ import Breadcrumb from "../components/Breadcrumb.astro";
 import Footer from "../components/Footer.astro";
 import Nav from "../components/Nav.astro";
 import CommonHead from "../components/CommonHead.astro";
-import ClientRouter from "astro/components/ClientRouter.astro";
 
 const navItems = [
   {
@@ -55,9 +54,11 @@ const props: Props = Astro.props;
   <head>
     <CommonHead title={props.title} />
 
-    <style is:global>
-      @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
+    <style is:global>
       @font-face {
         font-family: "Monaspace Neon";
         src: url("/fonts/MonaspaceNeonVarVF[wght,wdth,slnt].woff2")
@@ -68,7 +69,7 @@ const props: Props = Astro.props;
       }
 
       body {
-        font-family: "Noto Sans", sans-serif;
+        font-family: "Roboto", serif;
         font-optical-sizing: auto;
         font-weight: 400;
         font-style: normal;
@@ -87,28 +88,20 @@ const props: Props = Astro.props;
         }
       }
     </style>
-
-    <ClientRouter />
   </head>
   <body>
     <div
       class="relative box-border flex h-fit min-h-screen flex-col gap-y-6 bg-flexoki-base-paper dark:bg-flexoki-base-black text-flexoki-base-black dark:text-flexoki-base-200 antialiased"
     >
       <div class="relative flex flex-grow flex-col">
-        <header
-          class="sticky top-0 z-10 bg-background/50 font-special backdrop-blur-md"
-        >
-          <Nav items={navItems} />
-        </header>
+        <Nav items={navItems} />
         <main class="flex-grow">
-          <div class="mx-auto max-w-screen-sm px-4 mt-4 flex flex-col gap-y-6">
+          <div class="mx-auto max-w-screen-sm px-4 mt-4 flex flex-col gap-y-2">
             <Breadcrumb />
             <slot />
           </div>
         </main>
-        <footer class="py-4">
-          <Footer items={footerItems} />
-        </footer>
+        <Footer items={footerItems} />
       </div>
     </div>
   </body>

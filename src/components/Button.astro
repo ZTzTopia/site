@@ -1,53 +1,45 @@
 ---
-interface Props {
-  variant: string;
-  href?: string;
+import type { HTMLAttributes } from "astro/types";
+
+interface Props
+  extends HTMLAttributes<"button">,
+    Omit<HTMLAttributes<"a">, "type"> {
+  variant?: "primary" | "secondary" | "outline" | "ghost" | undefined;
 }
 
-const props: Props = Astro.props;
+const { variant = "primary", ...rest } = Astro.props as Props;
 ---
 
 {
-  props.href 
-    ? <>
-        <a href={props.href}>
-          <button class={`btn btn-${props.variant} w-fit`}>
-            <slot />
-          </button>
-        </a>
-      </>
-    : <>
-        <button class={`btn btn-${props.variant} w-fit`}>
-          <slot />
-        </button>
-      </>
+  rest.href ? (
+    <a class:list={["button", `variant-${variant}`]} {...rest}>
+      <slot />
+    </a>
+  ) : (
+    <button class:list={["button", `variant-${variant}`]} {...rest}>
+      <slot />
+    </button>
+  )
 }
 
 <style>
-  .btn {
-    min-height: auto;
-    padding: 0.25rem 0.75rem;
-    border-radius: 0.25rem;
-    cursor: pointer;
-  }
+  .button {
+    @apply px-4 py-2 rounded-md w-fit;
 
-  .btn-primary {
-    background-color: hsl(var(--twc-tx-accent));
-    color: hsl(var(--twc-bg-primary));
-  }
+    &.variant-primary {
+      @apply bg-flexoki-cyan-600 dark:bg-flexoki-cyan-400 text-flexoki-base-paper dark:text-flexoki-base-black;
 
-  .btn-primary:hover {
-    background-color: hsl(var(--twc-tx-accent-hover));
-  }
+      &:hover {
+        @apply bg-flexoki-cyan-400 dark:bg-flexoki-cyan-600;
+      }
+    }
 
-  .btn-outline {
-    padding: calc(0.25rem - 1px) calc(0.75rem - 1px);
-    border: 1px solid hsl(var(--twc-tx-faint));
-    color: hsl(var(--twc-tx-normal));
-  }
+    &.variant-outline {
+      @apply border border-flexoki-base-100 dark:border-flexoki-base-900 text-flexoki-base-black dark:text-flexoki-base-paper;
 
-  .btn-outline:hover {
-    background-color: hsl(var(--twc-tx-faint));
-    color: hsl(var(--twc-bg-primary));
+      &:hover {
+        @apply bg-flexoki-base-150 dark:bg-flexoki-base-850;
+      }
+    }
   }
 </style>

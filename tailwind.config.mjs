@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
 	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+	darkMode: 'selector',
 	theme: {
 		colors: {
 			flexoki: {
@@ -157,7 +158,7 @@ export default {
 								color: theme('colors.flexoki.cyan.600'),
 							}
 						},
-						'--tw-prose-body': theme('colors.flexoki.base.paper'),
+						'--tw-prose-body': theme('colors.flexoki.base.black'),
 						'--tw-prose-headings': theme('colors.flexoki.base.black'),
 						'--tw-prose-code': theme('colors.flexoki.cyan.600'),
 						'--tw-prose-quotes': theme('colors.flexoki.base.850'),

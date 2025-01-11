@@ -1,5 +1,7 @@
 ---
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
+import Dropdown from "./Dropdown.astro";
+import SwitchTheme from "./SwitchTheme.astro";
 
 interface Item {
   url: string;
@@ -12,53 +14,53 @@ interface Props {
 
 const { items }: Props = Astro.props;
 ---
+<header
+  class="sticky top-0 z-10 bg-flexoki-base-paper/25 dark:bg-flexoki-base-black/25 backdrop-blur-md"
+>
+  <div class="mx-auto max-w-screen-sm px-4 text-sm font-medium">
+    <div class="flex flex-wrap items-center justify-between gap-4 py-4">
+      <!-- Logo -->
+      <a href="/" class="font-bold text-flexoki-cyan-400 dark:text-flexoki-cyan-600">ztz0</a>
 
-<!-- <script>
-  const button = document.querySelector("button#menu");
-  const dropdown = document.querySelector("div#dropdown");
+      <div class="md:hidden flex gap-x-2">
+        <Dropdown dropdownId="menu" position="right" class="md:hidden">
+          <div class="flex flex-col gap-2">
+            {items.map((item: Item) => {
+              if (
+                item.url.replace("/", "") ===
+                Astro.url.pathname.replace("/", "")
+              ) {
+                return (
+                  <div class="pointer-events-none px-4 py-2 hover:bg-flexoki-base-150 dark:hover:bg-flexoki-base-850">
+                    {item.title}
+                  </div>
+                );
+              }
 
-  console.log(button, dropdown);
-
-  button.addEventListener("click", () => {
-    dropdown.classList.toggle("hidden");
-  });
-</script> -->
-
-<div class="mx-auto max-w-screen-sm px-4 text-sm font-medium">
-  <div class="flex flex-wrap items-center justify-between gap-4 py-4">
-    <a href="/">ztz0</a>
-    <div class="md:hidden">
-      <button id="menu" class="text-tx-normal hover:text-tx-accent-hover">
-        <Icon name="lucide:menu" class="w-4 h-4" />
-      </button>
-      <div id="dropdown" class="hidden absolute right-4 mt-4 w-48 bg-bg-secondary shadow-lg rounded-md">
-        <div class="flex flex-col gap-2">
-          {items.map((item: Item) => {
-            if (
-              item.url.replace("/", "") === Astro.url.pathname.replace("/", "")
-            ) {
               return (
-                <div class="text-tx-accent-hover pointer-events-none px-4 py-2">{item.title}</div>
+                <a
+                  href={item.url}
+                  class="block px-4 py-2 hover:bg-flexoki-base-150 dark:hover:bg-flexoki-base-850"
+                >
+                  {item.title}
+                </a>
               );
-            }
+            })}
+          </div>
+        </Dropdown>
 
-            return (
-              <a href={item.url} class="block px-4 py-2 hover:text-tx-accent-hover">
-                {item.title}
-              </a>
-            );
-          })}
-        </div>
+        <SwitchTheme uniqueId="2" />
       </div>
-    </div>
-    <div class="hidden md:flex items-center gap-2 md:gap-4">
-      {
-        items.map((item: Item) => {
+
+      <div class="hidden md:flex items-center gap-4">
+        {items.map((item: Item) => {
           if (
             item.url.replace("/", "") === Astro.url.pathname.replace("/", "")
           ) {
             return (
-              <div class="text-tx-accent-hover pointer-events-none">{item.title}</div>
+              <div class="text-tx-accent-hover pointer-events-none">
+                {item.title}
+              </div>
             );
           }
 
@@ -67,16 +69,11 @@ const { items }: Props = Astro.props;
               {item.title}
             </a>
           );
-        })
-      }
+        })}
+        
+        <SwitchTheme uniqueId="1" />
+      </div>
     </div>
   </div>
-</div>
+</header>
 
-<style>
-@media (max-width: 768px) {
-  .dropdown {
-    display: none;
-  }
-}
-</style>

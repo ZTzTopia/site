@@ -1,0 +1,73 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import ButtonIcon from "./ButtonIcon.astro";
+
+interface Props extends HTMLAttributes<"div"> {
+  dropdownId: string;
+  icon?: string;
+  position?: "left" | "right" | undefined;
+}
+
+const { dropdownId, icon, position = "left", ...rest } = Astro.props as Props;
+---
+
+<div class:list={["relative"]} {...rest}>
+  <ButtonIcon
+    variant="outline"
+    icon={icon || "lucide:menu"}
+    data-dropdown-toggle={dropdownId}
+  />
+  <div
+    id={dropdownId}
+    class={`hidden absolute mt-2 w-48 bg-flexoki-base-150 dark:bg-flexoki-base-950 border border-flexoki-base-100 dark:border-flexoki-base-900 shadow-lg rounded-md z-20 ${position === "right" ? "right-0" : "left-0"}`}
+  >
+    <slot />
+  </div>
+</div>
+
+<script is:inline>
+  const initialize = () => {
+    const dropdownButtons = document.querySelectorAll("[data-dropdown-toggle]");
+
+    dropdownButtons.forEach((button) => {
+      const dropdownId = button.getAttribute("data-dropdown-toggle");
+      if (!dropdownId) {
+        return;
+      }
+
+      const dropdownContent = document.getElementById(dropdownId);
+      if (!dropdownContent) {
+        return;
+      }
+
+      button.addEventListener("click", () => {
+        dropdownContent.classList.toggle("hidden");
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!event) {
+          return;
+        }
+
+        if (!event.target) {
+          return;
+        }
+
+        if (
+          !button.contains(event.target) &&
+          !dropdownContent.contains(event.target)
+        ) {
+          dropdownContent.classList.add("hidden");
+        }
+      });
+    });
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initialize();
+  });
+
+  document.addEventListener("astro:after-swap", () => {
+    initialize();
+  });
+</script>
