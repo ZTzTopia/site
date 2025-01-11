@@ -14,18 +14,18 @@ const rawNodeTypes = new Set(['text', 'raw', 'mdxTextExpression']);
 const codeTagNames = new Set(['code', 'pre']);
 
 export default function rehypeUniqueHeadingIds() {
-  return (tree, file) => {
+  return (tree: any, file: VFile) => {
     const frontmatter = file.data.astro?.frontmatter;
 		const isMDX = isMDXFile(file);
 
-    const pathSegments = file.history[0].split("/");
+    const pathSegments = file.history[0].split("\\");
     const isDataEvents = pathSegments.includes("data") && pathSegments.includes("events");
     
     let slugger = defaultSlugger;
     slugger.reset();
 
     if (isDataEvents) {
-      const path = pathSegments.slice(pathSegments.length - 4).join("/");
+      const path = pathSegments.slice(pathSegments.length - 5, pathSegments.length - 3).join("\\");
 
       slugger = savedSlugger.get(path);
       if (!slugger) {
@@ -34,7 +34,7 @@ export default function rehypeUniqueHeadingIds() {
       }
     }
 
-    visit(tree, (node) => {
+    visit(tree, (node: any) => {
       if (node.type !== 'element') {
         return;
       }
@@ -52,7 +52,7 @@ export default function rehypeUniqueHeadingIds() {
       // const depth = Number.parseInt(level);
 
       let text = '';
-      visit(node, (child, __, parent) => {
+      visit(node, (child: any, __: any, parent: any) => {
         if (child.type === 'element' || parent == null) {
           return;
         }
@@ -92,7 +92,7 @@ export default function rehypeUniqueHeadingIds() {
           slug = slug.slice(0, -1);
         }
 
-        console.log(`slug: ${slug}`);
+        console.log('Unique heading ID:', slug);
         node.properties.id = slug;
       }
     });

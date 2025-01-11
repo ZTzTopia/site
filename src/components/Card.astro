@@ -1,14 +1,15 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import Element from "./Element.astro";
 
 interface Props extends HTMLAttributes<"div"> {}
 
 const { ...rest } = Astro.props as Props;
 ---
 
-<div class:list={["card"]} {...rest}>
+<Element class:list={["card"]} {...rest}>
   <slot />
-</div>
+</Element>
 
 <style>
   .card {

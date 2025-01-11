@@ -3,24 +3,17 @@ import { defineConfig } from 'astro/config';
 import tailwind from "@astrojs/tailwind";
 import icon from 'astro-icon';
 
-import rehypeUniqueHeadingIds from './packages/markdown/remark/src/rehype-unique-heading-ids';
+import rehypeUniqueHeadingIds from './src/plugins/rehype/rehype-unique-heading-ids';
 import rehypeSanitize from 'rehype-sanitize';
 import rehypeShiftHeading from 'rehype-shift-heading';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
 import expressiveCode from 'astro-expressive-code';
+import rehypeInjectFrontmatterTitle from './src/plugins/rehype/rehype-inject-frontmatter-title';
 
 // https://astro.build/config
 export default defineConfig({
   output: 'static',
-  markdown: {
-    rehypePlugins: [
-      rehypeUniqueHeadingIds,
-      [rehypeShiftHeading, { shift: 1 }],
-      // [rehypeAutolinkHeadings, { behavior: 'append' }],
-      // rehypeSanitize
-    ]
-  },
   integrations: [
     tailwind({
       applyBaseStyles: true
@@ -34,4 +27,15 @@ export default defineConfig({
       themes: ['min-dark']
     })
   ],
+  markdown: {
+    rehypePlugins: [
+      rehypeUniqueHeadingIds,
+      // rehypeInjectFrontmatterTitle,
+      [rehypeShiftHeading, { shift: 1 }],
+      // [rehypeAutolinkHeadings, { behavior: 'append' }],
+      rehypeSanitize
+    ]
+  },
+  compressHTML: false,
+  scopedStyleStrategy: 'where'
 });

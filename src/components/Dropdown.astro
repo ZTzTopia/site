@@ -1,6 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 import ButtonIcon from "./ButtonIcon.astro";
+import Element from "./Element.astro";
 
 interface Props extends HTMLAttributes<"div"> {
   dropdownId: string;
@@ -11,7 +12,7 @@ interface Props extends HTMLAttributes<"div"> {
 const { dropdownId, icon, position = "left", ...rest } = Astro.props as Props;
 ---
 
-<div class:list={["relative"]} {...rest}>
+<Element class:list={["dropdown", "relative"]} {...rest}>
   <ButtonIcon
     variant="outline"
     icon={icon || "lucide:menu"}
@@ -23,7 +24,7 @@ const { dropdownId, icon, position = "left", ...rest } = Astro.props as Props;
   >
     <slot />
   </div>
-</div>
+</El>
 
 <script is:inline>
   const initialize = () => {
@@ -35,7 +36,7 @@ const { dropdownId, icon, position = "left", ...rest } = Astro.props as Props;
         return;
       }
 
-      const dropdownContent = document.getElementById(dropdownId);
+      const dropdownContent = document.querySelector(`.dropdown > #${dropdownId}`);
       if (!dropdownContent) {
         return;
       }

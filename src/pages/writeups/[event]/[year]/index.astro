@@ -2,7 +2,6 @@
 import { getCollection } from "astro:content";
 import WriteupLayout from "../../../../layouts/WriteupLayout.astro";
 import { render } from "astro:content";
-import TableOfContents from "../../../../components/TableOfContents.astro";
 
 export async function getStaticPaths() {
     const eventCollections = await getCollection('eventYears');
@@ -35,7 +34,6 @@ console.log(headings);
 
 <WriteupLayout title={eventYear.data.title}>
   <h1 class="text-4xl font-bold">{eventYear.data.title}</h1>
-  <TableOfContents headings={headings} />
   {
     [...events].map((event) => (
       <h2>{event.remarkPluginFrontmatter.title}</h2>

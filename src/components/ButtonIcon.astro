@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
 import type { HTMLAttributes } from "astro/types";
+import Element from "./Element.astro";
 
 interface Props
   extends HTMLAttributes<"button">,
@@ -12,23 +13,16 @@ interface Props
 const { variant = "primary", icon, ...rest } = Astro.props as Props;
 ---
 
-{
-  rest.href ? (
-    <a class:list={["button-icon", `variant-${variant}`]} {...rest}>
-      <div class="flex items-center gap-2">
-        <Icon name={icon} />
-        <slot />
-      </div>
-    </a>
-  ) : (
-    <button class:list={["button-icon", `variant-${variant}`]} {...rest}>
-      <div class="flex items-center gap-2">
-        <Icon name={icon} />
-        <slot />
-      </div>
-    </button>
-  )
-}
+<Element
+  class:list={["button-icon", `variant-${variant}`]}
+  as={rest.href ? "a" : "button"}
+  {...rest}
+>
+  <div class="flex items-center gap-2">
+    <Icon name={icon} />
+    <slot />
+  </div>
+</Element>
 
 <style>
   .button-icon {

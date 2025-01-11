@@ -1,0 +1,7 @@
+---
+const { as: As = 'div', ...rest } = Astro.props as { as: string };
+---
+
+<As {...rest}>
+  <slot>
+</As>

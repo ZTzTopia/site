@@ -1,13 +1,14 @@
 ---
 import { Icon } from "astro-icon/components";
 import type { HTMLAttributes } from "astro/types";
+import Element from "./Element.astro";
 
 interface Props extends HTMLAttributes<"a"> {}
 
 const { ...rest } = Astro.props as Props;
 ---
 
-<a class:list={["card-link", "group"]} {...rest}>
+<Element class:list={["card-link", "group"]} as="a" {...rest}>
   <div class="flex items-center justify-between">
     <div class="flex flex-col">
       <slot />
@@ -17,7 +18,7 @@ const { ...rest } = Astro.props as Props;
       class="group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
     />
   </div>
-</a>
+</Element>
 
 <style>
   .card-link {

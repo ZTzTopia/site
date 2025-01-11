@@ -22,20 +22,20 @@ const { items }: Props = Astro.props;
       <!-- Logo -->
       <a href="/" class="font-bold text-flexoki-cyan-400 dark:text-flexoki-cyan-600">ztz0</a>
 
-      <div class="md:hidden flex gap-x-2">
-        <Dropdown dropdownId="menu" position="right" class="md:hidden">
+      <div class="flex gap-x-2">
+        <Dropdown dropdownId="menu" position="right" class="block md:hidden">
           <div class="flex flex-col gap-2">
             {items.map((item: Item) => {
-              if (
-                item.url.replace("/", "") ===
-                Astro.url.pathname.replace("/", "")
-              ) {
-                return (
-                  <div class="pointer-events-none px-4 py-2 hover:bg-flexoki-base-150 dark:hover:bg-flexoki-base-850">
-                    {item.title}
-                  </div>
-                );
-              }
+              // if (
+              //   item.url.replace("/", "") ===
+              //   Astro.url.pathname.replace("/", "")
+              // ) {
+              //   return (
+              //     <div class="pointer-events-none px-4 py-2 hover:bg-flexoki-base-150 dark:hover:bg-flexoki-base-850">
+              //       {item.title}
+              //     </div>
+              //   );
+              // }
 
               return (
                 <a
@@ -49,31 +49,116 @@ const { items }: Props = Astro.props;
           </div>
         </Dropdown>
 
-        <SwitchTheme uniqueId="2" />
-      </div>
+        <div class="hidden md:flex items-center gap-4">
+          {items.map((item: Item) => {
+            // if (
+            //   item.url.replace("/", "") === Astro.url.pathname.replace("/", "")
+            // ) {
+            //   return (
+            //     <div class="text-tx-accent-hover pointer-events-none">
+            //       {item.title}
+            //     </div>
+            //   );
+            // }
 
-      <div class="hidden md:flex items-center gap-4">
-        {items.map((item: Item) => {
-          if (
-            item.url.replace("/", "") === Astro.url.pathname.replace("/", "")
-          ) {
             return (
-              <div class="text-tx-accent-hover pointer-events-none">
+              <a href={item.url} class="hover:text-tx-accent-hover">
                 {item.title}
-              </div>
+              </a>
             );
-          }
+          })}
+        </div>
 
-          return (
-            <a href={item.url} class="hover:text-tx-accent-hover">
-              {item.title}
-            </a>
-          );
-        })}
-        
-        <SwitchTheme uniqueId="1" />
+        <Dropdown dropdownId="switchTheme" icon="lucide:moon" position="right">
+          <div class="flex flex-col gap-2">
+            <button
+              id="lightTheme"
+              class="block px-4 py-2 text-left hover:text-tx-accent-hover hover:bg-flexoki-base-300 dark:hover:bg-flexoki-base-850"
+            >
+              Light Mode
+            </button>
+            <button
+              id="darkTheme"
+              class="block px-4 py-2 text-left hover:text-tx-accent-hover hover:bg-flexoki-base-300 dark:hover:bg-flexoki-base-850"
+            >
+              Dark Mode
+            </button>
+            <button
+              id="systemTheme"
+              class="block px-4 py-2 text-left hover:text-tx-accent-hover hover:bg-flexoki-base-300 dark:hover:bg-flexoki-base-850"
+            >
+              System Default
+            </button>
+          </div>
+        </Dropdown>
       </div>
     </div>
   </div>
 </header>
 
+<script is:inline>
+  const applyTheme = (theme) => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else if (theme === "light") {
+      document.documentElement.classList.remove("dark");
+    }
+  };
+
+  const applySystemTheme = () => {
+    const systemPrefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    if (systemPrefersDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
+
+  const initializeTheme = () => {
+    const savedTheme = localStorage.getItem("theme");
+    if (!savedTheme || savedTheme === "system") {
+      applySystemTheme();
+    } else {
+      applyTheme(savedTheme);
+    }
+  };
+
+  const initializeListenet = () => {
+    const lightThemes = document.querySelectorAll("#lightTheme");
+    const darkThemes = document.querySelectorAll("#darkTheme");
+    const systemThemes = document.querySelectorAll("#systemTheme");
+
+    lightThemes.forEach((lightTheme) => {
+      lightTheme.addEventListener("click", () => {
+        localStorage.setItem("theme", "light");
+        applyTheme("light");
+      });
+    });
+
+    darkThemes.forEach((darkTheme) => {
+      darkTheme.addEventListener("click", () => {
+        localStorage.setItem("theme", "dark");
+        applyTheme("dark");
+      });
+    });
+
+    systemThemes.forEach((systemTheme) => {
+      systemTheme.addEventListener("click", () => {
+        localStorage.setItem("theme", "system");
+        applySystemTheme();
+      });
+    });
+  };
+  
+  document.addEventListener("DOMContentLoaded", () => {
+    initializeTheme();
+    initializeListenet();
+  });
+
+  document.addEventListener("astro:after-swap", () => {
+    initializeTheme();
+    initializeListenet();
+  });
+</script>

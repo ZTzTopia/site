@@ -1,5 +1,6 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import Element from "./Element.astro";
 
 interface Props
   extends HTMLAttributes<"button">,
@@ -10,17 +11,13 @@ interface Props
 const { variant = "primary", ...rest } = Astro.props as Props;
 ---
 
-{
-  rest.href ? (
-    <a class:list={["button", `variant-${variant}`]} {...rest}>
-      <slot />
-    </a>
-  ) : (
-    <button class:list={["button", `variant-${variant}`]} {...rest}>
-      <slot />
-    </button>
-  )
-}
+<Element
+  class:list={["button", `variant-${variant}`]}
+  as={rest.href ? "a" : "button"}
+  {...rest}
+>
+  <slot />
+</Element>
 
 <style>
   .button {
