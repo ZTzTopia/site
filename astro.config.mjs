@@ -17,8 +17,8 @@ export default defineConfig({
   integrations: [
     tailwind({
       applyBaseStyles: true
-    }), 
-    icon(), 
+    }),
+    icon(),
     expressiveCode({
       styleOverrides: {
         codeFontFamily: "'Monaspace Neon', monospace",

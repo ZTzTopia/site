@@ -1,7 +1,5 @@
 ---
-import { Icon } from "astro-icon/components";
 import Dropdown from "./Dropdown.astro";
-import SwitchTheme from "./SwitchTheme.astro";
 
 interface Item {
   url: string;
@@ -19,28 +17,16 @@ const { items }: Props = Astro.props;
 >
   <div class="mx-auto max-w-screen-sm px-4 text-sm font-medium">
     <div class="flex flex-wrap items-center justify-between gap-4 py-4">
-      <!-- Logo -->
-      <a href="/" class="font-bold text-flexoki-cyan-400 dark:text-flexoki-cyan-600">ztz0</a>
+      <a href="/" class="font-bold text-flexoki-cyan-600 dark:text-flexoki-cyan-400">ztz0</a>
 
-      <div class="flex gap-x-2">
+      <div class="flex gap-x-2 md:gap-x-4">
         <Dropdown dropdownId="menu" position="right" class="block md:hidden">
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col p-1">
             {items.map((item: Item) => {
-              // if (
-              //   item.url.replace("/", "") ===
-              //   Astro.url.pathname.replace("/", "")
-              // ) {
-              //   return (
-              //     <div class="pointer-events-none px-4 py-2 hover:bg-flexoki-base-150 dark:hover:bg-flexoki-base-850">
-              //       {item.title}
-              //     </div>
-              //   );
-              // }
-
               return (
                 <a
                   href={item.url}
-                  class="block px-4 py-2 hover:bg-flexoki-base-150 dark:hover:bg-flexoki-base-850"
+                  class="block px-4 py-2 rounded-md hover:bg-flexoki-base-150 dark:hover:bg-flexoki-base-850"
                 >
                   {item.title}
                 </a>
@@ -51,18 +37,8 @@ const { items }: Props = Astro.props;
 
         <div class="hidden md:flex items-center gap-4">
           {items.map((item: Item) => {
-            // if (
-            //   item.url.replace("/", "") === Astro.url.pathname.replace("/", "")
-            // ) {
-            //   return (
-            //     <div class="text-tx-accent-hover pointer-events-none">
-            //       {item.title}
-            //     </div>
-            //   );
-            // }
-
             return (
-              <a href={item.url} class="hover:text-tx-accent-hover">
+              <a href={item.url} class="hover:text-flexoki-cyan-600 dark:hover:text-flexoki-cyan-400">
                 {item.title}
               </a>
             );
@@ -70,22 +46,22 @@ const { items }: Props = Astro.props;
         </div>
 
         <Dropdown dropdownId="switchTheme" icon="lucide:moon" position="right">
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col p-1">
             <button
               id="lightTheme"
-              class="block px-4 py-2 text-left hover:text-tx-accent-hover hover:bg-flexoki-base-300 dark:hover:bg-flexoki-base-850"
+              class="block px-4 py-2 text-left rounded-md hover:bg-flexoki-base-300 dark:hover:bg-flexoki-base-850"
             >
               Light Mode
             </button>
             <button
               id="darkTheme"
-              class="block px-4 py-2 text-left hover:text-tx-accent-hover hover:bg-flexoki-base-300 dark:hover:bg-flexoki-base-850"
+              class="block px-4 py-2 text-left rounded-md hover:bg-flexoki-base-300 dark:hover:bg-flexoki-base-850"
             >
               Dark Mode
             </button>
             <button
               id="systemTheme"
-              class="block px-4 py-2 text-left hover:text-tx-accent-hover hover:bg-flexoki-base-300 dark:hover:bg-flexoki-base-850"
+              class="block px-4 py-2 text-left rounded-md hover:bg-flexoki-base-300 dark:hover:bg-flexoki-base-850"
             >
               System Default
             </button>
@@ -96,7 +72,7 @@ const { items }: Props = Astro.props;
   </div>
 </header>
 
-<script is:inline>
+<script>
   const applyTheme = (theme) => {
     if (theme === "dark") {
       document.documentElement.classList.add("dark");

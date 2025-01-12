@@ -26,7 +26,7 @@ const { dropdownId, icon, position = "left", ...rest } = Astro.props as Props;
   </div>
 </El>
 
-<script is:inline>
+<script>
   const initialize = () => {
     const dropdownButtons = document.querySelectorAll("[data-dropdown-toggle]");
 
@@ -55,8 +55,8 @@ const { dropdownId, icon, position = "left", ...rest } = Astro.props as Props;
         }
 
         if (
-          !button.contains(event.target) &&
-          !dropdownContent.contains(event.target)
+          !button.contains(event.target as Node) &&
+          !dropdownContent.contains(event.target as Node)
         ) {
           dropdownContent.classList.add("hidden");
         }
