@@ -1,4 +1,5 @@
 ---
+import Slugger from "github-slugger";
 import { getCollection } from "astro:content";
 import WriteupLayout from "../../../../layouts/WriteupLayout.astro";
 import { render } from "astro:content";
@@ -27,7 +28,21 @@ for (const event of eventCollections) {
 
 const [ eventYear ] = await getCollection('eventYears', ({ id }) => id.split('/')[0] === Astro.params.event && id.split('/')[1] === Astro.params.year);
 
-const headings = events.flatMap((event) => event.headings);
+const slugger = new Slugger();
+
+const headings = events.flatMap((event) => {
+  event.headings = [
+    {
+      depth: 2,
+      slig: `user-content-${slugger.slug(event.remarkPluginFrontmatter.title)}`,
+      text: event.remarkPluginFrontmatter.title
+    },
+    ...event.headings
+  ];
+  return event.headings
+});
+
+slugger.reset();
 
 console.log(headings);
 ---
@@ -36,10 +51,10 @@ console.log(headings);
   <h1 class="text-4xl font-bold">{eventYear.data.title}</h1>
   {
     [...events].map((event) => (
-      <h2>{event.remarkPluginFrontmatter.title}</h2>
-      <div class="not-prose flex flex-col gap-y-4 border p-4">
+      <h2 id={`user-content-${slugger.slug(event.remarkPluginFrontmatter.title)}`}>{event.remarkPluginFrontmatter.title}</h2>
+      <div class="not-prose flex flex-col gap-y-4 border p-4 rounded-md border-flexoki-base-100 dark:border-flexoki-base-900">
         <div class="flex flex-col divide-y">
-          <div class="flex gap-x-2 py-2 first:pt-0 last:pb-0">
+          <div class="flex gap-x-2 py-2 first:pt-0 last:pb-0 border-flexoki-base-100 dark:border-flexoki-base-900">
             <div class="flex-1">
               Category
             </div>
@@ -47,7 +62,7 @@ console.log(headings);
               <p>{event.remarkPluginFrontmatter.category}</p>
             </div>
           </div>
-          <div class="flex gap-x-2 py-2 first:pt-0 last:pb-0">
+          <div class="flex gap-x-2 py-2 first:pt-0 last:pb-0 border-flexoki-base-100 dark:border-flexoki-base-900">
             <div class="flex-1">
               Tags
             </div>
@@ -55,7 +70,7 @@ console.log(headings);
               <p>{event.remarkPluginFrontmatter.tags}</p>
             </div>
           </div>
-          <div class="flex gap-x-2 py-2 first:pt-0 last:pb-0">
+          <div class="flex gap-x-2 py-2 first:pt-0 last:pb-0 border-flexoki-base-100 dark:border-flexoki-base-900">
             <div class="flex-1">
               Flag
             </div>
@@ -69,3 +84,9 @@ console.log(headings);
     ))
   }
 </WriteupLayout>
+
+<style>
+  .prose > img {
+    @apply rounded-md
+  }
+</style>

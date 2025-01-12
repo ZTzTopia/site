@@ -73,7 +73,7 @@ const { items }: Props = Astro.props;
 </header>
 
 <script>
-  const applyTheme = (theme) => {
+  const applyTheme = (theme: string) => {
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
     } else if (theme === "light") {

@@ -42,7 +42,9 @@ const [ event ] = (await getCollection('events', ({ data }) => data.title.toLowe
         {
           [...events].map((event) => (
             <a href={`${Astro.url.pathname}/${event.title}`}>
-              <Card title={event.title} />
+              <Card>
+                {event.title}
+              </Card>
             </a>
           ))
         }

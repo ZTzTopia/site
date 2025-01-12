@@ -13,10 +13,10 @@ const navItems = [
   //   url: "/blog",
   //   title: "Blog",
   // },
-  // {
-  //   url: "/writeups",
-  //   title: "Writeups",
-  // },
+  {
+    url: "/writeups",
+    title: "Writeups",
+  },
   {
     url: "/projects",
     title: "Projects",
@@ -96,7 +96,7 @@ const props: Props = Astro.props;
       <div class="relative flex flex-grow flex-col">
         <Nav items={navItems} />
         <main class="flex-grow">
-          <div class="mx-auto max-w-screen-sm px-4 mt-4 flex flex-col gap-y-2">
+          <div class="mx-auto max-w-screen-sm px-4 mt-4 flex flex-col gap-y-4">
             <Breadcrumb />
             <slot />
           </div>

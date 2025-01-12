@@ -5,7 +5,6 @@ import Slugger from "github-slugger";
 import { visit } from "unist-util-visit";
 import type { MdxTextExpression } from 'mdast-util-mdx-expression';
 import type { Node } from 'unist';
-import type { VFile } from 'vfile';
 
 const defaultSlugger = new Slugger();
 const savedSlugger = new Map();
@@ -14,7 +13,7 @@ const rawNodeTypes = new Set(['text', 'raw', 'mdxTextExpression']);
 const codeTagNames = new Set(['code', 'pre']);
 
 export default function rehypeUniqueHeadingIds() {
-  return (tree: any, file: VFile) => {
+  return (tree: any, file: any) => {
     const frontmatter = file.data.astro?.frontmatter;
 		const isMDX = isMDXFile(file);
 
