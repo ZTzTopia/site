@@ -98,7 +98,7 @@ export default function rehypeUniqueHeadingIds() {
   };
 }
 
-function isMDXFile(file: VFile) {
+function isMDXFile(file: any) {
 	return Boolean(file.history[0]?.endsWith('.mdx'));
 }
 
