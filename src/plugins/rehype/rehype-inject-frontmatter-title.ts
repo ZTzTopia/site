@@ -1,7 +1,7 @@
 import { visit } from "unist-util-visit";
 
 export default function rehypeInjectFrontmatterTitle() {
-  return (tree: any, file: VFile) => {
+  return (tree: any, file: any) => {
     const frontmatter = file.data.astro?.frontmatter;
 
     let headingLevelOne = false;
