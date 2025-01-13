@@ -1,0 +1,33 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'div'> {
+  list?: string[];
+}
+
+const { ...rest } = Astro.props as Props;
+---
+
+<div
+  class:list={[
+    'prose',
+    'dark:prose-invert',
+
+    'prose-a:text-flexoki-cyan-400',
+    'dark:prose-a:text-flexoki-cyan-600',
+    'hover:prose-a:text-flexoki-cyan-600',
+    'dark:hover:prose-a:text-flexoki-cyan-400',
+    'active:prose-a:text-flexoki-cyan-600',
+    'dark:active:prose-a:text-flexoki-cyan-400',
+
+    'prose-code:p-1',
+    'prose-code:bg-flexoki-base-50',
+    'dark:prose-code:bg-flexoki-base-950',
+    'prose-code:rounded',
+    'after:prose-code:content-none',
+    'before:prose-code:content-none',
+  ]}
+  {...rest}
+>
+  <slot />
+</div>

@@ -1,0 +1,27 @@
+---
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props as Props;
+
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta name="generator" content={Astro.generator} />
+<title>{title} | ztz0</title>
+
+<meta name="description" content={description} />
+
+{canonical && <link rel="canonical" href={canonical.href} />}
+
+<!-- Open Graph Meta Tags (Social Sharing) -->
+<meta property="og:title" content={title} />
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonical?.href} />
+<meta property="og:description" content={description} />
+<meta property="og:site_name" content="ztz0" />

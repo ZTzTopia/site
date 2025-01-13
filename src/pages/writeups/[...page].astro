@@ -4,6 +4,7 @@ import Button from "../../components/Button.astro";
 import Layout from "../../layouts/Layout.astro";
 import type { Page } from "astro";
 import Card from "../../components/Card.astro";
+import Paginatation from "../../components/Paginatation.astro";
 
 export async function getStaticPaths({ paginate }: { paginate: (paths: any[], options: { pageSize: number }) => any }) {
   const eventCollections = await getCollection('events');
@@ -15,16 +16,20 @@ export async function getStaticPaths({ paginate }: { paginate: (paths: any[], op
       }
   });
   
-  return paginate(paths, { pageSize: 8 });
+  return paginate(paths, { pageSize: 1 });
 }
 
-const props: { page: Page } = Astro.props;
+interface Props {
+  page: Page
+}
+
+const { page } = Astro.props as Props;
 ---
 
 <Layout title="ztz0">
   <div class="grid grid-cols-2 gap-2">
     {
-      [...props.page.data].map((event) => (
+      [...page.data].map((event) => (
         <a href={`/writeups/${event.slug}`}>
           <Card>
             {event.name}
@@ -34,8 +39,7 @@ const props: { page: Page } = Astro.props;
     }
   </div>
 
-  <div class="flex gap-2 justify-center">
-    {props.page.url.prev && <Button variant="outline" href={props.page.url.prev}>Previous</Button>}
-    {props.page.url.next && <Button variant="outline" href={props.page.url.next}>Next</Button>}
+  <div class="flex gap-1 justify-center">
+    <Paginatation page={page} />
   </div>
 </Layout>

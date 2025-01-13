@@ -1,67 +1,62 @@
 ---
-type Heading = {
+import TableOfContentList from './TableOfContentList.astro';
+
+type Headings = {
   depth: number;
   slug: string;
   text: string;
 };
 
-type Props = {
-  headings: Heading[];
+type Propss = {
+  headings: Headings[];
 };
 
-const props: Props = Astro.props;
+const props: Propss = Astro.props;
 
-// Helper function to render nested lists
-function renderHeadings(headings: Heading[]) {
-  const result: string[] = [];
+interface Item {
+  depth: number;
+  slug: string;
+  text: string;
+}
 
-  headings.forEach((heading, index) => {
+interface Heading extends Item {
+  children: Heading[];
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+function renderHeadingsAsJson(props: Propss): Heading[] {
+  const { headings } = props;
+  const stack: Heading[] = [];
+  const result: Heading[] = [];
+
+  headings.forEach(heading => {
     const { depth, slug, text } = heading;
 
-    // Open a new list if the depth increases
-    if (index === 0 || headings[index - 1].depth < depth) {
-      result.push(`<ul class="ml-${depth * 4}">`);
+    const newHeading: Heading = { depth, slug, text, children: [] };
+
+    // Determine where to insert the new heading
+    while (stack.length > 0 && stack[stack.length - 1].depth >= depth) {
+      stack.pop(); // Pop higher or equal depth items
     }
 
-    // Close the current list if the depth decreases
-    if (index > 0 && headings[index - 1].depth > depth) {
-      const difference = headings[index - 1].depth - depth;
-      for (let i = 0; i < difference; i++) {
-        result.push(`</ul>`);
-      }
+    if (stack.length === 0) {
+      result.push(newHeading); // Add to the root level
+    } else {
+      const parent = stack[stack.length - 1];
+      parent.children.push(newHeading); // Add to the parent's children
     }
 
-    // Add the list item
-    result.push(
-      `<li>
-        <a href="#${slug}" class="text-blue-500 hover:underline">${text}</a>
-      </li>`
-    );
-
-    // Close any remaining lists at the end
-    if (index === headings.length - 1) {
-      const remainingDepth = depth;
-      for (let i = 0; i < remainingDepth; i++) {
-        result.push(`</ul>`);
-      }
-    }
+    stack.push(newHeading); // Add the current heading to the stack
   });
 
-  return result.join('');
+  return result;
 }
+
+const headings = renderHeadingsAsJson(props);
 ---
 
-<div class="prose dark:prose-invert">
-  <h2 class="text-lg font-bold mb-2">Table of Contents</h2>
-  <Fragment set:html={renderHeadings(props.headings)} />
-</div>
-
-<style>
-  ul {
-    @apply list-none;
-  }
-
-  li {
-    @apply mb-1;
-  }
-</style>
+<h2 class="text-lg font-bold mb-2">Table of Contents</h2>
+<TableOfContentList headings={headings} depth={0} />

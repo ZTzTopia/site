@@ -11,7 +11,6 @@
   "dependencies": {
     "astro": "^5.1.2",
     "mdast-util-mdx-expression": "^2.0.1",
-    "mdx": "^0.3.1",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3"
   },

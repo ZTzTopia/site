@@ -1,11 +1,19 @@
 ---
-import Layout from "./Layout.astro";
+import MarkdownContent from '../components/MarkdownContent.astro';
+import Layout from './Layout.astro';
 
-const { title } = Astro.props;
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { ...rest } = Astro.props as Props;
 ---
 
-<Layout title={title}>
-  <div class="prose dark:prose-invert">
-    <slot />
-  </div>
+<Layout {...rest}>
+  <main>
+    <MarkdownContent>
+      <slot />
+    </MarkdownContent>
+  </main>
 </Layout>

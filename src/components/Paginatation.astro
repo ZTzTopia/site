@@ -1,0 +1,59 @@
+---
+import type { Page } from 'astro';
+import Button from './Button.astro';
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  page: Page
+}
+
+const { page } = Astro.props as Props;
+---
+
+<nav role="navigation">
+  <Button variant="ghost" href={page.url.prev} size="sm">
+    <Icon name="lucide:chevron-left" />
+    Previous
+  </Button>
+
+  {
+    page.currentPage > 4 && (
+      <Button variant="ghost" size="sm">
+        1
+      </Button>
+      <Button variant="ghost" size="sm">...</Button>
+    )
+  }
+  {
+    Array.from({ length: 5 }).map((_, index) => {
+      let pageNumber = (page.currentPage + index);
+      if (page.currentPage - page.lastPage > -4) {
+        pageNumber -= (page.currentPage - page.lastPage) + 4;
+      } else if (page.currentPage > 1) {
+        pageNumber -= (page.currentPage > 4 ? 2 : page.currentPage - 1);
+      }
+
+      const isCurrentPage = page.currentPage === pageNumber;
+      const variant = isCurrentPage ? 'outline' : 'ghost';
+
+      return (
+        <Button variant={variant} size="sm">
+          {pageNumber}
+        </Button>
+      );
+    })
+  }
+  {
+    page.currentPage < page.lastPage - 3 && (
+      <Button variant="ghost" size="sm">...</Button>
+      <Button variant="ghost" size="sm">
+        {page.lastPage}
+      </Button>
+    )
+  }
+
+  <Button variant="ghost" href={page.url.next} size="sm">
+    Next
+    <Icon name="lucide:chevron-right" />
+  </Button>
+</nav>

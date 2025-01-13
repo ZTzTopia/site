@@ -1,0 +1,81 @@
+---
+import { Icon } from "astro-icon/components";
+import Button from "./Button.astro";
+import Dropdown from "./Dropdown.astro";
+---
+
+<!-- TODO: Avoid FOUC and also change trigger icon -->
+<theme-select>
+  <Dropdown size="icon" position="right">
+    <Icon slot="trigger" name="lucide:sun" />
+    <div class="flex flex-col p-1">
+      <Button id="lightThemeButton" variant="ghost">
+        <Icon name="lucide:sun" class="mr-2" /> Light Mode
+      </Button>
+      <Button id="darkThemeButton" variant="ghost">
+        <Icon name="lucide:moon" class="mr-2" /> Dark Mode
+      </Button>
+      <Button id="systemThemeButton" variant="ghost">
+        <Icon name="lucide:computer" class="mr-2" /> System Default
+      </Button>
+    </div>
+  </Dropdown>
+</theme-select>
+
+<script>
+  const applyTheme = (theme: string) => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else if (theme === "light") {
+      document.documentElement.classList.remove("dark");
+    }
+  };
+
+  const applySystemTheme = () => {
+    const systemPrefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
+    if (systemPrefersDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
+
+  const init = () => {
+    const savedTheme = localStorage.getItem("theme");
+    if (!savedTheme || savedTheme === "system") {
+      applySystemTheme();
+    } else {
+      applyTheme(savedTheme);
+    }
+  };
+
+  class ThemeSelect extends HTMLElement {
+		constructor() {
+			super();
+      
+      init();
+			
+      const lightTheme = this.querySelector("#lightThemeButton");
+      lightTheme?.addEventListener("click", () => {
+        localStorage.setItem("theme", "light");
+        applyTheme("light");
+      });
+
+      const darkTheme = this.querySelector("#darkThemeButton");
+      darkTheme?.addEventListener("click", () => {
+        localStorage.setItem("theme", "dark");
+        applyTheme("dark");
+      });
+
+      const systemTheme = this.querySelector("#systemThemeButton");
+      systemTheme?.addEventListener("click", () => {
+        localStorage.setItem("theme", "system");
+        applySystemTheme();
+      });
+		}
+	}
+
+  customElements.define('theme-select', ThemeSelect);
+</script>

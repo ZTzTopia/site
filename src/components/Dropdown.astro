@@ -1,64 +1,51 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import ButtonIcon from "./ButtonIcon.astro";
 import Element from "./Element.astro";
+import Card from "./Card.astro";
+import Button from "./Button.astro";
 
 interface Props extends HTMLAttributes<"div"> {
-  dropdownId: string;
-  icon?: string;
+  variant?: "outline" | "ghost" | "text" | undefined;
+  size?: "default" | "icon" | undefined;
   position?: "left" | "right" | undefined;
 }
 
-const { dropdownId, icon, position = "left", ...rest } = Astro.props as Props;
+const {
+  variant = "outline",
+  size = "default",
+  position = "left",
+  ...rest
+} = Astro.props as Props;
 ---
 
-<Element class:list={["dropdown", "relative"]} {...rest}>
-  <ButtonIcon
-    variant="outline"
-    icon={icon || "lucide:menu"}
-    data-dropdown-toggle={dropdownId}
-  />
-  <div
-    id={dropdownId}
-    class={`hidden absolute mt-2 w-48 bg-flexoki-base-150 dark:bg-flexoki-base-950 border border-flexoki-base-100 dark:border-flexoki-base-900 shadow-lg rounded-md z-20 ${position === "right" ? "right-0" : "left-0"}`}
+<Element class:list="dropdown relative" {...rest}>
+  <Button variant={variant} size={size}>
+    <slot name="trigger" />
+  </Button>
+  <Card
+    class={`hidden absolute z-20 mt-2 w-max ${position === "right" ? "right-0" : "left-0"} bg-flexoki-base-150 dark:bg-flexoki-base-950 border border-flexoki-base-100 dark:border-flexoki-base-900`}
   >
     <slot />
-  </div>
-</El>
+  </Card>
+</Element>
 
 <script>
   const initialize = () => {
-    const dropdownButtons = document.querySelectorAll("[data-dropdown-toggle]");
+    const dropdowns = document.querySelectorAll(".dropdown");
+    dropdowns.forEach((dropdown) => {
+      const dropdownButtonTrigger = dropdown.children[0];
+      const dropdownContent = dropdown.children[1];
 
-    dropdownButtons.forEach((button) => {
-      const dropdownId = button.getAttribute("data-dropdown-toggle");
-      if (!dropdownId) {
-        return;
-      }
-
-      const dropdownContent = document.querySelector(`.dropdown > #${dropdownId}`);
-      if (!dropdownContent) {
-        return;
-      }
-
-      button.addEventListener("click", () => {
-        dropdownContent.classList.toggle("hidden");
+      dropdownButtonTrigger.addEventListener("click", () => {
+        dropdownContent?.classList.toggle("hidden");
       });
 
       document.addEventListener("click", (event) => {
-        if (!event) {
-          return;
-        }
-
-        if (!event.target) {
-          return;
-        }
-
         if (
-          !button.contains(event.target as Node) &&
-          !dropdownContent.contains(event.target as Node)
+          !dropdownButtonTrigger.contains(event.target as Node) &&
+          !dropdownContent?.contains(event.target as Node)
         ) {
-          dropdownContent.classList.add("hidden");
+          dropdownContent?.classList.add("hidden");
         }
       });
     });

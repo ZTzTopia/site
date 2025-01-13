@@ -1,18 +1,22 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
-import CardLink from "./CardLink.astro";
+import Card from "./Card.astro";
 
 type Project = CollectionEntry<"projects">;
 const projects: Project[] = await getCollection("projects");
 ---
 
-<div class="grid md:grid-cols-2 gap-2">
-  {
-    projects.map((project: Project) => (
-      <CardLink href={project.data.url} target="_blank">
-        <h2 class="font-medium">{project.data.title}</h2>
-        <p class="text-sm">{project.data.description}</p>
-      </CardLink>
-    ))
-  }
-</div>
+{
+  projects && (
+    <div class="grid md:grid-cols-2 gap-2">
+      {projects.map((project: Project) => (
+        <Card href={project.data.url} target="_blank">
+          <div slot="content" class="flex flex-col">
+            <h2 class="font-medium">{project.data.title}</h2>
+            <p class="text-sm">{project.data.description}</p>
+          </div>
+        </Card>
+      ))}
+    </div>
+  )
+}

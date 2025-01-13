@@ -1,6 +1,6 @@
 ---
-import { Icon } from 'astro-icon/components';
-import ButtonIcon from './ButtonIcon.astro';
+import { Icon } from "astro-icon/components";
+import Button from "./Button.astro";
 
 interface Item {
   url: string;
@@ -12,15 +12,22 @@ interface Props {
   items: Item[];
 }
 
-const { items }: Props = Astro.props;
+const props: Props = Astro.props;
 ---
 
 <footer class="py-4 mt-12">
-  <div class="flex justify-center gap-2">
-    {
-      items.map((item: Item) => (
-        <ButtonIcon variant="outline" href={item.url} icon={item.iconName || ""} />
-      ))
-    }
+  <div class="mx-auto px-4 max-w-screen-sm">
+    <div class="flex justify-end items-center">
+      <!-- <p class="text-sm">&copy; 2025 All rights reserved.</p> -->
+      <div class="flex gap-2">
+        {
+          props.items.map((item: Item) => (
+            <Button variant="outline" size="icon" href={item.url}>
+              <Icon name={item.iconName} />
+            </Button>
+          ))
+        }
+      </div>
+    </div>
   </div>
 </footer>

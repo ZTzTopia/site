@@ -1,18 +1,14 @@
 ---
 import Breadcrumb from "../components/Breadcrumb.astro";
 import Footer from "../components/Footer.astro";
-import Nav from "../components/Nav.astro";
-import CommonHead from "../components/CommonHead.astro";
+import Header from "../components/Header.astro";
+import Head from "../components/Head.astro";
 
 const navItems = [
   {
     url: "/",
     title: "Home",
   },
-  // {
-  //   url: "/blog",
-  //   title: "Blog",
-  // },
   {
     url: "/writeups",
     title: "Writeups",
@@ -44,21 +40,23 @@ const footerItems = [
 
 interface Props {
   title: string;
+  description?: string;
 }
 
-const props: Props = Astro.props;
+const {
+  title,
+  description = "Software Engineer and CTF Player from Tangerang, Indonesia",
+} = Astro.props as Props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <CommonHead title={props.title} />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <Head title={title} description={description} />
 
     <style is:global>
+      @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
       @font-face {
         font-family: "Monaspace Neon";
         src: url("/fonts/MonaspaceNeonVarVF[wght,wdth,slnt].woff2")
@@ -77,32 +75,24 @@ const props: Props = Astro.props;
       }
 
       ::selection {
-        --tw-bg-opacity: 0.25;
-        background: rgb(36, 131, 123, var(--tw-bg-opacity));
-      }
-
-      @media (prefers-color-scheme: dark) {
-        ::selection {
-          --tw-bg-opacity: 0.25;
-          background: rgba(58, 169, 159, var(--tw-bg-opacity));
-        }
+        @apply bg-flexoki-cyan-400/15 dark:bg-flexoki-cyan-600/15;
       }
     </style>
   </head>
-  <body>
-    <div
-      class="relative box-border flex h-fit min-h-screen flex-col gap-y-6 bg-flexoki-base-paper dark:bg-flexoki-base-black text-flexoki-base-black dark:text-flexoki-base-200 antialiased"
-    >
-      <div class="relative flex flex-grow flex-col">
-        <Nav items={navItems} />
-        <main class="flex-grow">
-          <div class="mx-auto max-w-screen-sm px-4 mt-4 flex flex-col gap-y-4">
-            <Breadcrumb />
-            <slot />
-          </div>
-        </main>
-        <Footer items={footerItems} />
+  <body
+    class="bg-flexoki-base-paper dark:bg-flexoki-base-black text-flexoki-base-black dark:text-flexoki-base-200 antialiased"
+  >
+    <div class="flex flex-col min-h-screen">
+      <Header items={navItems} />
+      
+      <div class="flex-grow">
+        <div class="flex flex-col gap-y-4 mx-auto p-4 max-w-screen-sm">
+          <Breadcrumb />
+          <slot />
+        </div>
       </div>
+
+      <Footer items={footerItems} />
     </div>
   </body>
 </html>

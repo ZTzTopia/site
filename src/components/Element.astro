@@ -1,7 +1,13 @@
 ---
-const { as: As = 'div', ...rest } = Astro.props as { as: string };
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<"div"> {
+  as?: string;
+}
+
+const { as: As = "div", ...rest } = Astro.props as Props;
 ---
 
 <As {...rest}>
-  <slot>
+  <slot />
 </As>

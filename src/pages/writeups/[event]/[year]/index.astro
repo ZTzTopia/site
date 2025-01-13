@@ -3,6 +3,7 @@ import Slugger from "github-slugger";
 import { getCollection } from "astro:content";
 import WriteupLayout from "../../../../layouts/WriteupLayout.astro";
 import { render } from "astro:content";
+import TableOfContent from "../../../../components/TableOfContent.astro";
 
 export async function getStaticPaths() {
     const eventCollections = await getCollection('eventYears');
@@ -34,7 +35,7 @@ const headings = events.flatMap((event) => {
   event.headings = [
     {
       depth: 2,
-      slig: `user-content-${slugger.slug(event.remarkPluginFrontmatter.title)}`,
+      slug: `user-content-${slugger.slug(event.remarkPluginFrontmatter.title)}`,
       text: event.remarkPluginFrontmatter.title
     },
     ...event.headings
@@ -49,6 +50,7 @@ console.log(headings);
 
 <WriteupLayout title={eventYear.data.title}>
   <h1 class="text-4xl font-bold">{eventYear.data.title}</h1>
+  <!-- <TableOfContent headings={headings} /> -->
   {
     [...events].map((event) => (
       <h2 id={`user-content-${slugger.slug(event.remarkPluginFrontmatter.title)}`}>{event.remarkPluginFrontmatter.title}</h2>

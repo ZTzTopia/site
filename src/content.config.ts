@@ -11,6 +11,17 @@ const projects = defineCollection({
   })
 });
 
+const experiences = defineCollection({
+  loader: file('./src/data/experiences.json'),
+  schema: z.object({
+    id: z.number(),
+    title: z.string(),
+    description: z.string(),
+    startDate: z.string(),
+    endDate: z.string(),
+  })
+});
+
 const events = defineCollection({
   loader: glob({ pattern: "*/*.{md,mdx}", base: "./src/data/events" }),
   schema: z.object({
@@ -45,6 +56,7 @@ const eventYearChallenges = defineCollection({
 
 export const collections = {
   projects,
+  experiences,
   events,
   eventYears,
   eventYearChallenges

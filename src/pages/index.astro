@@ -1,10 +1,10 @@
 ---
 import { Image } from "astro:assets";
-import Layout from "../layouts/Layout.astro";
-// import Experience from "../components/Experience.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import Experience from "../components/Experience.astro";
 ---
 
-<Layout title="ztz0">
+<MainLayout title="Home">
   <div class="prose dark:prose-invert max-w-none">
     <h1 class="font-medium">
       <span class="block overflow-hidden group relative">
@@ -36,17 +36,17 @@ import Layout from "../layouts/Layout.astro";
         />CTF</a
       > player.
     </p>
-    <!-- <p>
+    <p>
       I also have <a
         target="_blank"
-        href=`garden.${Astro.url.host}`
-        class="not-prose bg-ui-normal text-xs font-medium px-2.5 py-0.5 rounded"
+        href=`quartz.${Astro.url.host}`
+        class="not-prose bg-flexoki-base-50 dark:bg-flexoki-base-950 text-xs font-medium px-2.5 py-0.5 rounded"
         >🥬 Digital Garden</a
       > for CTF notes and other notes.
-    </p> -->
-    <!-- <h2 class="font-medium">Experiences</h2>
+    </p>
+    <h2 class="font-medium">Experiences</h2>
     <div class="not-prose">
       <Experience />
-    </div> -->
+    </div>
   </div>
-</Layout>
+</MainLayout>

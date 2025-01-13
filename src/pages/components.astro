@@ -1,38 +1,54 @@
 ---
+import { Icon } from "astro-icon/components";
 import Layout from "../layouts/Layout.astro";
-import Card from "../components/Card.astro";
-import CardLink from "../components/CardLink.astro";
-import Breadcrumb from "../components/Breadcrumb.astro";
 import Button from "../components/Button.astro";
-import ButtonIcon from "../components/ButtonIcon.astro";
-import Project from "../components/Project.astro";
 import Experience from "../components/Experience.astro";
-import Dropdown from "../components/Dropdown.astro";
-import TableOfContent from "../components/TableOfContent.astro";
+import Projects from "../components/Project.astro";
 ---
 
 <Layout title="Components">
-    <Card>
-        Test
-    </Card>
-    <CardLink href="https://example.com">
-        Test
-    </CardLink>
-    <Breadcrumb />
-    <Button>Test</Button>
-    <ButtonIcon icon="lucide:home"></ButtonIcon>
-    <Button variant="outline">Test</Button>
-    <ButtonIcon variant="outline" icon="lucide:home"></ButtonIcon>
-    <Project />
-    <Experience />
-    <Dropdown dropdownId="asd">
-        Test
-    </Dropdown>
-    <Dropdown dropdownId="asds" position="right">
-        Test
-    </Dropdown>
-    <TableOfContent headings={[
-        { depth: 1, slug: "test", text: "Test" },
-        { depth: 2, slug: "test2", text: "Test 2" },
-    ]} />
+  <div class="flex flex-col gap-8">
+    <div class="flex flex-col gap-2">
+      <h2 class="text-2xl font-medium">Button</h2>
+
+      <div class="flex gap-4">
+        <Button>Test</Button>
+        <Button variant="secondary">Test</Button>
+        <Button variant="outline">Test</Button>
+        <Button variant="ghost">Test</Button>
+      </div>
+
+      <div class="flex gap-4">
+        <Button size="sm">Test</Button>
+        <Button variant="secondary" size="sm">Test</Button>
+        <Button variant="outline" size="sm">Test</Button>
+        <Button variant="ghost" size="sm">Test</Button>
+      </div>
+
+      <div class="flex gap-4">
+        <Button size="lg">Test</Button>
+        <Button variant="secondary" size="lg">Test</Button>
+        <Button variant="outline" size="lg">Test</Button>
+        <Button variant="ghost" size="lg">Test</Button>
+      </div>
+
+      <div class="flex gap-4">
+        <Button size="icon"><Icon name="lucide:home" /></Button>
+        <Button variant="secondary" size="icon"
+          ><Icon name="lucide:home" /></Button
+        >
+        <Button variant="outline" size="icon"
+          ><Icon name="lucide:home" /></Button
+        >
+        <Button variant="ghost" size="icon"><Icon name="lucide:home" /></Button>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <h2 class="text-2xl font-medium">Blocks</h2>
+
+      <Experience />
+      <Projects />
+    </div>
+  </div>
 </Layout>
