@@ -30,7 +30,9 @@ const { items }: Props = Astro.props;
 
       <nav class="flex gap-x-2 md:gap-x-4">
         <Dropdown size="icon" position="right" class="block md:hidden">
-          <Icon slot="trigger" name="lucide:menu" />
+          <Button slot="trigger" variant="outline" size="icon">
+            <Icon name="lucide:menu" />
+          </Button>
           <div class="flex flex-col p-1">
             {
               items.map((item: Item) => {

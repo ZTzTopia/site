@@ -7,7 +7,9 @@ import Dropdown from "./Dropdown.astro";
 <!-- TODO: Avoid FOUC and also change trigger icon -->
 <theme-select>
   <Dropdown size="icon" position="right">
-    <Icon slot="trigger" name="lucide:sun" />
+    <Button slot="trigger" variant="outline" size="icon">
+      <Icon name="lucide:sun" />
+    </Button>
     <div class="flex flex-col p-1">
       <Button id="lightThemeButton" variant="ghost">
         <Icon name="lucide:sun" class="mr-2" /> Light Mode
