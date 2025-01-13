@@ -1,40 +1,40 @@
 ---
-import Breadcrumb from "../components/Breadcrumb.astro";
-import Footer from "../components/Footer.astro";
-import Header from "../components/Header.astro";
-import Head from "../components/Head.astro";
+import Breadcrumb from '../components/Breadcrumb.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import Head from '../components/Head.astro';
 
 const navItems = [
   {
-    url: "/",
-    title: "Home",
+    url: '/',
+    title: 'Home',
   },
   // {
   //   url: "/writeups",
   //   title: "Writeups",
   // },
   {
-    url: "/projects",
-    title: "Projects",
+    url: '/projects',
+    title: 'Projects',
   },
 ];
 
 const footerItems = [
   {
-    url: "mailto:muhzib36@gmail.com",
-    iconName: "lucide:mail",
+    url: 'mailto:muhzib36@gmail.com',
+    iconName: 'lucide:mail',
   },
   {
-    url: "https://www.youtube.com/channel/ZTzTopia702",
-    iconName: "lucide:youtube",
+    url: 'https://www.youtube.com/channel/ZTzTopia702',
+    iconName: 'lucide:youtube',
   },
   {
-    url: "https://github.com/ZTzTopia",
-    iconName: "lucide:github",
+    url: 'https://github.com/ZTzTopia',
+    iconName: 'lucide:github',
   },
   {
-    url: "https://www.linkedin.com/in/muhamad-zibrisky-b6a861252/",
-    iconName: "lucide:linkedin",
+    url: 'https://www.linkedin.com/in/muhamad-zibrisky-b6a861252/',
+    iconName: 'lucide:linkedin',
   },
 ];
 
@@ -45,7 +45,7 @@ interface Props {
 
 const {
   title,
-  description = "Software Engineer and CTF Player from Tangerang, Indonesia",
+  description = 'Software Engineer and CTF Player from Tangerang, Indonesia',
 } = Astro.props as Props;
 
 /*
@@ -59,30 +59,28 @@ interface Props extends HTMLAttributes<'div'> {
 }
 */
 
-const path = Astro.url.pathname.split("/")
-  .map((path, index, paths) => {
-    if (index === 0) {
-      return {
-        label: "Home",
-        href: "/",
-      };
-    }
+const path = Astro.url.pathname.split('/').map((path, index, paths) => {
+  if (index === 0) {
+    return {
+      label: 'Home',
+      href: '/',
+    };
+  }
 
-    if (index === paths.length - 1) {
-      return {
-        label: decodeURIComponent(path),
-        href: Astro.url.pathname,
-      };
-    }
-
+  if (index === paths.length - 1) {
     return {
       label: decodeURIComponent(path),
-      href: paths.slice(0, index + 1).join("/"),
+      href: Astro.url.pathname,
     };
-  });
+  }
+
+  return {
+    label: decodeURIComponent(path),
+    href: paths.slice(0, index + 1).join('/'),
+  };
+});
 
 console.log(path);
-
 ---
 
 <!doctype html>
@@ -94,20 +92,20 @@ console.log(path);
       @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..700;1,100..700&display=swap');
 
       @font-face {
-        font-family: "Monaspace Neon";
-        src: url("/fonts/MonaspaceNeonVarVF[wght,wdth,slnt].woff2")
-          format("woff2");
+        font-family: 'Monaspace Neon';
+        src: url('/fonts/MonaspaceNeonVarVF[wght,wdth,slnt].woff2')
+          format('woff2');
         font-weight: normal;
         font-style: normal;
         font-display: swap;
       }
 
       body {
-        font-family: "Roboto", serif;
+        font-family: 'Roboto', serif;
         font-optical-sizing: auto;
         font-weight: 400;
         font-style: normal;
-        font-variation-settings: "wdth" 100;
+        font-variation-settings: 'wdth' 100;
       }
 
       ::selection {
@@ -120,10 +118,10 @@ console.log(path);
   >
     <div class="flex flex-col min-h-screen">
       <Header items={navItems} />
-      
+
       <div class="flex-grow">
         <div class="flex flex-col gap-y-4 mx-auto p-4 max-w-screen-sm">
-          <Breadcrumb items={path} />
+          {path[1].href !== '/' && <Breadcrumb items={path} />}
           <slot />
         </div>
       </div>
