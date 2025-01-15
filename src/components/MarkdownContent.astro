@@ -1,14 +1,15 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
+import Element from './Element.astro';
 
 interface Props extends HTMLAttributes<'div'> {
   list?: string[];
 }
 
-const { ...rest } = Astro.props as Props;
+const { class: className, ...rest } = Astro.props as Props;
 ---
 
-<div
+<Element
   class:list={[
     'prose',
     'dark:prose-invert',
@@ -27,7 +28,8 @@ const { ...rest } = Astro.props as Props;
     'after:prose-code:content-none',
     'before:prose-code:content-none',
   ]}
+  newClassName={className}
   {...rest}
 >
   <slot />
-</div>
+</Element>

@@ -1,25 +1,29 @@
 ---
-import type { HTMLAttributes } from "astro/types";
-import Element from "./Element.astro";
-import { Icon } from "astro-icon/components";
+import type { HTMLAttributes } from 'astro/types';
+import { Icon } from 'astro-icon/components';
+import Element from './Element.astro';
 
-interface Props extends HTMLAttributes<"div">, HTMLAttributes<"a"> {
-  size?: "sm" | "md" | "lg" | "xl" | undefined;
+interface Props extends HTMLAttributes<'div'>, HTMLAttributes<'a'> {
+  size?: 'sm' | 'md' | 'lg' | 'xl' | undefined;
 }
 
-const { ...rest } = Astro.props as Props;
-const remoteLink = rest.href?.toString().startsWith("http");
+const { class: className, ...rest } = Astro.props as Props;
+const remoteLink = rest.href?.toString().startsWith('http');
 ---
 
 <Element
-  class:list={`flex justify-center rounded-lg w-fit ${remoteLink ? "flex-row items-center gap-x-2" : "flex-col"} group bg-flexoki-base-50 dark:bg-flexoki-base-950 border border-flexoki-base-100 dark:border-flexoki-base-900`}
-  as={rest.href ? "a" : "div"}
-  target={remoteLink ? "_blank" : undefined}
+  class:list={[
+    "flex justify-center rounded-lg w-fit group bg-flexoki-base-50 dark:bg-flexoki-base-950 border border-flexoki-base-100 dark:border-flexoki-base-900",
+    `${remoteLink ? 'flex-row items-center gap-x-2' : 'flex-col'}`
+  ]}
+  newClassName={className}
+  as={rest.href ? 'a' : 'div'}
+  target={remoteLink ? '_blank' : undefined}
   {...rest}
 >
   <div class="flex flex-col">
     {
-      Astro.slots.has("content") && (
+      Astro.slots.has('content') && (
         <div class="p-4">
           <slot name="content" />
         </div>

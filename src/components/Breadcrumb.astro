@@ -2,7 +2,6 @@
 import type { HTMLAttributes } from 'astro/types';
 import { Icon } from 'astro-icon/components';
 import Dropdown from './Dropdown.astro';
-import Button from './Button.astro';
 
 interface Item {
   label: string;
@@ -17,86 +16,55 @@ const { items, ...rest } = Astro.props as Props;
 ---
 
 <nav {...rest}>
-  <ol class="flex flex-warp gap-1 items-center break-words">
+  <ol class="flex flex-wrap gap-1 items-center text-sm capitalize break-words">
     {
       items && items.map((item, index) =>
         index === items.length - 1 
           ? (
-            <li>
-              <Icon name="lucide:chevron-right" class="text-sm" />
+            <li class="inline-flex items-center">
+              <Icon name="lucide:chevron-right" />
             </li>
-            <li class="inline-flex items-center gap-1">
-              <span class="capitalize">{item.label}</span>
+            <li class="inline-flex items-center">
+              <span class="text-flexoki-cyan-600 dark:text-flexoki-cyan-400">{item.label}</span>
             </li>
           ) 
-          : (
-            <Fragment>
-              {
-                index !== 0 && (
-                  <li>
-                    <Icon name="lucide:chevron-right" class="text-sm" />
-                  </li>
-                )
-              }
-            </Fragment>
-            <li class="inline-flex items-center gap-1">
-              <a class="capitalize" href={item.href}>{item.label}</a>
-            </li>
-          )
+          : index === 2 && items.length > 4
+            ? (
+              <li class="inline-flex items-center">
+                <Icon name="lucide:chevron-right" />
+              </li>
+              <li class="inline-flex items-center">
+                <Dropdown>
+                  <span slot="trigger" class="flex items-center justify-center hover:cursor-pointer">...</span>
+                  <div class="flex flex-col p-1">
+                    {/* Loop */}
+                    {items.slice(1, items.length - index).map((item, index) => (
+                      <a
+                        href={item.href}
+                        class="block px-4 py-2 rounded-md"
+                      >
+                        {decodeURIComponent(item.label)}
+                      </a>
+                    ))}
+                  </div>
+                </Dropdown>
+              </li>
+            )
+            : (index == 0 || items.length < 4 || index >= items.length - 2) && (
+              <Fragment>
+                {
+                  index !== 0 && (
+                    <li class="inline-flex items-center">
+                      <Icon name="lucide:chevron-right" />
+                    </li>
+                  )
+                }
+              </Fragment>
+              <li class="inline-flex items-center">
+                <a href={item.href} class="hover:text-flexoki-cyan-400 hover:dark:text-flexoki-cyan-600">{item.label}</a>
+              </li>
+            )
       )
     }
-
-    <!-- <li class="inline-flex items-center gap-1">
-      <Button variant="link" href="/">
-        <Icon name="lucide:house" />
-      </Button>
-    </li>
-    <li class="inline-flex items-center gap-1">
-      <Button variant="link" href="/">
-        <Icon name="lucide:house" />
-      </Button>
-    </li> -->
-    <!-- {
-      paths.map((path, index) =>
-        index === paths.length - 1 ? (
-          <div class="flex gap-x-1 items-center">
-            <Icon name="lucide:chevron-right" class="text-sm" />
-            <span class="text-sm uppercase">{decodeURIComponent(path)}</span>
-          </div>
-        ) : index === 1 && paths.length > 3 ? (
-          <div class="flex gap-x-1 items-center">
-            <Icon name="lucide:chevron-right" class="text-sm" />
-            <Dropdown
-              dropdownId="breadcrumb"
-              variant="text"
-              class="text-sm uppercase"
-            >
-              <Fragment slot="trigger">...</Fragment>
-              <div class="flex flex-col p-1">
-                {/* Loop */}
-                {paths.slice(0, paths.length - index).map((path, index) => (
-                  <a
-                    href={`/${paths.slice(0, index + 1).join('/')}`}
-                    class="block px-4 py-2 rounded-md hover:bg-flexoki-base-150 dark:hover:bg-flexoki-base-850"
-                  >
-                    {decodeURIComponent(path)}
-                  </a>
-                ))}
-              </div>
-            </Dropdown>
-          </div>
-        ) : paths.length < 4 || index >= paths.length - 2 ? (
-          <div class="flex gap-x-1 items-center">
-            <Icon name="lucide:chevron-right" class="text-sm" />
-            <a
-              href={`/${paths.slice(0, index + 1).join('/')}`}
-              class="text-sm uppercase hover:text-flexoki-cyan-600 dark:hover:text-flexoki-cyan-400"
-            >
-              {decodeURIComponent(path)}
-            </a>
-          </div>
-        ) : null
-      )
-    } -->
   </ol>
 </nav>

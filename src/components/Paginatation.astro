@@ -10,7 +10,7 @@ interface Props {
 const { page } = Astro.props as Props;
 ---
 
-<nav role="navigation">
+<nav>
   <Button variant="ghost" href={page.url.prev} size="sm">
     <Icon name="lucide:chevron-left" />
     Previous

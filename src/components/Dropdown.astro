@@ -1,27 +1,19 @@
 ---
-import type { HTMLAttributes } from "astro/types";
-import Element from "./Element.astro";
-import Card from "./Card.astro";
-import Button from "./Button.astro";
+import type { HTMLAttributes } from 'astro/types';
+import Element from './Element.astro';
+import Card from './Card.astro';
 
-interface Props extends HTMLAttributes<"div"> {
-  variant?: "outline" | "ghost" | "text" | undefined;
-  size?: "default" | "icon" | undefined;
-  position?: "left" | "right" | undefined;
+interface Props extends HTMLAttributes<'div'> {
+  position?: 'left' | 'right' | undefined;
 }
 
-const {
-  variant = "outline",
-  size = "default",
-  position = "left",
-  ...rest
-} = Astro.props as Props;
+const { position = 'left', class: className, ...rest } = Astro.props as Props;
 ---
 
-<Element class:list="dropdown relative" {...rest}>
+<Element class:list="dropdown relative" newClassName={className} {...rest}>
   <slot name="trigger" />
   <Card
-    class={`hidden absolute z-20 mt-2 w-max ${position === "right" ? "right-0" : "left-0"} bg-flexoki-base-150 dark:bg-flexoki-base-950 border border-flexoki-base-100 dark:border-flexoki-base-900`}
+    class={`hidden absolute z-20 mt-2 w-max ${position === 'right' ? 'right-0' : 'left-0'} bg-flexoki-base-150 dark:bg-flexoki-base-950 border border-flexoki-base-100 dark:border-flexoki-base-900`}
   >
     <slot />
   </Card>
@@ -29,31 +21,31 @@ const {
 
 <script>
   const initialize = () => {
-    const dropdowns = document.querySelectorAll(".dropdown");
+    const dropdowns = document.querySelectorAll('.dropdown');
     dropdowns.forEach((dropdown) => {
       const dropdownButtonTrigger = dropdown.children[0];
       const dropdownContent = dropdown.children[1];
 
-      dropdownButtonTrigger.addEventListener("click", () => {
-        dropdownContent?.classList.toggle("hidden");
+      dropdownButtonTrigger.addEventListener('click', () => {
+        dropdownContent?.classList.toggle('hidden');
       });
 
-      document.addEventListener("click", (event) => {
+      document.addEventListener('click', (event) => {
         if (
           !dropdownButtonTrigger.contains(event.target as Node) &&
           !dropdownContent?.contains(event.target as Node)
         ) {
-          dropdownContent?.classList.add("hidden");
+          dropdownContent?.classList.add('hidden');
         }
       });
     });
   };
 
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener('DOMContentLoaded', () => {
     initialize();
   });
 
-  document.addEventListener("astro:after-swap", () => {
+  document.addEventListener('astro:after-swap', () => {
     initialize();
   });
 </script>

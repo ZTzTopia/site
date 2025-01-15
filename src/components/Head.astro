@@ -1,4 +1,6 @@
 ---
+import { ClientRouter } from 'astro:transitions';
+
 interface Props {
   title: string;
   description: string;
@@ -25,3 +27,5 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefin
 <meta property="og:url" content={canonical?.href} />
 <meta property="og:description" content={description} />
 <meta property="og:site_name" content="ztz0" />
+
+<ClientRouter />
