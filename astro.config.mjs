@@ -13,6 +13,11 @@ import rehypeInjectFrontmatterTitle from './src/plugins/rehype/rehype-inject-fro
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://ztz0.com',
+  redirects: {
+    '/flag': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    '/flags': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+  },
   output: 'static',
   integrations: [
     tailwind({
