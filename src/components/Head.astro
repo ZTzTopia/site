@@ -9,6 +9,7 @@ interface Props {
 const { title, description } = Astro.props as Props;
 
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
+const sitemap = Astro.site ? new URL('/sitemap-index.xml', Astro.site) : undefined;
 ---
 
 <meta charset="UTF-8" />
@@ -27,6 +28,8 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefin
 <meta property="og:url" content={canonical?.href} />
 <meta property="og:description" content={description} />
 <meta property="og:site_name" content="ztz0" />
+
+{sitemap && <link rel="sitemap" href={sitemap.href} />}
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

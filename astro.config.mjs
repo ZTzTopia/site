@@ -11,6 +11,8 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import expressiveCode from 'astro-expressive-code';
 import rehypeInjectFrontmatterTitle from './src/plugins/rehype/rehype-inject-frontmatter-title';
 
+import sitemap from '@astrojs/sitemap';
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://ztz0.com',
@@ -19,19 +21,15 @@ export default defineConfig({
     '/flags': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
   },
   output: 'static',
-  integrations: [
-    tailwind({
-      applyBaseStyles: true
-    }),
-    icon(),
-    expressiveCode({
-      styleOverrides: {
-        codeFontFamily: "'Monaspace Neon', monospace",
-        uiFontFamily: "'Noto Sans', sans-serif"
-      },
-      themes: ['min-dark']
-    })
-  ],
+  integrations: [tailwind({
+    applyBaseStyles: true
+  }), icon(), expressiveCode({
+    styleOverrides: {
+      codeFontFamily: "'Monaspace Neon', monospace",
+      uiFontFamily: "'Noto Sans', sans-serif"
+    },
+    themes: ['min-dark']
+  }), sitemap()],
   markdown: {
     rehypePlugins: [
       rehypeUniqueHeadingIds,
