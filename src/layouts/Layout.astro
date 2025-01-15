@@ -119,7 +119,7 @@ paths = paths.filter((path) => path.label !== '');
 
       <div class="flex-grow">
         <div class="flex flex-col gap-y-4 mx-auto p-4 max-w-screen-sm">
-          {paths[1].href !== '/' && <Breadcrumb items={paths} />}
+          {paths[0].href !== '/' && <Breadcrumb items={paths} />}
           <slot />
         </div>
       </div>
