@@ -36,6 +36,5 @@ export default defineConfig({
       rehypeSanitize
     ]
   },
-  compressHTML: false,
   scopedStyleStrategy: 'where'
 });
