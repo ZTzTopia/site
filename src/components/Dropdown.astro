@@ -10,7 +10,7 @@ interface Props extends HTMLAttributes<'div'> {
 const { position = 'left', class: className, ...rest } = Astro.props as Props;
 ---
 
-<Element class:list="dropdown relative" newClassName={className} {...rest}>
+<Element as="z-dropdown" class:list="relative" newClassName={className} {...rest}>
   <slot name="trigger" />
   <Card
     class={`hidden absolute z-20 mt-2 w-max ${position === 'right' ? 'right-0' : 'left-0'} bg-flexoki-base-100 dark:bg-flexoki-base-900 border border-flexoki-base-100 dark:border-flexoki-base-900`}
@@ -20,11 +20,12 @@ const { position = 'left', class: className, ...rest } = Astro.props as Props;
 </Element>
 
 <script>
-  const initialize = () => {
-    const dropdowns = document.querySelectorAll('.dropdown');
-    dropdowns.forEach((dropdown) => {
-      const dropdownButtonTrigger = dropdown.children[0];
-      const dropdownContent = dropdown.children[1];
+  class Dropdown extends HTMLElement {
+    constructor() {
+      super();
+
+      const dropdownButtonTrigger = this.children[0];
+      const dropdownContent = this.children[1];
 
       dropdownButtonTrigger.addEventListener('click', () => {
         dropdownContent?.classList.toggle('hidden');
@@ -38,14 +39,8 @@ const { position = 'left', class: className, ...rest } = Astro.props as Props;
           dropdownContent?.classList.add('hidden');
         }
       });
-    });
-  };
+    }
+  }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    initialize();
-  });
-
-  document.addEventListener('astro:after-swap', () => {
-    initialize();
-  });
+  customElements.define('z-dropdown', Dropdown);
 </script>
