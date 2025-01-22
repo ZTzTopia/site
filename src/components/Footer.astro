@@ -1,6 +1,6 @@
 ---
-import { Icon } from "astro-icon/components";
-import Button from "./Button.astro";
+import { Icon } from 'astro-icon/components';
+import Button from './Button.astro';
 
 interface Item {
   url: string;
@@ -17,8 +17,10 @@ const props: Props = Astro.props;
 
 <footer class="py-4 mt-12">
   <div class="mx-auto px-4 max-w-screen-sm">
-    <div class="flex justify-end items-center">
-      <!-- <p class="text-sm">&copy; 2025 All rights reserved.</p> -->
+    <div class="flex justify-between items-center">
+      <p class="text-sm">
+        &copy; {new Date().getFullYear()} All rights reserved.
+      </p>
       <div class="flex gap-2">
         {
           props.items.map((item: Item) => (

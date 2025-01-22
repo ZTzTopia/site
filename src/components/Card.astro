@@ -7,28 +7,28 @@ interface Props extends HTMLAttributes<'div'>, HTMLAttributes<'a'> {
   size?: 'sm' | 'md' | 'lg' | 'xl' | undefined;
 }
 
-const { class: className, ...rest } = Astro.props as Props;
+const { class: classList = '', ...rest } = Astro.props as Props;
 const remoteLink = rest.href?.toString().startsWith('http');
 ---
 
 <Element
-  class:list={[
-    "flex justify-center rounded-lg w-fit group bg-flexoki-base-50 dark:bg-flexoki-base-950 border border-flexoki-base-100 dark:border-flexoki-base-900",
-    `${remoteLink ? 'flex-row items-center gap-x-2' : 'flex-col'}`
-  ]}
-  newClassName={className}
   as={rest.href ? 'a' : 'div'}
+  class:list={[
+    'rounded bg-flexoki-base-50 dark:bg-flexoki-base-950 border border-flexoki-base-100 dark:border-flexoki-base-900',
+    {
+      'flex flex-row justify-between group items-center': remoteLink,
+      'flex flex-col': !remoteLink,
+    },
+    {
+      'p-4': Astro.slots.has('content'),
+    },
+  ]}
+  {classList}
   target={remoteLink ? '_blank' : undefined}
   {...rest}
 >
   <div class="flex flex-col">
-    {
-      Astro.slots.has('content') && (
-        <div class="p-4">
-          <slot name="content" />
-        </div>
-      )
-    }
+    <slot name="content" />
     <slot />
   </div>
 
@@ -36,7 +36,7 @@ const remoteLink = rest.href?.toString().startsWith('http');
     remoteLink && (
       <Icon
         name="lucide:arrow-up-right"
-        class="mr-4 text-xl group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+        class="duration-75 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
       />
     )
   }

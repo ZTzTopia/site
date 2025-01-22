@@ -7,13 +7,24 @@ interface Props extends HTMLAttributes<'div'> {
   position?: 'left' | 'right' | undefined;
 }
 
-const { position = 'left', class: className, ...rest } = Astro.props as Props;
+const {
+  position = 'left',
+  class: classList = '',
+  ...rest
+} = Astro.props as Props;
 ---
 
-<Element as="z-dropdown" class:list="relative" newClassName={className} {...rest}>
+<Element as="z-dropdown" class:list="relative" {classList} {...rest}>
   <slot name="trigger" />
   <Card
-    class={`hidden absolute z-20 mt-2 w-max ${position === 'right' ? 'right-0' : 'left-0'} bg-flexoki-base-100 dark:bg-flexoki-base-900 border border-flexoki-base-100 dark:border-flexoki-base-900`}
+    class:list={[
+      'hidden absolute z-20 mt-2 w-max',
+      'bg-flexoki-base-100 dark:bg-flexoki-base-900 border border-flexoki-base-100 dark:border-flexoki-base-900',
+      {
+        'right-0': position === 'right',
+        'left-0': position === 'left',
+      },
+    ]}
   >
     <slot />
   </Card>
@@ -25,7 +36,14 @@ const { position = 'left', class: className, ...rest } = Astro.props as Props;
       super();
 
       const dropdownButtonTrigger = this.children[0];
+      if (!dropdownButtonTrigger) {
+        return;
+      }
+
       const dropdownContent = this.children[1];
+      if (!dropdownContent) {
+        return;
+      }
 
       dropdownButtonTrigger.addEventListener('click', () => {
         dropdownContent?.classList.toggle('hidden');

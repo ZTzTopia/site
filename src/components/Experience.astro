@@ -1,9 +1,9 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
-import Card from "./Card.astro";
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Card from './Card.astro';
 
-type Experience = CollectionEntry<"experiences">;
-const experiences: Experience[] = await getCollection("experiences");
+type Experience = CollectionEntry<'experiences'>;
+const experiences: Experience[] = await getCollection('experiences');
 ---
 
 {

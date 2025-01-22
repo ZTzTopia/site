@@ -19,37 +19,38 @@ interface Props
 const {
   variant = 'primary',
   size = 'default',
-  class: className,
+  class: classList = '',
   ...rest
 } = Astro.props as Props;
-
-let variantClass = 'bg-flexoki-cyan-400 dark:bg-flexoki-cyan-400 hover:bg-flexoki-cyan-600 hover:dark:bg-flexoki-cyan-600 text-flexoki-base-black';
-if (variant === 'secondary') {
-  variantClass = 'bg-flexoki-base-100 dark:bg-flexoki-base-900 hover:bg-flexoki-base-150 hover:dark:bg-flexoki-base-850 text-flexoki-base-black dark:text-flexoki-base-200';
-} else if (variant === 'outline') {
-  variantClass = 'border border-flexoki-base-100 dark:border-flexoki-base-900 hover:bg-flexoki-base-150 hover:dark:bg-flexoki-base-850 text-flexoki-base-black dark:text-flexoki-base-200';
-} else if (variant === 'ghost') {
-  variantClass = 'text-flexoki-base-black dark:text-flexoki-base-200 hover:bg-flexoki-base-150 hover:dark:bg-flexoki-base-850';
-} else if (variant === 'link') {
-  variantClass = 'p-0 text-flexoki-base-black dark:text-flexoki-base-200 hover:text-flexoki-cyan-600 hover:dark:text-flexoki-cyan-400';
-} else if (variant === 'text') {
-  variantClass = 'p-0 text-flexoki-base-black dark:text-flexoki-base-200';
-}
-
-let sizeClass = 'text-base';
-if (size === 'sm') {
-  sizeClass = 'text-sm';
-} else if (size === 'lg') {
-  sizeClass = 'text-lg';
-} else if (size === 'icon') {
-  sizeClass = 'p-3';
-}
 ---
 
 <Element
-  class:list={[`px-4 py-2 rounded-md ${variantClass} ${sizeClass}`]}
-  newClassName={className}
+  class:list={[
+    'px-4 py-2',
+    'rounded',
+    {
+      'bg-flexoki-cyan-400 dark:bg-flexoki-cyan-400 hover:bg-flexoki-cyan-600 hover:dark:bg-flexoki-cyan-600 text-flexoki-base-black':
+        variant === 'primary',
+      'bg-flexoki-base-100 dark:bg-flexoki-base-900 hover:bg-flexoki-base-150 hover:dark:bg-flexoki-base-850 text-flexoki-base-black dark:text-flexoki-base-200':
+        variant === 'secondary',
+      'border border-flexoki-base-100 dark:border-flexoki-base-900 hover:bg-flexoki-base-150 hover:dark:bg-flexoki-base-850 text-flexoki-base-black dark:text-flexoki-base-200':
+        variant === 'outline',
+      'text-flexoki-base-black dark:text-flexoki-base-200 hover:bg-flexoki-base-150 hover:dark:bg-flexoki-base-850':
+        variant === 'ghost',
+      'p-0 text-flexoki-base-black dark:text-flexoki-base-200 hover:text-flexoki-cyan-600 hover:dark:text-flexoki-cyan-400':
+        variant === 'link',
+      'p-0 text-flexoki-base-black dark:text-flexoki-base-200':
+        variant === 'text',
+    },
+    {
+      'text-sm': size === 'sm',
+      'text-lg': size === 'lg',
+      'p-3': size === 'icon',
+      'text-base': size === 'default',
+    },
+  ]}
   as={rest.href ? 'a' : 'button'}
+  {classList}
   {...rest}
 >
   <div class="flex items-center gap-2">

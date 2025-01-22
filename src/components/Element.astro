@@ -4,12 +4,12 @@ import { twMerge } from 'tailwind-merge';
 
 interface Props extends HTMLAttributes<'div'> {
   as?: string;
-  newClassName?: string | null;
+  classList?: string | null;
 }
 
-const { as: As = 'div', newClassName, class: className, ...rest } = Astro.props as Props;
+const { as: As = 'div', classList, class: className, ...rest } = Astro.props as Props;
 ---
 
-<As class:list={twMerge(className, newClassName)} {...rest}>
+<As class:list={twMerge(className, classList)} {...rest}>
   <slot />
 </As>

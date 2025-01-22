@@ -1,9 +1,9 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
-import Card from "./Card.astro";
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Card from './Card.astro';
 
-type Project = CollectionEntry<"projects">;
-const projects: Project[] = await getCollection("projects");
+type Project = CollectionEntry<'projects'>;
+const projects: Project[] = await getCollection('projects');
 ---
 
 {

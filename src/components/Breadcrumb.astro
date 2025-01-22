@@ -2,6 +2,8 @@
 import type { HTMLAttributes } from 'astro/types';
 import { Icon } from 'astro-icon/components';
 import Dropdown from './Dropdown.astro';
+import Element from './Element.astro';
+import Button from './Button.astro';
 
 interface Item {
   label: string;
@@ -15,56 +17,60 @@ interface Props extends HTMLAttributes<'div'> {
 const { items, ...rest } = Astro.props as Props;
 ---
 
-<nav {...rest}>
+<Element as="nav" {...rest}>
   <ol class="flex flex-wrap gap-1 items-center text-sm capitalize break-words">
     {
-      items && items.map((item, index) =>
-        index === items.length - 1 
-          ? (
+      items && items.map((item, index) => {
+        if (index === items.length - 1) {
+          return (
             <li class="inline-flex items-center">
               <Icon name="lucide:chevron-right" />
             </li>
             <li class="inline-flex items-center">
               <span class="text-flexoki-cyan-600 dark:text-flexoki-cyan-400">{item.label}</span>
             </li>
-          ) 
-          : index === 2 && items.length > 4
-            ? (
-              <li class="inline-flex items-center">
-                <Icon name="lucide:chevron-right" />
-              </li>
-              <li class="inline-flex items-center">
-                <Dropdown>
-                  <span slot="trigger" class="flex items-center justify-center hover:cursor-pointer">...</span>
-                  <div class="flex flex-col p-1">
-                    {/* Loop */}
-                    {items.slice(1, items.length - index).map((item, index) => (
-                      <a
-                        href={item.href}
-                        class="block px-4 py-2 rounded-md"
-                      >
-                        {decodeURIComponent(item.label)}
-                      </a>
-                    ))}
-                  </div>
-                </Dropdown>
-              </li>
-            )
-            : (index == 0 || items.length < 4 || index >= items.length - 2) && (
-              <Fragment>
-                {
-                  index !== 0 && (
-                    <li class="inline-flex items-center">
-                      <Icon name="lucide:chevron-right" />
-                    </li>
-                  )
-                }
-              </Fragment>
-              <li class="inline-flex items-center">
-                <a href={item.href} class="hover:text-flexoki-cyan-400 hover:dark:text-flexoki-cyan-600">{item.label}</a>
-              </li>
-            )
-      )
+          );
+        }
+
+        if (index === 1 && items.length > 4) {
+          return (
+            <li class="inline-flex items-center">
+              <Icon name="lucide:chevron-right" />
+            </li>
+            <li class="inline-flex items-center">
+              <Dropdown>
+                <span slot="trigger" class="flex items-center justify-center hover:cursor-pointer">...</span>
+                <div class="flex flex-col p-1">
+                  {items.slice(1, items.length - index).map((item) => (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      href={item.href}
+                    >
+                      {decodeURIComponent(item.label)}
+                    </Button>
+                  ))}
+                </div>
+              </Dropdown>
+            </li>
+          );
+        }
+
+        return (
+          <Fragment>
+            {
+              index !== 0 && (
+                <li class="inline-flex items-center">
+                  <Icon name="lucide:chevron-right" />
+                </li>
+              )
+            }
+          </Fragment>
+          <li class="inline-flex items-center">
+            <a href={item.href} class="hover:text-flexoki-cyan-400 hover:dark:text-flexoki-cyan-600">{item.label}</a>
+          </li>
+        )
+      })
     }
   </ol>
-</nav>
+</Element>

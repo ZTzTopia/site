@@ -2,11 +2,9 @@
 import type { HTMLAttributes } from 'astro/types';
 import Element from './Element.astro';
 
-interface Props extends HTMLAttributes<'div'> {
-  list?: string[];
-}
+interface Props extends HTMLAttributes<'div'> {}
 
-const { class: className, ...rest } = Astro.props as Props;
+const { class: classList = '', ...rest } = Astro.props as Props;
 ---
 
 <Element
@@ -28,7 +26,7 @@ const { class: className, ...rest } = Astro.props as Props;
     'after:prose-code:content-none',
     'before:prose-code:content-none',
   ]}
-  newClassName={className}
+  {classList}
   {...rest}
 >
   <slot />

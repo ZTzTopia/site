@@ -1,17 +1,13 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import tailwind from "@astrojs/tailwind";
+import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
+import expressiveCode from 'astro-expressive-code';
 
-import rehypeUniqueHeadingIds from './src/plugins/rehype/rehype-unique-heading-ids';
 import rehypeSanitize from 'rehype-sanitize';
 import rehypeShiftHeading from 'rehype-shift-heading';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-
-import expressiveCode from 'astro-expressive-code';
-import rehypeInjectFrontmatterTitle from './src/plugins/rehype/rehype-inject-frontmatter-title';
-
-import sitemap from '@astrojs/sitemap';
+import rehypeUniqueHeadingIds from './src/plugins/rehype/rehype-unique-heading-ids';
 
 // https://astro.build/config
 export default defineConfig({

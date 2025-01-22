@@ -1,8 +1,8 @@
 ---
-import { Icon } from "astro-icon/components";
-import Dropdown from "./Dropdown.astro";
-import Button from "./Button.astro";
-import SwitchTheme from "./SwitchTheme.astro";
+import { Icon } from 'astro-icon/components';
+import Dropdown from './Dropdown.astro';
+import Button from './Button.astro';
+import SwitchTheme from './SwitchTheme.astro';
 
 interface Item {
   url: string;
@@ -19,8 +19,8 @@ const { items }: Props = Astro.props;
 <header
   class="sticky top-0 z-10 bg-flexoki-base-paper/[0.90] dark:bg-flexoki-base-black/[0.90] backdrop-blur-sm"
 >
-  <div class="mx-auto px-4 max-w-screen-sm text-sm font-medium py-4">
-    <div class="flex flex-wrap items-center justify-between gap-4">
+  <div class="mx-auto px-4 max-w-screen-sm text-sm font-medium">
+    <div class="flex flex-wrap items-center justify-between gap-4 py-4">
       <Button
         variant="text"
         href="/"
@@ -33,16 +33,13 @@ const { items }: Props = Astro.props;
           <Button slot="trigger" variant="outline" size="icon">
             <Icon name="lucide:menu" />
           </Button>
-          <div class="flex flex-col p-1">
+          <div class="flex flex-col min-w-32 p-1">
             {
               items.map((item: Item) => {
                 return (
-                  <a
-                    href={item.url}
-                    class="block px-4 py-2 rounded-md hover:bg-flexoki-base-150 dark:hover:bg-flexoki-base-850"
-                  >
+                  <Button href={item.url} variant="ghost" size="sm">
                     {item.title}
-                  </a>
+                  </Button>
                 );
               })
             }
@@ -54,7 +51,7 @@ const { items }: Props = Astro.props;
             items.map((item: Item) => {
               return (
                 <a
-                  href={item.url}
+                  href={item.url === Astro.url.pathname ? '#' : item.url}
                   class="hover:text-flexoki-cyan-600 dark:hover:text-flexoki-cyan-400"
                 >
                   {item.title}
