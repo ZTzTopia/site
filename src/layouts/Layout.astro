@@ -114,6 +114,22 @@ paths = paths.filter((path) => path.label !== '');
       [id] {
         scroll-margin-top: 5rem;
       }
+
+      body ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      body ::-webkit-scrollbar-track {
+        @apply bg-flexoki-base-100 dark:bg-flexoki-base-900 rounded-md;
+      }
+
+      body ::-webkit-scrollbar-thumb {
+        @apply bg-flexoki-base-200 dark:bg-flexoki-base-800 rounded-md;
+      }
+
+      body ::-webkit-scrollbar-thumb:hover {
+        @apply bg-flexoki-base-300 dark:bg-flexoki-base-700;
+      }
     </style>
   </head>
   <body

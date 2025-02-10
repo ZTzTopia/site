@@ -1,16 +1,8 @@
 ---
-interface Item {
-  depth: number;
-  slug: string;
-  text: string;
-}
-
-interface Heading extends Item {
-  children: Heading[];
-}
+import type { TableOfContentHeading } from '../utils/markdown';
 
 interface Props {
-  headings: Heading[];
+  headings: TableOfContentHeading[];
   depth: number;
 }
 
@@ -21,9 +13,11 @@ const { headings, depth = 0 } = Astro.props as Props;
   {
     headings.map((heading) => (
       <li>
-        <a href={"#" + heading.slug} class="text-flexoki-base-600 dark:text-flexoki-base-500">
-          <span>{heading.text}</span>
-        </a>
+        {
+          <a href={"#" + heading.slug} class="text-flexoki-base-600 dark:text-flexoki-base-500 hover:text-flexoki-cyan-600 dark:hover:text-flexoki-cyan-400">
+            <span>{heading.text}</span>
+          </a>   
+        }
         {heading.children.length > 0 && (
           <Astro.self headings={heading.children} depth={heading.depth + 1} />
         )}
@@ -33,6 +27,11 @@ const { headings, depth = 0 } = Astro.props as Props;
 </ul>
 
 <style define:vars={{ depth }}>
+  /* ul {
+		padding: 0;
+		list-style: none;
+	} */
+
   a {
 		--pad-inline: 0.5rem;
 		display: block;
@@ -40,5 +39,9 @@ const { headings, depth = 0 } = Astro.props as Props;
 		padding-block: 0.25rem;
 		padding-inline: calc(0.375rem * (var(--depth) - 1)) var(--pad-inline);
 		line-height: 1.25;
+	}
+
+  a[aria-current='true'] {
+		@apply text-flexoki-cyan-600 hover:text-flexoki-cyan-400;
 	}
 </style>

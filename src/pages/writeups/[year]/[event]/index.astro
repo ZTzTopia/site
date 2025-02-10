@@ -62,33 +62,35 @@ slugger.reset();
       <h2 id={`user-content-${slugger.slug(event.remarkPluginFrontmatter.title)}`}>{event.remarkPluginFrontmatter.title}</h2>
 
       <div class="not-prose flex flex-col gap-y-4 border p-4 rounded-md border-flexoki-base-100 dark:border-flexoki-base-900">
-    <div class="flex flex-col divide-y">
-      <div class="flex gap-x-2 py-2 first:pt-0 last:pb-0 border-flexoki-base-100 dark:border-flexoki-base-900">
-        <div class="flex-1">
-          Category
-        </div>
-        <div class="flex-1">
-          <p>{event.remarkPluginFrontmatter.category}</p>
+        <div class="flex flex-col divide-y">
+          <div class="flex gap-x-2 py-2 first:pt-0 last:pb-0 border-flexoki-base-100 dark:border-flexoki-base-900">
+            <div class="flex-1">
+              Category
+            </div>
+            <div class="flex-1">
+              <p>{event.remarkPluginFrontmatter.category}</p>
+            </div>
+          </div>
+
+          <div class="flex gap-x-2 py-2 first:pt-0 last:pb-0 border-flexoki-base-100 dark:border-flexoki-base-900">
+            <div class="flex-1">
+              Tags
+            </div>
+            <div class="flex-1">
+              <p>{event.remarkPluginFrontmatter.tags}</p>
+            </div>
+          </div>
+
+          <div class="flex gap-x-2 py-2 first:pt-0 last:pb-0 border-flexoki-base-100 dark:border-flexoki-base-900">
+            <div class="flex-1">
+              Flag
+            </div>
+            <div class="flex-1 blur-sm hover:blur-none transition-[filter] duration-200 break-all">
+              <p>{event.remarkPluginFrontmatter.flag}</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="flex gap-x-2 py-2 first:pt-0 last:pb-0 border-flexoki-base-100 dark:border-flexoki-base-900">
-        <div class="flex-1">
-          Tags
-        </div>
-        <div class="flex-1">
-          <p>{event.remarkPluginFrontmatter.tags}</p>
-        </div>
-      </div>
-      <div class="flex gap-x-2 py-2 first:pt-0 last:pb-0 border-flexoki-base-100 dark:border-flexoki-base-900">
-        <div class="flex-1">
-          Flag
-        </div>
-        <div class="flex-1 blur-sm hover:blur-none transition-[filter] duration-200 break-all">
-          <p>{event.remarkPluginFrontmatter.flag}</p>
-        </div>
-      </div>
-    </div>
-  </div>
 
       <event.Content />
     ))

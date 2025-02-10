@@ -1,0 +1,37 @@
+---
+import { Icon } from 'astro-icon/components';
+import TableOfContentList from './TableOfContentList.astro';
+import { buildHierarchy } from '../utils/markdown';
+import type { MarkdownHeading } from 'astro';
+
+const { headings } = Astro.props as { headings: MarkdownHeading[] };
+---
+
+<nav class="xl:hidden">
+  <details
+    class="group border p-4 rounded-md border-flexoki-base-100 dark:border-flexoki-base-900"
+  >
+    <summary class="group-open:pb-4">
+      <div class="flex flex-row justify-between items-center">
+        Table of Contents
+        <Icon
+          name="lucide:chevron-down"
+          class="transition group-open:transform group-open:rotate-180"
+        />
+      </div>
+    </summary>
+    <div class="max-h-48 overflow-hidden overflow-y-auto">
+      <TableOfContentList headings={buildHierarchy(headings)} depth={0} />
+    </div>
+  </details>
+</nav>
+
+<style>
+  details > summary {
+    list-style: none;
+  }
+
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

@@ -3,15 +3,16 @@
     return {
       updateTheme: (theme = 'system') => {
         if (theme === 'system') {
-          window.matchMedia('(prefers-color-scheme: light)').matches
-            ? document.documentElement.classList.remove('dark')
-            : document.documentElement.classList.add('dark');
+          theme = window.matchMedia('(prefers-color-scheme: light)').matches
+            ? 'light'
+            : 'dark';
+        }
+        if (theme === 'light') {
+          document.documentElement.classList.remove('dark');
+          document.documentElement.setAttribute('data-theme', 'light');
         } else {
-          if (theme === 'light') {
-            document.documentElement.classList.remove('dark');
-          } else {
-            document.documentElement.classList.add('dark');
-          }
+          document.documentElement.classList.add('dark');
+          document.documentElement.setAttribute('data-theme', 'dark');
         }
       },
     };

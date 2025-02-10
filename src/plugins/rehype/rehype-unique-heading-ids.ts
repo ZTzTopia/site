@@ -91,7 +91,6 @@ export default function rehypeUniqueHeadingIds() {
           slug = slug.slice(0, -1);
         }
 
-        console.log('Unique heading ID:', slug);
         node.properties.id = slug;
       }
     });
