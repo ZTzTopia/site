@@ -55,7 +55,7 @@ const headings = renderedEvents.flatMap((event) => {
 slugger.reset();
 ---
 
-<WriteupLayout title={props.event.data.title} {headings}>
+<WriteupLayout title=`Writeup for ${props.event.data.title}` description={props.event.data.description} {headings}>
   <h1 class="text-4xl font-bold" id="_halll">{props.event.data.title}</h1>
   {
     [...renderedEvents].map((event) => (

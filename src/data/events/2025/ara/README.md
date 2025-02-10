@@ -1,5 +1,5 @@
 ---
-title: "ARA 6.0"
+title: "ARA 6.0 CTF"
 start: 2025-02-09T09:00:00+07:00
 end: 2025-02-09T17:00:00+07:00
 location: Online

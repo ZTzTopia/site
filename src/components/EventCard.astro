@@ -13,6 +13,7 @@ function formatToUTC(dateString: Date) {
     hour: '2-digit',
     minute: '2-digit',
     hour12: false,
+    timeZone: 'UTC'
   } as Intl.DateTimeFormatOptions;
 
   return utcDate.toLocaleString('en-US', options);
