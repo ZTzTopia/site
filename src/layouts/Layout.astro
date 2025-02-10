@@ -3,6 +3,7 @@ import Breadcrumb from '../components/Breadcrumb.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import Head from '../components/Head.astro';
+import ScrollToTop from '../components/ScrollToTop.astro';
 
 const navItems = [
   {
@@ -10,8 +11,8 @@ const navItems = [
     title: 'Home',
   },
   {
-    url: "/writeups",
-    title: "Writeups",
+    url: '/writeups',
+    title: 'Writeups',
   },
   {
     url: '/projects',
@@ -109,6 +110,10 @@ paths = paths.filter((path) => path.label !== '');
       ::selection {
         @apply bg-flexoki-cyan-400/15 dark:bg-flexoki-cyan-600/15;
       }
+
+      [id] {
+        scroll-margin-top: 5rem;
+      }
     </style>
   </head>
   <body
@@ -118,10 +123,18 @@ paths = paths.filter((path) => path.label !== '');
       <Header items={navItems} />
 
       <div class="flex-grow">
-        {paths.length !== 1 && <Breadcrumb items={paths} class="flex flex-col p-4 mx-auto max-w-screen-sm" />}
+        {
+          paths.length !== 1 && (
+            <Breadcrumb
+              items={paths}
+              class="flex flex-col p-4 mx-auto max-w-screen-sm"
+            />
+          )
+        }
         <slot />
       </div>
 
+      <ScrollToTop />
       <Footer items={footerItems} />
     </div>
   </body>

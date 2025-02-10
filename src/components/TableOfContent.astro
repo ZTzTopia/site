@@ -32,6 +32,8 @@ function renderHeadingsAsJson(props: Propss): Heading[] {
   const stack: Heading[] = [];
   const result: Heading[] = [];
 
+  result.push({ depth: 1, slug: "_halll", text: "Overview", children: [] });    
+
   headings.forEach(heading => {
     const { depth, slug, text } = heading;
 
