@@ -2,7 +2,7 @@
 import { Icon } from 'astro-icon/components';
 import Dropdown from './Dropdown.astro';
 import Button from './Button.astro';
-import SwitchTheme from './SwitchTheme.astro';
+import ThemeSelect from './ThemeSelect.astro';
 
 interface Item {
   url: string;
@@ -61,7 +61,7 @@ const { items }: Props = Astro.props;
           }
         </div>
 
-        <SwitchTheme />
+        <ThemeSelect />
       </nav>
     </div>
   </div>
