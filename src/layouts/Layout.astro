@@ -9,10 +9,10 @@ const navItems = [
     url: '/',
     title: 'Home',
   },
-  // {
-  //   url: "/writeups",
-  //   title: "Writeups",
-  // },
+  {
+    url: "/writeups",
+    title: "Writeups",
+  },
   {
     url: '/projects',
     title: 'Projects',
@@ -114,14 +114,12 @@ paths = paths.filter((path) => path.label !== '');
   <body
     class="bg-flexoki-base-paper dark:bg-flexoki-base-black text-flexoki-base-black dark:text-flexoki-base-200 antialiased"
   >
-    <div class="flex flex-col min-h-screen">
+    <div class="flex flex-col gap-y-2 min-h-screen">
       <Header items={navItems} />
 
       <div class="flex-grow">
-        <div class="flex flex-col gap-y-4 mx-auto p-4 max-w-screen-sm">
-          {paths.length !== 1 && <Breadcrumb items={paths} />}
-          <slot />
-        </div>
+        {paths.length !== 1 && <Breadcrumb items={paths} class="flex flex-col p-4 mx-auto max-w-screen-sm" />}
+        <slot />
       </div>
 
       <Footer items={footerItems} />

@@ -10,7 +10,7 @@ const { ...rest } = Astro.props as Props;
 ---
 
 <Layout {...rest}>
-  <main>
+  <main class="flex flex-col gap-y-4 px-4 mx-auto max-w-screen-sm">
     <slot />
   </main>
 </Layout>

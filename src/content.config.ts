@@ -23,16 +23,10 @@ const experiences = defineCollection({
 });
 
 const events = defineCollection({
-  loader: glob({ pattern: "*/*.{md,mdx}", base: "./src/data/events" }),
-  schema: z.object({
-    title: z.string()
-  })
-});
-
-const eventYears = defineCollection({
   loader: glob({ pattern: "*/*/*.{md,mdx}", base: "./src/data/events" }),
   schema: z.object({
     title: z.string(),
+    description: z.string().default("No description."),
     start: z.date().optional(),
     end: z.date().optional(),
     location: z.string().optional(),
@@ -41,7 +35,7 @@ const eventYears = defineCollection({
   })
 });
 
-const eventYearChallenges = defineCollection({
+const eventChallenges = defineCollection({
   loader: glob({ pattern: "*/*/*/*/*.{md,mdx}", base: "./src/data/events" }),
   schema: z.object({
     title: z.string(),
@@ -58,6 +52,5 @@ export const collections = {
   projects,
   experiences,
   events,
-  eventYears,
-  eventYearChallenges
+  eventChallenges
 };

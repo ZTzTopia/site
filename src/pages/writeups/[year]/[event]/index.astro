@@ -1,0 +1,96 @@
+---
+import Slugger from "github-slugger";
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import WriteupLayout from "../../../../layouts/WriteupLayout.astro";
+
+export async function getStaticPaths() {
+    const eventCollections = await getCollection('events');
+    const paths = eventCollections.map((event) => {
+        const slugs = event.id.split('/');
+        return {
+            params: {
+              year: slugs[0],
+              event: slugs[1]
+            },
+            props: {
+              event
+            }
+        };
+    });
+    
+    return paths;
+}
+
+interface Params {
+    year: string;
+    event: string;
+}
+
+interface Props {
+    event: CollectionEntry<"events">;
+}
+
+const params = Astro.params as Params;
+const props: Props = Astro.props;
+
+const eventCollections = await getCollection('eventChallenges', ({ id }) => id.split('/')[0] === params.year && id.split('/')[1] === params.event);
+const renderedEvents = await Promise.all(eventCollections.map(async (event) => {
+  return await render(event);
+}));
+
+const slugger = new Slugger();
+
+const headings = renderedEvents.flatMap((event) => {
+  event.headings = [
+    {
+      depth: 2,
+      slug: `user-content-${slugger.slug(event.remarkPluginFrontmatter.title)}`,
+      text: event.remarkPluginFrontmatter.title
+    },
+    ...event.headings
+  ];
+  return event.headings
+});
+
+slugger.reset();
+---
+
+<WriteupLayout title={props.event.data.title} {headings}>
+  <h1 class="text-4xl font-bold">{props.event.data.title}</h1>
+  {
+    [...renderedEvents].map((event) => (
+      <h2 id={`user-content-${slugger.slug(event.remarkPluginFrontmatter.title)}`}>{event.remarkPluginFrontmatter.title}</h2>
+
+      <div class="not-prose flex flex-col gap-y-4 border p-4 rounded-md border-flexoki-base-100 dark:border-flexoki-base-900">
+    <div class="flex flex-col divide-y">
+      <div class="flex gap-x-2 py-2 first:pt-0 last:pb-0 border-flexoki-base-100 dark:border-flexoki-base-900">
+        <div class="flex-1">
+          Category
+        </div>
+        <div class="flex-1">
+          <p>{event.remarkPluginFrontmatter.category}</p>
+        </div>
+      </div>
+      <div class="flex gap-x-2 py-2 first:pt-0 last:pb-0 border-flexoki-base-100 dark:border-flexoki-base-900">
+        <div class="flex-1">
+          Tags
+        </div>
+        <div class="flex-1">
+          <p>{event.remarkPluginFrontmatter.tags}</p>
+        </div>
+      </div>
+      <div class="flex gap-x-2 py-2 first:pt-0 last:pb-0 border-flexoki-base-100 dark:border-flexoki-base-900">
+        <div class="flex-1">
+          Flag
+        </div>
+        <div class="flex-1 blur-sm hover:blur-none transition-[filter] duration-200 break-all">
+          <p>{event.remarkPluginFrontmatter.flag}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+      <event.Content />
+    ))
+  }
+</WriteupLayout>

@@ -58,5 +58,7 @@ function renderHeadingsAsJson(props: Propss): Heading[] {
 const headings = renderHeadingsAsJson(props);
 ---
 
-<h2 class="text-lg font-bold mb-2">Table of Contents</h2>
-<TableOfContentList headings={headings} depth={0} />
+<div class="px-8">
+  <h2 class="text-lg font-bold mb-2">Table of Contents</h2>
+  <TableOfContentList headings={headings} depth={0} />
+</div>

@@ -1,19 +1,38 @@
 ---
 import MarkdownContent from '../components/MarkdownContent.astro';
+import TableOfContent from '../components/TableOfContent.astro';
 import Layout from './Layout.astro';
+
+interface Item {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Heading extends Item {
+  children: Heading[];
+}
 
 interface Props {
   title: string;
   description?: string;
+  headings: Heading[];
 }
 
-const { ...rest } = Astro.props as Props;
+const { headings, ...rest } = Astro.props as Props;
 ---
 
 <Layout {...rest}>
-  <main>
-    <MarkdownContent>
-      <slot />
-    </MarkdownContent>
-  </main>
+  <di class="grid grid-cols-[minmax(0px,1fr)_min(608px,100%)_minmax(0px,1fr)] px-4 mx-auto gap-y-4">
+    <div class="hidden xl:flex justify-end px-6 row-start-2 col-start-1">
+      <nav class="block md:sticky top-20 max-h-[calc(100vh-5rem)] overflow-y-auto">
+        <TableOfContent {headings} />
+      </nav>
+    </div>
+    <main class="row-start-2 col-start-2">
+      <MarkdownContent>
+        <slot />
+      </MarkdownContent>
+    </main>
+  </div>
 </Layout>

@@ -1,7 +1,6 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
-import Button from "../../components/Button.astro";
-import Layout from "../../layouts/Layout.astro";
+import MainLayout from "../../layouts/MainLayout.astro";
 import type { Page } from "astro";
 import Card from "../../components/Card.astro";
 import Paginatation from "../../components/Paginatation.astro";
@@ -9,14 +8,11 @@ import Paginatation from "../../components/Paginatation.astro";
 export async function getStaticPaths({ paginate }: { paginate: (paths: any[], options: { pageSize: number }) => any }) {
   const eventCollections = await getCollection('events');
   const paths = eventCollections.map((event: CollectionEntry<"events">) => {
-      const slugs = event.id.split('/');
-      return {
-        name: event.data.title,
-        slug: slugs[0]
-      }
+      return event;
   });
-  
-  return paginate(paths, { pageSize: 1 });
+
+  // TODO: Category the events by year
+  return paginate(paths, { pageSize: 20 });
 }
 
 interface Props {
@@ -26,20 +22,24 @@ interface Props {
 const { page } = Astro.props as Props;
 ---
 
-<Layout title="ztz0">
-  <div class="grid grid-cols-2 gap-2">
+<MainLayout title="Writeups">
+  <div class="flex flex-col gap-2">
+    {page.data.length === 0 && <p>No writeups found :(</p>}
     {
       [...page.data].map((event) => (
-        <a href={`/writeups/${event.slug}`}>
-          <Card>
-            {event.name}
+        <a href={`${Astro.url.pathname}/${event.id.split('/').slice(0, -1).join('/')}`}>
+          <Card class=" ">
+            <Fragment slot="content">
+              {event.data.title}
+              <p class="text-flexoki-base-600 dark:text-flexoki-base-500">{event.data.description}</p>
+            </Fragment>
           </Card>
         </a>
       ))
     }
   </div>
 
-  <div class="flex gap-1 justify-center">
+  <!-- <div class="flex gap-1 justify-center">
     <Paginatation page={page} />
-  </div>
-</Layout>
+  </div> -->
+</MainLayout>

@@ -17,11 +17,11 @@ interface Props {
 const { headings, depth = 0 } = Astro.props as Props;
 ---
 
-<ul>
+<ul class="pl-5 list-disc md:list-none md:pl-0">
   {
     headings.map((heading) => (
       <li>
-        <a href={"#" + heading.slug}>
+        <a href={"#" + heading.slug} class="text-flexoki-base-600 dark:text-flexoki-base-500">
           <span>{heading.text}</span>
         </a>
         {heading.children.length > 0 && (
@@ -32,4 +32,13 @@ const { headings, depth = 0 } = Astro.props as Props;
   }
 </ul>
 
-<style define:vars={{ depth }}></style>
+<style define:vars={{ depth }}>
+  a {
+		--pad-inline: 0.5rem;
+		display: block;
+		border-radius: 0.25rem;
+		padding-block: 0.25rem;
+		padding-inline: calc(0.375rem * (var(--depth) - 1)) var(--pad-inline);
+		line-height: 1.25;
+	}
+</style>

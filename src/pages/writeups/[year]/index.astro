@@ -1,0 +1,74 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import MainLayout from "../../../layouts/MainLayout.astro";
+import Card from "../../../components/Card.astro";
+
+export async function getStaticPaths() {
+  // TOOD: Refactor this so paths only contain one year or wild solution is use 1970 - present.
+  const eventCollections = await getCollection('events');
+  const paths = eventCollections.map((event: CollectionEntry<"events">) => {
+      const slugs = event.id.split('/');
+      return {
+          params: {
+              year: slugs[0]
+          }
+      };
+  });
+  
+  return paths;
+}
+
+interface Params {
+    year: string;
+}
+
+const { year } = Astro.params as Params;
+
+const eventCollections = await getCollection('events', ({ id }) => id.split('/')[0] === year);
+
+function formatToUTC(dateString: Date) {
+  const date = new Date(dateString); // Parse the date
+  const utcDate = new Date(date.toISOString()); // Convert to UTC
+  
+  const options = {
+    month: 'long',
+    day: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    timeZone: 'UTC', // Force UTC time
+  } as Intl.DateTimeFormatOptions;
+  
+  return utcDate.toLocaleString('en-US', options); // Format to MM/DD/YY HH:mm
+}
+---
+
+<MainLayout title=`${year} Writeups`>
+  {eventCollections.length > 0 
+    ?
+      <div class="grid gap-2">
+        {
+          eventCollections.map((event) => (
+            <a href={`${Astro.url.pathname}/${event.id.split('/').slice(1, -1).join('/')}`}>
+              <Card>
+                <Fragment slot="content">
+                  <div class="flex items-center space-x-2">
+                    <p class="font-medium">{event.data.title}</p>
+                    {/* <span class="bg-flexoki-base-100 dark:bg-flexoki-base-900 text-xs font-medium px-2.5 py-0.5 rounded">
+                      {formatToUTC(event.data.start)} - {formatToUTC(event.data.end)}
+                    </span> */}
+                  </div>
+                  <p class="text-flexoki-base-600 dark:text-flexoki-base-500">{event.data.description}</p>
+                  {/* <p class="text-flexoki-base-600 dark:text-flexoki-base-500">{event.data.location}</p>
+                  <p class="text-flexoki-base-600 dark:text-flexoki-base-500">{event.data.format}</p> */}
+                </Fragment>
+              </Card>
+            </a>
+          ))
+        }
+      </div>
+    :
+    <p>No events found :(</p>
+  }
+</MainLayout>
