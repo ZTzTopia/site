@@ -10,7 +10,7 @@ interface Props {
 const { page } = Astro.props as Props;
 ---
 
-<nav>
+<nav class="flex flex-row space-x-2">
   <Button variant="ghost" href={page.url.prev} size="sm">
     <Icon name="lucide:chevron-left" />
     Previous
@@ -31,6 +31,10 @@ const { page } = Astro.props as Props;
         pageNumber -= (page.currentPage - page.lastPage) + 4;
       } else if (page.currentPage > 1) {
         pageNumber -= (page.currentPage > 4 ? 2 : page.currentPage - 1);
+      }
+
+      if (pageNumber < 1 || pageNumber > page.lastPage) {
+        return null;
       }
 
       const isCurrentPage = page.currentPage === pageNumber;

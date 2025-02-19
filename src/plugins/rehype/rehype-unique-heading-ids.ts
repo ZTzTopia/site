@@ -17,14 +17,15 @@ export default function rehypeUniqueHeadingIds() {
     const frontmatter = file.data.astro?.frontmatter;
 		const isMDX = isMDXFile(file);
 
-    const pathSegments = file.history[0].split("\\");
+    const pathSegments = file.history[0].split("\\") || file.history[0].split("/");
     const isDataEvents = pathSegments.includes("data") && pathSegments.includes("events");
     
     let slugger = defaultSlugger;
     slugger.reset();
 
     if (isDataEvents) {
-      const path = pathSegments.slice(pathSegments.length - 5, pathSegments.length - 3).join("\\");
+      let path = pathSegments.slice(pathSegments.length - 5, pathSegments.length - 3)
+      path = path.join("\\") || path.join("/");
 
       slugger = savedSlugger.get(path);
       if (!slugger) {

@@ -4,18 +4,28 @@ import MainLayout from '../../../layouts/MainLayout.astro';
 import EventCard from '../../../components/EventCard.astro';
 
 export async function getStaticPaths() {
-  // TOOD: Refactor this so paths only contain one year or wild solution is use 1970 - present.
   const eventCollections = await getCollection('events');
-  const paths = eventCollections.map((event: CollectionEntry<'events'>) => {
+  const years: string[] = [];
+
+  eventCollections.forEach((event: CollectionEntry<'events'>) => {
     const slugs = event.id.split('/');
-    return {
-      params: {
-        year: slugs[0],
-      },
-    };
+    if (slugs.length > 1) {
+      const year = slugs[0];
+      if (!year) {
+        return;
+      }
+
+      if (!years.includes(year)) {
+        years.push(year);
+      }
+    }
   });
 
-  return paths;
+  return years.map((year) => ({
+    params: {
+      year,
+    },
+  }));
 }
 
 interface Params {
@@ -33,7 +43,7 @@ const eventCollections = await getCollection(
 <MainLayout title=`${year} Writeups`>
   {
     eventCollections.length > 0 ? (
-      <div class="grid gap-2">
+      <div class="grid grid-cols-2 gap-2">
         {eventCollections.map((event) => (
           <a
             href={`${Astro.url.pathname}/${event.id.split('/').slice(1, -1).join('/')}`}

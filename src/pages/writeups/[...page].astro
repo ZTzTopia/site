@@ -11,12 +11,15 @@ export async function getStaticPaths({
   paginate: (paths: any[], options: { pageSize: number }) => any;
 }) {
   const eventCollections = await getCollection('events');
-  const paths = eventCollections.map((event: CollectionEntry<'events'>) => {
+  const sortedEventCollections = eventCollections.sort((a, b) => {
+    return new Date(b.data.end as Date).getTime() - new Date(a.data.start as Date).getTime();
+  });
+  const paths = sortedEventCollections.map((event: CollectionEntry<'events'>) => {
     return event;
   });
 
   // TODO: Category the events by year
-  return paginate(paths, { pageSize: 20 });
+  return paginate(paths, { pageSize: 2 });
 }
 
 interface Props {
@@ -27,7 +30,7 @@ const { page } = Astro.props as Props;
 ---
 
 <MainLayout title="Writeups">
-  <div class="flex flex-col gap-2">
+  <div class="grid grid-cols-2 gap-2">
     {page.data.length === 0 && <p>No writeups found :(</p>}
     {
       [...page.data].map((event) => (

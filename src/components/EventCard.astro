@@ -2,7 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import Card from './Card.astro';
 
-function formatToUTC(dateString: Date) {
+/* function formatToUTC(dateString: Date) {
   const date = new Date(dateString);
   const utcDate = new Date(date.toISOString());
 
@@ -17,7 +17,7 @@ function formatToUTC(dateString: Date) {
   } as Intl.DateTimeFormatOptions;
 
   return utcDate.toLocaleString('en-US', options);
-}
+} */
 
 const { event } = Astro.props as { event: CollectionEntry<'events'> };
 ---
@@ -26,21 +26,21 @@ const { event } = Astro.props as { event: CollectionEntry<'events'> };
   <Fragment slot="content">
     <div class="flex items-center space-x-2">
       <p class="font-medium">{event.data.title}</p>
-      <span
+      <!-- <span
         class="bg-flexoki-base-100 dark:bg-flexoki-base-900 text-xs font-medium px-2.5 py-0.5 rounded"
       >
         {formatToUTC(event.data.start as Date)} -{' '}
         {formatToUTC(event.data.end as Date)}
-      </span>
+      </span> -->
     </div>
     <p class="text-flexoki-base-600 dark:text-flexoki-base-500">
       {event.data.description}
     </p>
-    <p class="text-flexoki-base-600 dark:text-flexoki-base-500">
+    <!-- <p class="text-flexoki-base-600 dark:text-flexoki-base-500">
       {event.data.location}
     </p>
     <p class="text-flexoki-base-600 dark:text-flexoki-base-500">
       {event.data.format}
-    </p>
+    </p> -->
   </Fragment>
 </Card>
