@@ -28,7 +28,6 @@ export default function rehypeUniqueHeadingIds() {
     if (isDataEvents) {
       const path = pathSegments
         .slice(pathSegments.length - 5, pathSegments.length - 3)
-        .replace(/\\/g, '/')
         .join("/");
 
       slugger = savedSlugger.get(path);

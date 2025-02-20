@@ -27,6 +27,8 @@ const { headings, depth = 0 } = Astro.props as Props;
 </ul>
 
 <style define:vars={{ depth }}>
+  @reference '../styles/global.css';
+
   /* ul {
 		padding: 0;
 		list-style: none;

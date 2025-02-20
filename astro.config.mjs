@@ -1,14 +1,13 @@
 // @ts-check
 import fs from 'node:fs';
 import { defineConfig } from 'astro/config';
-import tailwind from "@astrojs/tailwind";
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
 import expressiveCode, { ExpressiveCodeTheme } from 'astro-expressive-code';
+import tailwindcss from '@tailwindcss/vite';
 
 import rehypeUniqueHeadingIds from './src/plugins/rehype/rehype-unique-heading-ids';
 import rehypeShiftHeading from 'rehype-shift-heading';
-import rehypeSanitize from 'rehype-sanitize';
 
 const flexokiDark = ExpressiveCodeTheme.fromJSONString(
   fs.readFileSync(new URL(`./flexoki-dark.jsonc`, import.meta.url), 'utf-8')
@@ -26,9 +25,6 @@ export default defineConfig({
   },
   output: 'static',
   integrations: [
-    tailwind({
-      applyBaseStyles: true
-    }), 
     icon(), 
     expressiveCode({
       defaultProps: {
@@ -51,9 +47,11 @@ export default defineConfig({
     rehypePlugins: [
       rehypeUniqueHeadingIds,
       // rehypeInjectFrontmatterTitle,
-      [rehypeShiftHeading, { shift: 1 }],
-      rehypeSanitize
+      [rehypeShiftHeading, { shift: 1 }]
     ]
+  },
+  vite: {
+    plugins: [tailwindcss()]
   },
   scopedStyleStrategy: 'where'
 });
