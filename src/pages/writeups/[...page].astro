@@ -18,8 +18,7 @@ export async function getStaticPaths({
     return event;
   });
 
-  // TODO: Category the events by year
-  return paginate(paths, { pageSize: 2 });
+  return paginate(paths, { pageSize: 20 });
 }
 
 interface Props {
