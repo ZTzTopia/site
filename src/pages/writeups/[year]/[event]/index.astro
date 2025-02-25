@@ -3,6 +3,7 @@ import type { MarkdownHeading } from 'astro';
 import Slugger from "github-slugger";
 import { type CollectionEntry, getCollection, render } from "astro:content";
 import WriteupLayout from "../../../../layouts/WriteupLayout.astro";
+import type { RenderResult } from 'astro:content';
 
 export async function getStaticPaths() {
     const eventCollections = await getCollection('events');
@@ -42,19 +43,20 @@ for (const event of eventCollections) {
   }
 
   groupEventCollections.get(event.data.category).push(await render(event));
-  groupEventCollections.get(event.data.category).sort((a, b) => a.remarkPluginFrontmatter.title.localeCompare(b.remarkPluginFrontmatter.title));
+  groupEventCollections.get(event.data.category).sort((a: any, b: any) => a.remarkPluginFrontmatter.title.localeCompare(b.remarkPluginFrontmatter.title));
 };
 
 const slugger = new Slugger();
 
 const headings: MarkdownHeading[] = [];
-groupEventCollections.forEach((events, category) => {
+groupEventCollections.forEach((events: RenderResult[], category: string) => {
   headings.push({
     depth: 2,
     slug: `user-content-${slugger.slug(category)}`,
     text: category
   });
-  events.forEach((event) => {
+
+  events.forEach((event: RenderResult) => {
     event.headings = [
       {
         depth: 3,
@@ -77,7 +79,7 @@ slugger.reset();
       <>
         <h2 id={`user-content-${slugger.slug(category)}`}>{category}</h2>
         
-        {events.map((event) => (
+        {events.map((event: RenderResult) => (
           <>
             <h3 id={`user-content-${slugger.slug(event.remarkPluginFrontmatter.title)}`}>{event.remarkPluginFrontmatter.title}</h3>
 

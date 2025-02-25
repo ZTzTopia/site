@@ -1,10 +1,15 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
-@config '../../tailwind.config.mjs';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Mobile/Touch-screen doesn't support @media (hover:hover)? or chromium issue? or what? */
+@custom-variant hover (&:hover);
 
 @theme {
-  --color-flexoki-base-paper: #FFFCF0;
-  --color-flexoki-base-black: #100F0F;
+  --color-flexoki-paper: #FFFCF0;
+  --color-flexoki-black: #100F0F;
+  
   --color-flexoki-base-50: #F2F0E5;
   --color-flexoki-base-100: #E6E4D9;
   --color-flexoki-base-150: #DAD8CE;
@@ -130,4 +135,76 @@
   --color-flexoki-magenta-850: #4F1B39;
   --color-flexoki-magenta-900: #39172B;
   --color-flexoki-magenta-950: #24131D;
+}
+
+@theme inline {
+  --color-flexoki-light-bg: var(--color-flexoki-paper);
+  --color-flexoki-light-bg-2: var(--color-flexoki-base-50);
+
+  --color-flexoki-light-tx: var(--color-flexoki-black);
+  --color-flexoki-light-tx-2: var(--color-flexoki-base-600);
+  --color-flexoki-light-tx-3: var(--color-flexoki-base-300);
+
+  --color-flexoki-light-ui: var(--color-flexoki-base-100);
+  --color-flexoki-light-ui-2: var(--color-flexoki-base-150);
+  --color-flexoki-light-ui-3: var(--color-flexoki-base-200);
+
+  --color-flexoki-light-re: var(--color-flexoki-red-600);
+  --color-flexoki-light-re-2: var(--color-flexoki-red-400);
+
+  --color-flexoki-light-or: var(--color-flexoki-orange-600);
+  --color-flexoki-light-or-2: var(--color-flexoki-orange-400);
+
+  --color-flexoki-light-ye: var(--color-flexoki-yellow-600);
+  --color-flexoki-light-ye-2: var(--color-flexoki-yellow-400);
+
+  --color-flexoki-light-gr: var(--color-flexoki-green-600);
+  --color-flexoki-light-gr-2: var(--color-flexoki-green-400);
+
+  --color-flexoki-light-cy: var(--color-flexoki-cyan-600);
+  --color-flexoki-light-cy-2: var(--color-flexoki-cyan-400);
+
+  --color-flexoki-light-bl: var(--color-flexoki-blue-600);
+  --color-flexoki-light-bl-2: var(--color-flexoki-blue-400);
+
+  --color-flexoki-light-pu: var(--color-flexoki-purple-600);
+  --color-flexoki-light-pu-2: var(--color-flexoki-purple-400);
+
+  --color-flexoki-light-ma: var(--color-flexoki-magenta-600);
+  --color-flexoki-light-ma-2: var(--color-flexoki-magenta-400);
+
+  --color-flexoki-dark-bg: var(--color-flexoki-black);
+  --color-flexoki-dark-bg-2: var(--color-flexoki-base-950);
+
+  --color-flexoki-dark-tx: var(--color-flexoki-base-200);
+  --color-flexoki-dark-tx-2: var(--color-flexoki-base-500);
+  --color-flexoki-dark-tx-3: var(--color-flexoki-base-700);
+
+  --color-flexoki-dark-ui: var(--color-flexoki-base-900);
+  --color-flexoki-dark-ui-2: var(--color-flexoki-base-850);
+  --color-flexoki-dark-ui-3: var(--color-flexoki-base-800);
+
+  --color-flexoki-dark-re: var(--color-flexoki-red-400);
+  --color-flexoki-dark-re-2: var(--color-flexoki-red-600);
+
+  --color-flexoki-dark-or: var(--color-flexoki-orange-400);
+  --color-flexoki-dark-or-2: var(--color-flexoki-orange-600);
+
+  --color-flexoki-dark-ye: var(--color-flexoki-yellow-400);
+  --color-flexoki-dark-ye-2: var(--color-flexoki-yellow-600);
+
+  --color-flexoki-dark-gr: var(--color-flexoki-green-400);
+  --color-flexoki-dark-gr-2: var(--color-flexoki-green-600);
+
+  --color-flexoki-dark-cy: var(--color-flexoki-cyan-400);
+  --color-flexoki-dark-cy-2: var(--color-flexoki-cyan-600);
+
+  --color-flexoki-dark-bl: var(--color-flexoki-blue-400);
+  --color-flexoki-dark-bl-2: var(--color-flexoki-blue-600);
+
+  --color-flexoki-dark-pu: var(--color-flexoki-purple-400);
+  --color-flexoki-dark-pu-2: var(--color-flexoki-purple-600);
+
+  --color-flexoki-dark-ma: var(--color-flexoki-magenta-400);
+  --color-flexoki-dark-ma-2: var(--color-flexoki-magenta-600);
 }

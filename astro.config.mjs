@@ -18,7 +18,7 @@ const flexokiLight = ExpressiveCodeTheme.fromJSONString(
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://ztz0.com',
+  site: 'https://www.ztz0.com',
   redirects: {
     '/flag': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     '/flags': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
@@ -47,7 +47,7 @@ export default defineConfig({
     rehypePlugins: [
       rehypeUniqueHeadingIds,
       // rehypeInjectFrontmatterTitle,
-      [rehypeShiftHeading, { shift: 1 }]
+      [rehypeShiftHeading, { shift: 2 }]
     ]
   },
   vite: {
