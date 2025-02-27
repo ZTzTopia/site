@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://ztz0.com/sitemap-index.xml
