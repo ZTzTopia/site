@@ -14,8 +14,6 @@ const {
   class: classList = '',
   ...rest
 } = Astro.props as Props;
-
-console.log(position, side);
 ---
 
 <Element as="z-dropdown" class:list="relative block" {classList} {...rest}>
