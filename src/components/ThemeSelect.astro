@@ -6,34 +6,23 @@ import Dropdown from './Dropdown.astro';
 
 <!-- TODO: Change trigger icon? -->
 <z-theme-select>
-  <Dropdown position="right">
-    <Button slot="trigger" variant="outline" size="icon">
+  <Dropdown side="right">
+    <Button slot="trigger" variant="outline" size="icon" class="hover:cursor-pointer">
       <Icon name="lucide:sun" />
     </Button>
     <div class="flex flex-col p-1">
-      <Button variant="ghost" size="sm" id="lightThemeButton">
+      <Button variant="ghost" size="sm" class="hover:cursor-pointer" id="systemThemeButton">
+        <Icon name="lucide:computer" class="mr-2" /> System Default
+      </Button>
+      <Button variant="ghost" size="sm" class="hover:cursor-pointer" id="lightThemeButton">
         <Icon name="lucide:sun" class="mr-2" /> Light Mode
       </Button>
-      <Button variant="ghost" size="sm" id="darkThemeButton">
+      <Button variant="ghost" size="sm" class="hover:cursor-pointer" id="darkThemeButton">
         <Icon name="lucide:moon" class="mr-2" /> Dark Mode
-      </Button>
-      <Button variant="ghost" size="sm" id="systemThemeButton">
-        <Icon name="lucide:computer" class="mr-2" /> System Default
       </Button>
     </div>
   </Dropdown>
 </z-theme-select>
-
-<script is:inline>
-  const storedTheme =
-    typeof localStorage !== 'undefined' && localStorage.getItem('z-theme');
-  const theme =
-    storedTheme ||
-    (window.matchMedia('(prefers-color-scheme: light)').matches
-      ? 'light'
-      : 'dark');
-  ThemeProvider.updateTheme(theme);
-</script>
 
 <script>
   type Theme = 'system' | 'dark' | 'light';
@@ -56,8 +45,11 @@ import Dropdown from './Dropdown.astro';
     }
   };
 
+  const getPreferredColorScheme = (): Theme =>
+		matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+
   function onThemeChange(theme: Theme): void {
-    ThemeProvider.updateTheme(theme);
+    document.documentElement.setAttribute('data-theme', theme === 'system' ? getPreferredColorScheme() : theme);
     storeTheme(theme);
   }
 
@@ -72,6 +64,11 @@ import Dropdown from './Dropdown.astro';
       super();
       onThemeChange(loadTheme());
 
+      const systemTheme = this.querySelector('#systemThemeButton');
+      systemTheme?.addEventListener('click', () => {
+        onThemeChange('system');
+      });
+
       const lightTheme = this.querySelector('#lightThemeButton');
       lightTheme?.addEventListener('click', () => {
         onThemeChange('light');
@@ -80,11 +77,6 @@ import Dropdown from './Dropdown.astro';
       const darkTheme = this.querySelector('#darkThemeButton');
       darkTheme?.addEventListener('click', () => {
         onThemeChange('dark');
-      });
-
-      const systemTheme = this.querySelector('#systemThemeButton');
-      systemTheme?.addEventListener('click', () => {
-        onThemeChange('system');
       });
     }
   }

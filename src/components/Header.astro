@@ -17,20 +17,21 @@ const { items }: Props = Astro.props;
 ---
 
 <header
-  class="sticky top-0 z-10 bg-flexoki-paper/[0.90] dark:bg-flexoki-black/[0.90] backdrop-blur-sm"
+  class="sticky top-0 z-10 bg-flexoki-light-bg/[0.975] dark:bg-flexoki-dark-bg/[0.975] backdrop-blur-sm border-b-1 border-flexoki-base-100 dark:border-flexoki-base-900"
+  id="header"
 >
-  <div class="mx-auto px-4 max-w-screen-sm text-sm font-medium">
-    <div class="flex flex-wrap items-center justify-between gap-4 py-4">
+  <div class="mx-auto px-4 max-w-screen-md text-sm font-medium">
+    <div class="flex flex-wrap items-center justify-between gap-4 py-2">
       <Button
         variant="text"
         href="/"
-        class="font-bold text-flexoki-cyan-600 dark:text-flexoki-cyan-400"
+        class="font-bold text-flexoki-light-cy dark:text-flexoki-dark-cy"
         >ztz0</Button
       >
 
       <nav class="flex gap-x-2 md:gap-x-4">
-        <Dropdown position="right" class="block md:hidden">
-          <Button slot="trigger" variant="outline" size="icon">
+        <Dropdown side="right" class="block md:hidden">
+          <Button slot="trigger" variant="outline" size="icon" class="hover:cursor-pointer">
             <Icon name="lucide:menu" />
           </Button>
           <div class="flex flex-col min-w-32 p-1">
@@ -51,8 +52,12 @@ const { items }: Props = Astro.props;
             items.map((item: Item) => {
               return (
                 <a
-                  href={item.url === Astro.url.pathname ? '#' : item.url}
-                  class="hover:text-flexoki-cyan-600 dark:hover:text-flexoki-cyan-400"
+                  href={item.url}
+                  class:list={['hover:text-flexoki-light-cy-2 dark:hover:text-flexoki-dark-cy-2', {
+                    'text-flexoki-light-cy dark:text-flexoki-dark-cy': Astro.url.pathname === '/' && item.url === '/'
+                      ? true
+                      : item.url !== '/' && Astro.url.pathname.startsWith(item.url),
+                  }]}
                 >
                   {item.title}
                 </a>

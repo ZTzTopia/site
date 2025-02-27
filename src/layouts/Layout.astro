@@ -6,6 +6,16 @@ import Header from '../components/Header.astro';
 import Head from '../components/Head.astro';
 import ScrollToTop from '../components/ScrollToTop.astro';
 
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'Software Engineer and CTF Player from Tangerang, Indonesia',
+} = Astro.props as Props;
+
 const navItems = [
   {
     url: '/',
@@ -24,42 +34,25 @@ const navItems = [
 const footerItems = [
   {
     url: 'mailto:muhzib36@gmail.com',
+    title: 'Contact',
     iconName: 'lucide:mail',
   },
   {
     url: 'https://www.youtube.com/channel/ZTzTopia702',
+    title: 'YouTube',
     iconName: 'lucide:youtube',
   },
   {
     url: 'https://github.com/ZTzTopia',
+    title: 'GitHub',
     iconName: 'lucide:github',
   },
   {
     url: 'https://www.linkedin.com/in/muhamad-zibrisky-b6a861252/',
+    title: 'LinkedIn',
     iconName: 'lucide:linkedin',
   },
 ];
-
-interface Props {
-  title: string;
-  description?: string;
-}
-
-const {
-  title,
-  description = 'Software Engineer and CTF Player from Tangerang, Indonesia',
-} = Astro.props as Props;
-
-/*
-interface Item {
-  label: string;
-  href: string;
-}
-
-interface Props extends HTMLAttributes<'div'> {
-  items: Item[];
-}
-*/
 
 let paths = Astro.url.pathname.split('/').map((path, index, paths) => {
   if (index === 0) {
@@ -91,52 +84,13 @@ paths = paths.filter((path) => path.label !== '');
     <Head title={title} description={description} />
 
     <style is:global>
-      @reference '../styles/global.css';
-
-      @font-face {
-        font-family: 'Monaspace Neon';
-        src: url('/fonts/MonaspaceNeonVarVF[wght,wdth,slnt].woff2')
-          format('woff2');
-        font-weight: normal;
-        font-style: normal;
-        font-display: swap;
-      }
-
-      body {
-        font-family: 'Roboto', serif;
-        font-optical-sizing: auto;
-        font-weight: 400;
-        font-style: normal;
-        font-variation-settings: 'wdth' 100;
-      }
-
-      ::selection {
-        @apply bg-flexoki-cyan-400/15 dark:bg-flexoki-cyan-600/15;
-      }
-
       [id] {
         scroll-margin-top: 5rem;
-      }
-
-      body ::-webkit-scrollbar {
-        width: 8px;
-      }
-
-      body ::-webkit-scrollbar-track {
-        @apply bg-flexoki-base-100 dark:bg-flexoki-base-900 rounded-md;
-      }
-
-      body ::-webkit-scrollbar-thumb {
-        @apply bg-flexoki-base-200 dark:bg-flexoki-base-800 rounded-md;
-      }
-
-      body ::-webkit-scrollbar-thumb:hover {
-        @apply bg-flexoki-base-300 dark:bg-flexoki-base-700;
       }
     </style>
   </head>
   <body
-    class="bg-flexoki-paper dark:bg-flexoki-black text-flexoki-black dark:text-flexoki-base-200 antialiased"
+    class="bg-flexoki-light-bg dark:bg-flexoki-dark-bg text-flexoki-light-tx dark:text-flexoki-dark-tx antialiased"
   >
     <div class="flex flex-col gap-y-2 min-h-screen">
       <Header items={navItems} />
@@ -146,7 +100,7 @@ paths = paths.filter((path) => path.label !== '');
           paths.length !== 1 && (
             <Breadcrumb
               items={paths}
-              class="flex flex-col p-4 mx-auto max-w-screen-sm"
+              class="flex flex-col p-4 mx-auto max-w-screen-md"
             />
           )
         }

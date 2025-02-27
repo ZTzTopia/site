@@ -1,6 +1,6 @@
 ---
 import type { MarkdownHeading } from 'astro';
-import MarkdownContent from '../components/MarkdownContent.astro';
+import Prose from '../components/Prose.astro';
 import MobileTableOfContent from '../components/MobileTableOfContent.astro';
 import TableOfContent from '../components/TableOfContent.astro';
 import Layout from './Layout.astro';
@@ -15,8 +15,9 @@ const { headings, ...rest } = Astro.props as Props;
 ---
 
 <Layout {...rest}>
-  <di
-    class="grid grid-cols-[minmax(0px,1fr)_min(608px,100%)_minmax(0px,1fr)] gap-y-4 px-4"
+  <MobileTableOfContent {headings} />
+  <div
+    class="grid grid-cols-[minmax(0px,1fr)_min(736px,100%)_minmax(0px,1fr)] gap-y-4 px-4"
   >
     <div class="hidden xl:flex justify-end px-6 row-start-2 col-start-1">
       <nav
@@ -26,10 +27,9 @@ const { headings, ...rest } = Astro.props as Props;
       </nav>
     </div>
     <main class="row-start-2 col-start-2 space-y-4">
-      <MobileTableOfContent {headings} />
-      <MarkdownContent>
+      <Prose>
         <slot />
-      </MarkdownContent>
+      </Prose>
     </main>
-  </di>
+  </div>
 </Layout>

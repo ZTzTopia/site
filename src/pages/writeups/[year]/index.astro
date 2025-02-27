@@ -2,6 +2,7 @@
 import { type CollectionEntry, getCollection } from 'astro:content';
 import MainLayout from '../../../layouts/MainLayout.astro';
 import EventCard from '../../../components/EventCard.astro';
+import { stripTrailingSlash } from '../../../utils/path';
 
 export async function getStaticPaths() {
   const eventCollections = await getCollection('events');
@@ -38,15 +39,18 @@ const eventCollections = await getCollection(
   'events',
   ({ id }) => id.split('/')[0] === year
 );
+const sortedEventCollections = eventCollections.sort((a, b) => {
+  return new Date(b.data.end as Date).getTime() - new Date(a.data.start as Date).getTime();
+});
 ---
 
 <MainLayout title=`${year} Writeups`>
   {
-    eventCollections.length > 0 ? (
+    sortedEventCollections.length > 0 ? (
       <div class="grid grid-cols-2 gap-2">
-        {eventCollections.map((event) => (
+        {sortedEventCollections.map((event) => (
           <a
-            href={`${Astro.url.pathname}/${event.id.split('/').slice(1, -1).join('/')}`}
+            href={`${stripTrailingSlash(Astro.url.pathname)}/${event.id.split('/').slice(1, -1).join('/')}`}
           >
             <EventCard event={event} />
           </a>

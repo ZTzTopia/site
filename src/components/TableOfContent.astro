@@ -6,34 +6,94 @@ import { buildHierarchy } from '../utils/markdown';
 const { headings } = Astro.props as { headings: MarkdownHeading[] };
 ---
 
-<div class="px-8">
-	<z-toc>
-		<h2 class="text-lg font-bold mb-2">Table of Contents</h2>
-		<TableOfContentList headings={buildHierarchy(headings)} depth={0} />
-	</z-toc>
+<div class="px-8 text-wrap w-72">
+  <z-toc>
+    <h2 class="text-lg font-bold mb-2">Table of Contents</h2>
+    <TableOfContentList headings={buildHierarchy(headings)} depth={0} />
+  </z-toc>
 </div>
 
 <script>
-export class TableOfContent extends HTMLElement {
-	private _current = this.querySelector<HTMLAnchorElement>('a[aria-current="true"]');
+  export class TableOfContent extends HTMLElement {
+    private _current = this.querySelector<HTMLAnchorElement>(
+      'a[aria-current="true"]'
+    );
 
-	protected set current(link: HTMLAnchorElement) {
-		if (link === this._current) {
-			return;
-		}
+    protected set current(link: HTMLAnchorElement) {
+      if (link === this._current) {
+        return;
+      }
 
-		if (this._current) {
-			this._current.removeAttribute('aria-current');
-		}
+      if (this._current) {
+        this._current.removeAttribute('aria-current');
+      }
 
-		link.setAttribute('aria-current', 'true');
-		this._current = link;
-	}
+      link.setAttribute('aria-current', 'true');
+      this._current = link;
+    }
 
-	constructor() {
-		super();
-	}
-}
+    constructor() {
+      super();
+      this.init();
+    }
 
-customElements.define('z-toc', TableOfContent);
+    init() {
+      const links = [...this.querySelectorAll('a')];
+      const toObserve = document.querySelectorAll('main [id], main [id] ~ *, main .content > *');
+
+      let observer: IntersectionObserver | undefined;
+      const observe = () => {
+        if (observer) return;
+        observer = new IntersectionObserver((entries) => {
+          this.setCurrent(links, entries);
+        });
+        toObserve.forEach((h) => observer?.observe(h));
+      };
+
+      observe();
+
+      let timeout: NodeJS.Timeout;
+      window.addEventListener('resize', () => {
+
+        // Clear intersection observer
+        if (observer) {
+          observer.disconnect();
+          observer = undefined;
+        }
+  
+        clearTimeout(timeout);
+        timeout = setTimeout(() => observe, 100);
+      });
+    }
+
+    setCurrent(
+      links: HTMLAnchorElement[],
+      entries: IntersectionObserverEntry[]
+    ) {
+      for (const { isIntersecting, target } of entries) {
+        if (!isIntersecting) continue;
+        const heading = this.getElementHeading(target);
+        if (!heading) continue;
+        const link = links.find(
+          (l) => l.hash === `#${encodeURIComponent(heading.id)}`
+        );
+        if (link) {
+          this.current = link;
+          break;
+        }
+      }
+    }
+
+    getElementHeading(el: Element | null): HTMLHeadingElement | null {
+      while (el) {
+        if (el instanceof HTMLHeadingElement) return el;
+        let sibling = el.previousElementSibling;
+        while (sibling?.lastElementChild) sibling = sibling.lastElementChild;
+        el = sibling || el.parentElement;
+      }
+      return null;
+    }
+  }
+
+  customElements.define('z-toc', TableOfContent);
 </script>

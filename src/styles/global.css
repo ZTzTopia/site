@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 
-@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 /* Mobile/Touch-screen doesn't support @media (hover:hover)? or chromium issue? or what? */
 @custom-variant hover (&:hover);
@@ -9,7 +9,7 @@
 @theme {
   --color-flexoki-paper: #FFFCF0;
   --color-flexoki-black: #100F0F;
-  
+
   --color-flexoki-base-50: #F2F0E5;
   --color-flexoki-base-100: #E6E4D9;
   --color-flexoki-base-150: #DAD8CE;
@@ -207,4 +207,33 @@
 
   --color-flexoki-dark-ma: var(--color-flexoki-magenta-400);
   --color-flexoki-dark-ma-2: var(--color-flexoki-magenta-600);
+}
+
+::selection {
+  @apply bg-flexoki-cyan-400/15 dark:bg-flexoki-cyan-600/15;
+}
+
+body ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+body ::-webkit-scrollbar-track {
+  @apply bg-flexoki-base-100 rounded-md;
+}
+
+@variant dark {
+  body ::-webkit-scrollbar-track {
+    @apply bg-flexoki-base-900;
+  }
+}
+
+body ::-webkit-scrollbar-thumb {
+  @apply bg-flexoki-base-150 rounded-md hover:bg-flexoki-base-200;
+}
+
+@variant dark {
+  body ::-webkit-scrollbar-thumb {
+    @apply bg-flexoki-base-850 rounded-md hover:bg-flexoki-base-700;
+  }
 }

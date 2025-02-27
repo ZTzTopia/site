@@ -1,5 +1,5 @@
 ---
-import Layout from "./Layout.astro";
+import Layout from './Layout.astro';
 
 interface Props {
   title: string;
@@ -10,7 +10,7 @@ const { ...rest } = Astro.props as Props;
 ---
 
 <Layout {...rest}>
-  <main class="flex flex-col gap-y-4 px-4 mx-auto max-w-screen-sm">
+  <main class="flex flex-col px-4 mx-auto max-w-screen-md">
     <slot />
   </main>
 </Layout>

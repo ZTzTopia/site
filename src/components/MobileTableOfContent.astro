@@ -7,23 +7,26 @@ import type { MarkdownHeading } from 'astro';
 const { headings } = Astro.props as { headings: MarkdownHeading[] };
 ---
 
-<nav class="xl:hidden">
-  <details
-    class="group border p-4 rounded-md border-flexoki-base-100 dark:border-flexoki-base-900"
-  >
-    <summary class="group-open:pb-4">
-      <div class="flex flex-row justify-between items-center">
-        Table of Contents
-        <Icon
-          name="lucide:chevron-down"
-          class="transition group-open:transform group-open:rotate-180"
-        />
+<nav
+  class="block xl:hidden fixed z-10 w-full bg-flexoki-light-bg/[0.975] dark:bg-flexoki-dark-bg/[0.975] backdrop-blur-sm border-b-1 border-flexoki-base-100 dark:border-flexoki-base-900"
+  id="nav"
+>
+  <div class="mx-auto px-4 max-w-screen-md text-sm items-center min-h-[3.5rem]">
+    <details class="group items-center min-h-[3.5rem]">
+      <summary class="items-center min-h-[3.5rem] group-open:pb-2">
+        <div class="flex flex-row justify-between items-center min-h-[3.5rem]">
+          Table of Contents
+          <Icon
+            name="lucide:chevron-down"
+            class="transition group-open:transform group-open:rotate-180"
+          />
+        </div>
+      </summary>
+      <div class="max-h-48 overflow-hidden overflow-y-auto">
+        <TableOfContentList headings={buildHierarchy(headings)} depth={0} />
       </div>
-    </summary>
-    <div class="max-h-48 overflow-hidden overflow-y-auto">
-      <TableOfContentList headings={buildHierarchy(headings)} depth={0} />
-    </div>
-  </details>
+    </details>
+  </div>
 </nav>
 
 <style>
@@ -35,3 +38,23 @@ const { headings } = Astro.props as { headings: MarkdownHeading[] };
     display: none;
   }
 </style>
+
+<script is:inline>
+  const header = document.querySelector('#header');
+  const nav = document.querySelector('#nav');
+
+  console.log(header);
+  console.log(nav);
+
+  if (header && nav) {
+    const headerHeight = header.getBoundingClientRect().height;
+    nav.style.top = `${headerHeight}px`;
+  }
+
+  window.addEventListener('resize', () => {
+    if (header && nav) {
+      const headerHeight = header.getBoundingClientRect().height;
+      nav.style.top = `${headerHeight}px`;
+    }
+  });
+</script>

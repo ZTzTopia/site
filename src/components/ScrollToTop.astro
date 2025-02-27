@@ -13,7 +13,10 @@ import Button from "./Button.astro";
 </Button>
 
 <script is:inline>
-  document.addEventListener('astro:page-load', () => {
+  const onIdle = (cb) =>
+    (window.requestIdleCallback || ((cb) => setTimeout(cb, 1)))(cb);
+
+  onIdle(() => {
     const scrollToTopButton = document.getElementById('scroll-to-top');
     const footer = document.querySelector('footer');
 

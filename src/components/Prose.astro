@@ -10,11 +10,11 @@ const { class: classList = '', ...rest } = Astro.props as Props;
 <Element
   class:list={[
     'prose',
-    'prose-sm',
+    // 'prose-sm',
     'dark:prose-invert',
     'max-w-none',
 
-    'prose-p:text-flexoki-black',
+    /* 'prose-p:text-flexoki-black',
     'dark:prose-p:text-flexoki-base-200',
 
     'prose-headings:text-flexoki-black',
@@ -30,20 +30,22 @@ const { class: classList = '', ...rest } = Astro.props as Props;
 
     'prose-a:text-flexoki-cyan-400',
     'dark:prose-a:text-flexoki-cyan-600',
-    'hover:prose-a:text-flexoki-cyan-600',
-    'dark:hover:prose-a:text-flexoki-cyan-400',
-    'active:prose-a:text-flexoki-cyan-600',
-    'dark:active:prose-a:text-flexoki-cyan-400',
+    'prose-a:hover:text-flexoki-cyan-600',
+    'dark:prose-a:hover:text-flexoki-cyan-400',
+    'prose-a:active:text-flexoki-cyan-600',
+    'dark:prose-a:active:text-flexoki-cyan-400',
 
     'prose-code:p-1',
     'prose-code:bg-flexoki-base-50',
     'dark:prose-code:bg-flexoki-base-950',
     'prose-code:rounded',
-    'after:prose-code:content-none',
-    'before:prose-code:content-none',
+    'prose-code:after:content-none',
+    'prose-code:before:content-none',
 
     'prose-strong:text-flexoki-base-950',
     'dark:prose-strong:text-flexoki-base-50',
+
+    'prose-img:rounded', */
   ]}
   {classList}
   {...rest}

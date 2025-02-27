@@ -27,7 +27,7 @@ const { items, ...rest } = Astro.props as Props;
               <Icon name="lucide:chevron-right" />
             </li>
             <li class="inline-flex items-center">
-              <span class="text-flexoki-cyan-600 dark:text-flexoki-cyan-400">{item.label}</span>
+              <span class="text-flexoki-light-cy dark:text-flexoki-dark-cy">{item.label}</span>
             </li>
           );
         }
@@ -67,7 +67,7 @@ const { items, ...rest } = Astro.props as Props;
             }
           </Fragment>
           <li class="inline-flex items-center">
-            <a href={item.href} class="hover:text-flexoki-cyan-400 hover:dark:text-flexoki-cyan-600">{item.label}</a>
+            <a href={item.href} class="hover:text-flexoki-light-cy-2 hover:dark:text-flexoki-dark-cy-2">{item.label}</a>
           </li>
         )
       })

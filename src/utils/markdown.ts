@@ -1,12 +1,6 @@
 import type { MarkdownHeading } from "astro";
 
-export interface TableOfContentItem {
-  depth: number;
-  slug: string;
-  text: string;
-}
-
-export interface TableOfContentHeading extends TableOfContentItem {
+export interface TableOfContentHeading extends MarkdownHeading {
   children: TableOfContentHeading[];
 }
 
@@ -14,7 +8,7 @@ export const buildHierarchy = (headings: MarkdownHeading[]): TableOfContentHeadi
   const stack: TableOfContentHeading[] = [];
   const result: TableOfContentHeading[] = [];
 
-  result.push({ depth: 1, slug: "_halll", text: "Overview", children: [] });    
+  result.push({ depth: 1, slug: "_halll", text: "Overview", children: [] });
 
   headings.forEach(heading => {
     const { depth, slug, text } = heading;

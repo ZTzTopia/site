@@ -4,25 +4,34 @@ import Element from './Element.astro';
 import Card from './Card.astro';
 
 interface Props extends HTMLAttributes<'div'> {
-  position?: 'left' | 'right' | undefined;
+  position?: 'top' | 'bottom' | undefined;
+  side?: 'left' | 'right' | undefined;
 }
 
 const {
-  position = 'left',
+  position = 'bottom',
+  side = 'left',
   class: classList = '',
   ...rest
 } = Astro.props as Props;
+
+console.log(position, side);
 ---
 
-<Element as="z-dropdown" class:list="relative" {classList} {...rest}>
+<Element as="z-dropdown" class:list="relative block" {classList} {...rest}>
   <slot name="trigger" />
   <Card
     class:list={[
-      'hidden absolute z-20 mt-2 w-max',
+      'hidden absolute z-20 w-max',
       'bg-flexoki-base-100 dark:bg-flexoki-base-900 border border-flexoki-base-100 dark:border-flexoki-base-900',
       {
-        'right-0': position === 'right',
-        'left-0': position === 'left',
+        // Position dropdown menu?
+        'top-full mt-2': position === 'bottom',
+        'bottom-full mb-2': position === 'top',
+      },
+      {
+        'right-0': side === 'right',
+        'left-0': side === 'left',
       },
     ]}
   >
@@ -35,6 +44,15 @@ const {
     constructor() {
       super();
 
+      const onIdle = (cb: IdleRequestCallback) =>
+        (window.requestIdleCallback || ((cb) => setTimeout(cb, 1)))(cb);
+
+      onIdle(() => {
+        this.init();
+      });
+    }
+
+    init() {
       const dropdownButtonTrigger = this.children[0];
       if (!dropdownButtonTrigger) {
         return;
