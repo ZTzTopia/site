@@ -10,42 +10,43 @@ const { class: classList = '', ...rest } = Astro.props as Props;
 <Element
   class:list={[
     'prose',
-    // 'prose-sm',
+    'prose-sm',
     'dark:prose-invert',
     'max-w-none',
+    'break-words',
 
-    /* 'prose-p:text-flexoki-black',
-    'dark:prose-p:text-flexoki-base-200',
+    'prose-p:text-flexoki-light-tx',
+    'dark:prose-p:text-flexoki-dark-tx',
 
     'prose-headings:text-flexoki-black',
     'dark:prose-headings:text-flexoki-base-200',
 
-    'prose-code:text-flexoki-cyan-600',
-    'dark:prose-code:text-flexoki-cyan-400',
+    // TODO: Apply <code> only when parent is not a <pre>
+    'prose-code:text-flexoki-light-tx',
+    'dark:prose-code:text-flexoki-dark-tx',
 
-    'prose-blockquote:prose-p:text-flexoki-base-600',
-    'dark:prose-blockquote:prose-p:text-flexoki-base-500',
+    'prose-pre:border prose-pre:border-flexoki-base-100',
+    'dark:prose-pre:border dark:prose-pre:border-flexoki-base-900',
+
+    'prose-blockquote:prose-p:not-italic',
+    'prose-blockquote:prose-p:text-flexoki-light-tx',
+    'dark:prose-blockquote:prose-p:text-flexoki-dark-tx',
+    'prose-blockquote:bg-flexoki-light-bg-2',
+    'dark:prose-blockquote:bg-flexoki-dark-bg-2',
     'prose-blockquote:border-flexoki-cyan-600',
     'dark:prose-blockquote:border-flexoki-cyan-400',
 
-    'prose-a:text-flexoki-cyan-400',
-    'dark:prose-a:text-flexoki-cyan-600',
-    'prose-a:hover:text-flexoki-cyan-600',
-    'dark:prose-a:hover:text-flexoki-cyan-400',
-    'prose-a:active:text-flexoki-cyan-600',
-    'dark:prose-a:active:text-flexoki-cyan-400',
-
-    'prose-code:p-1',
-    'prose-code:bg-flexoki-base-50',
-    'dark:prose-code:bg-flexoki-base-950',
-    'prose-code:rounded',
-    'prose-code:after:content-none',
-    'prose-code:before:content-none',
+    'prose-a:text-flexoki-light-cy',
+    'prose-a:hover:text-flexoki-light-cy-2',
+    'prose-a:active:text-flexoki-light-cy-2',
+    'dark:prose-a:text-flexoki-dark-cy',
+    'dark:prose-a:hover:text-flexoki-dark-cy-2',
+    'dark:prose-a:active:text-flexoki-dark-cy-2',
 
     'prose-strong:text-flexoki-base-950',
     'dark:prose-strong:text-flexoki-base-50',
 
-    'prose-img:rounded', */
+    'prose-img:rounded',
   ]}
   {classList}
   {...rest}

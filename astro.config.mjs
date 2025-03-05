@@ -26,7 +26,10 @@ export default defineConfig({
     rehypePlugins: [
       rehypeUniqueHeadingIds,
       [rehypeShiftHeading, { shift: 1 }]
-    ]
+    ],
+    shikiConfig: {
+      theme: 'css-variables'
+    }
   },
   scopedStyleStrategy: 'where',
   vite: {

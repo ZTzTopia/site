@@ -237,3 +237,48 @@ body ::-webkit-scrollbar-thumb {
     @apply bg-flexoki-base-850 rounded-md hover:bg-flexoki-base-700;
   }
 }
+
+.astro-code {
+  --astro-code-background: var(--color-flexoki-light-bg-2);
+  --astro-code-foreground: var(--color-flexoki-light-tx);
+  --astro-code-token-constant: var(--color-flexoki-light-ye);
+  --astro-code-token-string: var(--color-flexoki-light-tx-2);
+  --astro-code-token-comment: var(--color-flexoki-light-tx-3);
+  --astro-code-token-keyword: var(--color-flexoki-light-gr);
+  --astro-code-token-parameter: var(--color-flexoki-light-tx);
+  --astro-code-token-function: var(--color-flexoki-light-or); /* Bold */
+  --astro-code-token-string-expression: var(--color-flexoki-light-cy);
+  --astro-code-token-punctuation: var(--color-flexoki-light-tx-2);
+  --astro-code-token-link: var(--color-flexoki-light-cy);
+}
+
+@variant dark {
+  .astro-code {
+    --astro-code-background: var(--color-flexoki-dark-bg-2);
+    --astro-code-foreground: var(--color-flexoki-dark-tx);
+    --astro-code-token-constant: var(--color-flexoki-dark-ye);
+    --astro-code-token-string: var(--color-flexoki-dark-tx-2);
+    --astro-code-token-comment: var(--color-flexoki-dark-tx-3);
+    --astro-code-token-keyword: var(--color-flexoki-dark-gr);
+    --astro-code-token-parameter: var(--color-flexoki-dark-tx);
+    --astro-code-token-function: var(--color-flexoki-dark-or); /* Bold */
+    --astro-code-token-string-expression: var(--color-flexoki-dark-cy);
+    --astro-code-token-punctuation: var(--color-flexoki-dark-tx-2);
+    --astro-code-token-link: var(--color-flexoki-dark-cy);
+  }
+}
+
+code {
+	counter-reset: step;
+	counter-increment: step 0;
+}
+
+code .line::before {
+  content: counter(step);
+  counter-increment: step;
+  width: 1rem;
+  margin-right: 1.5rem;
+  display: inline-block;
+  text-align: right;
+  color: var(--color-flexoki-dark-tx-2);
+}
