@@ -1,11 +1,12 @@
 ---
-import { Image } from "astro:assets";
-import MainLayout from "../layouts/MainLayout.astro";
+import { Image } from 'astro:assets';
+import MainLayout from '../layouts/MainLayout.astro';
+import Prose from '../components/Prose.astro';
 // import Experience from "../components/Experience.astro";
 ---
 
 <MainLayout title="Home">
-  <div class="py-2 prose dark:prose-invert max-w-none">
+  <Prose>
     <h1 class="font-medium">
       <span class="block overflow-hidden group relative">
         <span
@@ -37,16 +38,16 @@ import MainLayout from "../layouts/MainLayout.astro";
       > player.
     </p>
     <!-- <p>
-      I also have <a
-        target="_blank"
-        href=`quartz.${Astro.url.host}`
-        class="not-prose bg-flexoki-base-50 dark:bg-flexoki-base-950 text-xs font-medium px-2.5 py-0.5 rounded"
-        >🥬 Digital Garden</a
-      > for CTF notes and other notes.
-    </p>
-    <h2 class="font-medium">Experiences</h2>
-    <div class="not-prose">
-      <Experience />
-    </div> -->
-  </div>
+        I also have <a
+          target="_blank"
+          href=`quartz.${Astro.url.host}`
+          class="not-prose bg-flexoki-base-50 dark:bg-flexoki-base-950 text-xs font-medium px-2.5 py-0.5 rounded"
+          >🥬 Digital Garden</a
+        > for CTF notes and other notes.
+      </p>
+      <h2 class="font-medium">Experiences</h2>
+      <div class="not-prose">
+        <Experience />
+      </div> -->
+  </Prose>
 </MainLayout>
