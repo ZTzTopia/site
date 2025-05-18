@@ -1,11 +1,11 @@
 ---
-import { Icon } from "astro-icon/components";
-import Button from "./Button.astro";
+import { Icon } from 'astro-icon/components';
+import Button from './Button.astro';
 ---
 
 <Button
-  variant='outline'
-  size='icon'
+  variant="outline"
+  size="icon"
   id="scroll-to-top"
   class="hidden fixed bottom-8 right-8 z-50"
 >
@@ -26,7 +26,8 @@ import Button from "./Button.astro";
       });
 
       window.addEventListener('scroll', () => {
-        const footerVisible = footer.getBoundingClientRect().top <= window.innerHeight;
+        const footerVisible =
+          footer.getBoundingClientRect().top <= window.innerHeight;
         const shouldShowButton = window.scrollY > 256 && !footerVisible;
         scrollToTopButton.classList.toggle('hidden', !shouldShowButton);
       });

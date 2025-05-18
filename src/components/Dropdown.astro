@@ -20,10 +20,9 @@ const {
   <slot name="trigger" />
   <Card
     class:list={[
-      'hidden absolute z-20 w-max',
+      'hidden absolute w-max',
       'bg-flexoki-base-100 dark:bg-flexoki-base-900 border border-flexoki-base-100 dark:border-flexoki-base-900',
       {
-        // Position dropdown menu?
         'top-full mt-2': position === 'bottom',
         'bottom-full mb-2': position === 'top',
       },

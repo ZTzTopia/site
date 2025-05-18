@@ -17,8 +17,8 @@ const { page } = Astro.props as Props;
   </Button>
 
   {
-    page.currentPage > 4 && (
-      <Button variant="ghost" size="sm">
+    page.total != 5 && page.currentPage > 4 && (
+      <Button variant="ghost" size="sm" href={page.url.first}>
         1
       </Button>
       <Button variant="ghost" size="sm">...</Button>
@@ -40,17 +40,21 @@ const { page } = Astro.props as Props;
       const isCurrentPage = page.currentPage === pageNumber;
       const variant = isCurrentPage ? 'outline' : 'ghost';
 
+      const pageUrl = 
+        isCurrentPage 
+          ? page.url.current
+          : pageNumber === 1 ? '/writeups' : `/writeups/${pageNumber}`;
       return (
-        <Button variant={variant} size="sm">
+        <Button variant={variant} size="sm" href={pageUrl}>
           {pageNumber}
         </Button>
       );
     })
   }
   {
-    page.currentPage < page.lastPage - 3 && (
+    page.total != 5 && page.currentPage < page.lastPage - 3 && (
       <Button variant="ghost" size="sm">...</Button>
-      <Button variant="ghost" size="sm">
+      <Button variant="ghost" size="sm" href={page.url.last}>
         {page.lastPage}
       </Button>
     )

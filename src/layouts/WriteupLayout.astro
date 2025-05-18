@@ -15,7 +15,7 @@ const { headings, ...rest } = Astro.props as Props;
 ---
 
 <Layout {...rest}>
-  <MobileTableOfContent {headings} />
+  <MobileTableOfContent {headings} slot="top" />
   <div
     class="grid grid-cols-[minmax(0px,1fr)_min(736px,100%)_minmax(0px,1fr)] gap-y-4 px-4"
   >

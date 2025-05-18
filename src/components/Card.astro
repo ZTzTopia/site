@@ -14,7 +14,7 @@ const remoteLink = rest.href?.toString().startsWith('http');
 <Element
   as={rest.href ? 'a' : 'div'}
   class:list={[
-    'rounded bg-flexoki-base-50 dark:bg-flexoki-base-950 border border-flexoki-base-100 dark:border-flexoki-base-900',
+    'rounded text-flexoki-light-tx dark:text-flexoki-dark-tx bg-flexoki-base-50 dark:bg-flexoki-base-950 border border-flexoki-base-100 dark:border-flexoki-base-900',
     {
       'flex flex-row justify-between group items-center': remoteLink,
       'flex flex-col': !remoteLink,

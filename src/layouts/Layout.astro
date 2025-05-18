@@ -57,7 +57,7 @@ const footerItems = [
 let paths = Astro.url.pathname.split('/').map((path, index, paths) => {
   if (index === 0) {
     return {
-      label: 'Home',
+      label: 'home',
       href: '/',
     };
   }
@@ -84,18 +84,21 @@ paths = paths.filter((path) => path.label !== '');
     <Head title={title} description={description} />
 
     <style is:global>
+      @reference 'tailwindcss';
+
       [id] {
-        scroll-margin-top: 5rem;
+        @apply scroll-mt-32 xl:scroll-mt-20
       }
     </style>
   </head>
   <body
     class="bg-flexoki-light-bg dark:bg-flexoki-dark-bg text-flexoki-light-tx dark:text-flexoki-dark-tx antialiased"
   >
-    <div class="flex flex-col gap-y-2 min-h-screen">
+    <div class="flex flex-col min-h-screen">
       <Header items={navItems} />
 
-      <div class="flex-grow">
+      <main class="flex-grow">
+        <slot name="top" />
         {
           paths.length !== 1 && (
             <Breadcrumb
@@ -105,7 +108,7 @@ paths = paths.filter((path) => path.label !== '');
           )
         }
         <slot />
-      </div>
+      </main>
 
       <ScrollToTop />
       <Footer items={footerItems} />

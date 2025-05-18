@@ -18,7 +18,7 @@ const { items, ...rest } = Astro.props as Props;
 ---
 
 <Element as="nav" {...rest}>
-  <ol class="flex flex-wrap gap-1 items-center text-sm capitalize break-words">
+  <ol class="flex flex-wrap gap-1 items-center text-sm break-words">
     {
       items &&
         items.map((item, index) => {
