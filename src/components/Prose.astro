@@ -18,15 +18,29 @@ const { class: classList = '', ...rest } = Astro.props as Props;
     'prose-p:text-flexoki-light-tx',
     'dark:prose-p:text-flexoki-dark-tx',
 
+    'prose-strong:text-flexoki-light-tx',
+    'dark:prose-strong:text-flexoki-dark-tx',
+
+    'prose-li:text-flexoki-light-tx',
+    'dark:prose-li:text-flexoki-dark-tx',
+    'prose-li:marker:text-flexoki-light-tx-2',
+    'dark:prose-li:marker:text-flexoki-dark-tx-2',
+
     'prose-headings:text-flexoki-black',
     'dark:prose-headings:text-flexoki-base-200',
 
-    // TODO: Apply <code> only when parent is not a <pre>
-    'prose-code:text-flexoki-light-tx',
-    'dark:prose-code:text-flexoki-dark-tx',
+    'prose-code:not-in-prose-pre:text-flexoki-light-cy',
+    'dark:prose-code:not-in-prose-pre:text-flexoki-dark-cy',
+    'prose-code:not-in-prose-pre:bg-flexoki-light-ui',
+    'dark:prose-code:not-in-prose-pre:bg-flexoki-dark-ui',
+    'prose-code:not-in-prose-pre:rounded',
+    'prose-code:not-in-prose-pre:p-1',
+    'prose-code:not-in-prose-pre:before:content-[""]',
+    'prose-code:not-in-prose-pre:after:content-[""]',
 
-    'prose-pre:border prose-pre:border-flexoki-base-100',
-    'dark:prose-pre:border dark:prose-pre:border-flexoki-base-900',
+    'prose-pre:border',
+    'prose-pre:border-flexoki-base-100',
+    'dark:prose-pre:border-flexoki-base-900',
 
     'prose-blockquote:prose-p:not-italic',
     'prose-blockquote:prose-p:text-flexoki-light-tx',
@@ -35,6 +49,8 @@ const { class: classList = '', ...rest } = Astro.props as Props;
     'dark:prose-blockquote:bg-flexoki-dark-bg-2',
     'prose-blockquote:border-flexoki-cyan-600',
     'dark:prose-blockquote:border-flexoki-cyan-400',
+    'prose-blockquote:rounded',
+    'prose-blockquote:py-1',
 
     'prose-a:text-flexoki-light-cy',
     'prose-a:hover:text-flexoki-light-cy-2',
@@ -43,10 +59,13 @@ const { class: classList = '', ...rest } = Astro.props as Props;
     'dark:prose-a:hover:text-flexoki-dark-cy-2',
     'dark:prose-a:active:text-flexoki-dark-cy-2',
 
-    'prose-strong:text-flexoki-base-950',
-    'dark:prose-strong:text-flexoki-base-50',
+    'prose-hr:border-flexoki-base-100',
+    'dark:prose-hr:border-flexoki-base-900',
 
     'prose-img:rounded',
+    'prose-img:border',
+    'prose-img:border-flexoki-base-100',
+    'dark:prose-img:border-flexoki-base-900',
   ]}
   {classList}
   {...rest}
