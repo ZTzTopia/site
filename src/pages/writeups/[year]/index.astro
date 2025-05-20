@@ -47,7 +47,7 @@ const sortedEventCollections = eventCollections.sort((a, b) => {
 ---
 
 <MainLayout title={`${year} Writeups`}>
-  <div class="grid md:grid-cols-1 gap-2">
+  <div class="grid md:grid-cols-2 gap-2">
     {
       sortedEventCollections.length === 0 ? (
         <p>No events found :(</p>

@@ -16,7 +16,7 @@ const remoteLink = rest.href?.toString().startsWith('http');
   class:list={[
     'rounded text-flexoki-light-tx dark:text-flexoki-dark-tx bg-flexoki-base-50 dark:bg-flexoki-base-950 border border-flexoki-base-100 dark:border-flexoki-base-900',
     {
-      'flex flex-row justify-between group gap-2': remoteLink,
+      'flex flex-row justify-between group': remoteLink,
       'flex flex-col': !remoteLink,
     },
     {
