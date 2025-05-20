@@ -48,7 +48,7 @@ export default defineConfig({
       ]
     }
   },
-  scopedStyleStrategy: 'class',
+  scopedStyleStrategy: 'where',
   vite: {
     // Type 'Plugin<any>[]' is not assignable to type 'PluginOption'.
     // @ts-ignore

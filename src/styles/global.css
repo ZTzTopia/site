@@ -299,7 +299,7 @@ body ::-webkit-scrollbar-thumb {
 }
 
 .code-wrapper {
-  @apply text-sm overflow-y-hidden my-4;
+  @apply text-xs overflow-y-hidden my-4;
 
   pre {
     @apply rounded border border-flexoki-light-ui dark:border-flexoki-dark-ui py-4;
