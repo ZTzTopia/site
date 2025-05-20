@@ -1,8 +1,8 @@
 ---
-import Projects from "../components/Projects.astro";
+import ProjectsComponent from "../components/Projects.astro"; // error ts(2440): Import declaration conflicts with local declaration of 'Projects'.
 import MainLayout from "../layouts/MainLayout.astro";
 ---
 
 <MainLayout title="Projects">
-  <Projects />
+  <ProjectsComponent />
 </MainLayout>
