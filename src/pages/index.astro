@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import MainLayout from '../layouts/MainLayout.astro';
 import Prose from '../components/Prose.astro';
+import Projects from '../components/Projects.astro';
 // import Experience from "../components/Experience.astro";
 ---
 
@@ -37,6 +38,10 @@ import Prose from '../components/Prose.astro';
         />CTF</a
       > player.
     </p>
+    <h2 class="font-medium">Projects</h2>
+    <div class="not-prose">
+      <Projects limit={4} />
+    </div>
     <!-- <p>
         I also have <a
           target="_blank"

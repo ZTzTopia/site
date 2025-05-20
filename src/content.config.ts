@@ -6,8 +6,9 @@ const projects = defineCollection({
   schema: z.object({
     id: z.number(),
     title: z.string(),
-    description: z.string(),
-    url: z.string()
+    description: z.string().default("No description."),
+    url: z.string(),
+    tags: z.union([z.string(), z.array(z.string()), z.null()]).optional(),
   })
 });
 
@@ -44,6 +45,8 @@ const eventChallenges = defineCollection({
     draft: z.boolean().optional(),
     completedDuringEvent: z.boolean().optional(),
     submitted: z.boolean().optional(),
+    points: z.number().default(-1),
+    solves: z.number().default(-1),
     flag: z.string().optional()
   })
 });

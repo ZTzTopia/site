@@ -1,8 +1,21 @@
 [
     {
         "id": 1,
+        "title": "Site",
+        "description": "My portfolio site.",
+        "url": "https://github.com/ZTzTopia/site",
+        "tags": [
+            "Portfolio"
+        ]
+    },
+    {
+        "id": 2,
         "title": "GTProxy",
         "description": "Debugging packets and modifying requests.",
-        "url": "https://github.com/ZTzTopia/GTProxy"
+        "url": "https://github.com/ZTzTopia/GTProxy",
+        "tags": [
+            "Proxy",
+            "Debugging"
+        ]
     }
 ]
