@@ -1,10 +1,9 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
+import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import type { Page } from 'astro';
 import EventCard from '../../components/EventCard.astro';
-import { stripTrailingSlash } from '../../utils/path';
-// import Pagination from '../../components/Pagination.astro';
+import Pagination from '../../components/Pagination.astro';
 
 export async function getStaticPaths({
   paginate,
@@ -13,13 +12,12 @@ export async function getStaticPaths({
 }) {
   const eventCollections = await getCollection('events');
   const sortedEventCollections = eventCollections.sort((a, b) => {
-    return new Date(b.data.end as Date).getTime() - new Date(a.data.start as Date).getTime();
+    return (
+      new Date(b.data.end as Date).getTime() -
+      new Date(a.data.start as Date).getTime()
+    );
   });
-  const paths = sortedEventCollections.map((event: CollectionEntry<'events'>) => {
-    return event;
-  });
-
-  return paginate(paths, { pageSize: 20 });
+  return paginate(sortedEventCollections, { pageSize: 8 });
 }
 
 interface Props {
@@ -30,20 +28,26 @@ const { page } = Astro.props as Props;
 ---
 
 <MainLayout title="Writeups">
-  <div class="grid md:grid-cols-2 gap-2">
-    {page.data.length === 0 && <p>No writeups found :(</p>}
+  <div class="flex flex-col gap-4 min-h-[calc(100vh-14.35rem)]">
+    <div class="flex-grow">
+      <div class="grid md:grid-cols-2 gap-2">
+        {page.data.length === 0 && <p>No writeups found :(</p>}
+        {
+          [...page.data].map((event) => (
+            <a href={`/writeups/${event.id.split('/').slice(0, -1).join('/')}`}>
+              <EventCard event={event} />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+
     {
-      [...page.data].map((event) => (
-        <a
-          href={`${stripTrailingSlash(Astro.url.pathname)}/${event.id.split('/').slice(0, -1).join('/')}`}
-        >
-          <EventCard event={event} />
-        </a>
-      ))
+      page.lastPage !== 1 && (
+        <div class="flex gap-1 justify-end">
+          <Pagination page={page} />
+        </div>
+      )
     }
   </div>
-
-  <!-- <div class="flex gap-1 justify-center">
-    <Pagination page={page} />
-  </div> -->
 </MainLayout>

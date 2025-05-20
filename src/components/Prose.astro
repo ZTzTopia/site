@@ -34,7 +34,7 @@ const { class: classList = '', ...rest } = Astro.props as Props;
     'prose-code:not-in-prose-pre:bg-flexoki-light-ui',
     'dark:prose-code:not-in-prose-pre:bg-flexoki-dark-ui',
     'prose-code:not-in-prose-pre:rounded',
-    'prose-code:not-in-prose-pre:p-1',
+    'prose-code:not-in-prose-pre:p-0.5',
     'prose-code:not-in-prose-pre:before:content-[""]',
     'prose-code:not-in-prose-pre:after:content-[""]',
 
@@ -66,6 +66,18 @@ const { class: classList = '', ...rest } = Astro.props as Props;
     'prose-img:border',
     'prose-img:border-flexoki-base-100',
     'dark:prose-img:border-flexoki-base-900',
+
+    'prose-thead:border-flexoki-light-ui-2',
+    'dark:prose-thead:border-flexoki-dark-ui-2',
+
+    'prose-tr:border-flexoki-light-ui',
+    'dark:prose-tr:border-flexoki-dark-ui',
+
+    'prose-th:text-flexoki-light-tx',
+    'dark:prose-th:text-flexoki-dark-tx',
+
+    'prose-td:text-flexoki-light-tx-2',
+    'dark:prose-td:text-flexoki-dark-tx-2',
   ]}
   {classList}
   {...rest}

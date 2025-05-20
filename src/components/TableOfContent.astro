@@ -6,12 +6,12 @@ import { buildHierarchy } from '../utils/markdown';
 const { headings } = Astro.props as { headings: MarkdownHeading[] };
 ---
 
-<div class="px-8 text-wrap w-72">
+<aside class="px-8 text-wrap w-72 max-h-32">
   <z-toc>
-    <h2 class="text-lg font-bold mb-2">Table of Contents</h2>
+    <h2 class="text-lg font-bold mb-2">On This Page</h2>
     <TableOfContentList headings={buildHierarchy(headings)} depth={0} />
   </z-toc>
-</div>
+</aside>
 
 <script>
   export class TableOfContent extends HTMLElement {
@@ -32,66 +32,16 @@ const { headings } = Astro.props as { headings: MarkdownHeading[] };
       this._current = link;
     }
 
+    private onIdle = (cb: IdleRequestCallback) =>
+      (window.requestIdleCallback || ((cb) => setTimeout(cb, 1)))(cb);
+
     constructor() {
       super();
-      this.init();
+      this.onIdle(() => this.init());
     }
 
     init() {
-      const links = [...this.querySelectorAll('a')];
-      const toObserve = document.querySelectorAll('main [id], main [id] ~ *, main .content > *');
-
-      let observer: IntersectionObserver | undefined;
-      const observe = () => {
-        if (observer) return;
-        observer = new IntersectionObserver((entries) => {
-          this.setCurrent(links, entries);
-        });
-        toObserve.forEach((h) => observer?.observe(h));
-      };
-
-      observe();
-
-      let timeout: NodeJS.Timeout;
-      window.addEventListener('resize', () => {
-
-        // Clear intersection observer
-        if (observer) {
-          observer.disconnect();
-          observer = undefined;
-        }
-  
-        clearTimeout(timeout);
-        timeout = setTimeout(() => observe, 100);
-      });
-    }
-
-    setCurrent(
-      links: HTMLAnchorElement[],
-      entries: IntersectionObserverEntry[]
-    ) {
-      for (const { isIntersecting, target } of entries) {
-        if (!isIntersecting) continue;
-        const heading = this.getElementHeading(target);
-        if (!heading) continue;
-        const link = links.find(
-          (l) => l.hash === `#${encodeURIComponent(heading.id)}`
-        );
-        if (link) {
-          this.current = link;
-          break;
-        }
-      }
-    }
-
-    getElementHeading(el: Element | null): HTMLHeadingElement | null {
-      while (el) {
-        if (el instanceof HTMLHeadingElement) return el;
-        let sibling = el.previousElementSibling;
-        while (sibling?.lastElementChild) sibling = sibling.lastElementChild;
-        el = sibling || el.parentElement;
-      }
-      return null;
+      // TODO: Reimplement this.
     }
   }
 

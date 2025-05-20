@@ -94,10 +94,10 @@ paths = paths.filter((path) => path.label !== '');
   <body
     class="bg-flexoki-light-bg dark:bg-flexoki-dark-bg text-flexoki-light-tx dark:text-flexoki-dark-tx antialiased"
   >
-    <div class="flex flex-col min-h-screen">
+    <div class="flex flex-col min-h-svh">
       <Header items={navItems} />
 
-      <main class="flex-grow">
+      <main class="flex-1">
         <slot name="top" />
         {
           paths.length !== 1 && (

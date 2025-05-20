@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../../../../layouts/MainLayout.astro';
+import ChallengeCard from '../../../../../components/ChallengeCard.astro';
+
+export async function getStaticPaths() {
+  const eventChallengeCollections = await getCollection('eventChallenges');
+  const paths = eventChallengeCollections.map((event) => {
+    const slugs = event.id.split('/');
+    return {
+      params: {
+        year: slugs[0],
+        event: slugs[1],
+        category: slugs[2],
+      },
+      props: {},
+    };
+  });
+
+  return paths;
+}
+
+interface Params {
+  year: string;
+  event: string;
+  category: string;
+}
+
+const params = Astro.params as Params;
+
+const eventChallengeCollections = await getCollection(
+  'eventChallenges',
+  ({ id }) =>
+    id.split('/')[0] === params.year && id.split('/')[1] === params.event && id.split('/')[2] === params.category
+);
+---
+
+<MainLayout
+  title={`Challenge for ${params.category}`}
+>
+  <div class="flex flex-col gap-4">
+    <h1 class="text-4xl font-bold">{params.category}</h1>
+    <div class="flex flex-col gap-4">
+      <div class="grid md:grid-cols-2 gap-2">
+        {
+          eventChallengeCollections.length === 0 ? (
+            <p>No challenges found :(</p>
+          ) : (
+            eventChallengeCollections.map((eventChallenge) => (
+              <a
+                href={`/writeups/${eventChallenge.id.split('/').slice(0, -1).join('/')}`}
+              >
+                <ChallengeCard event={eventChallenge} />
+              </a>
+            ))
+          )
+        }
+      </div>
+    </div>
+  </div>
+</MainLayout>
