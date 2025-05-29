@@ -305,26 +305,75 @@ body ::-webkit-scrollbar-thumb {
     @apply rounded border border-flexoki-light-ui dark:border-flexoki-dark-ui py-4;
 
     code {
+      @apply px-4;
       min-width: 100%;
+      width: fit-content;
       line-height: 1.5rem;
-      display: grid;
+      display: block;
       counter-reset: step;
-	    counter-increment: step 0;
-
-      .line {
-        @apply block px-4 min-h-6;
-      }
+      counter-increment: step 0;
 
       .line:before {
-        content: counter(step);
-        counter-increment: step;
-        width: 1rem;
-        margin-right: 1.5rem;
         display: inline-block;
+        content: counter(step);
+        width: 1rem;
         text-align: right;
+        counter-increment: step;
+        margin-right: 1.5rem;
         color: var(--color-flexoki-dark-tx-2);
       }
     }
+  }
+
+  .button-container {
+    @apply top-3 right-3 cursor-pointer;
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+  }
+
+  &:hover .copy-button:not(.keep-svg) {
+    @apply opacity-100;
+  }
+
+  .copy-button:not(.keep-svg) {
+    @apply opacity-0;
+  }
+
+  .copy-button {
+    @apply p-2 rounded bg-flexoki-light-ui dark:bg-flexoki-dark-ui border border-flexoki-light-ui-2 dark:border-flexoki-dark-ui-2 transition duration-100 ease-in-out;
+
+    &:hover:not(.copied) {
+      @apply bg-flexoki-light-ui-2 dark:bg-flexoki-dark-ui-2 border border-flexoki-light-ui-3 dark:border-flexoki-dark-ui-3;
+    }
+
+    .lucide-copy {
+      display: block;
+    }
+
+    .lucide-check {
+      display: none;
+    }
+
+    .keep-svg {
+      opacity: 1 !important;
+    }
+
+    &.copied {
+      .lucide-copy {
+        display: none;
+      }
+
+      .lucide-check {
+        display: block;
+      }
+    }
+  }
+
+  .button-container svg {
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
   }
 }
 
