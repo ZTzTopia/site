@@ -9,6 +9,11 @@ interface Props {
   title: string;
   description?: string;
   headings: MarkdownHeading[];
+  keywords?: string[];
+  image?: string;
+  author?: string;
+  type?: 'website' | 'article';
+  publishDate?: Date;
 }
 
 const { headings, ...rest } = Astro.props as Props;

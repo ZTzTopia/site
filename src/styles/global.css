@@ -393,3 +393,11 @@ h5:hover .autolink {
   content: "#";
   @apply px-1;
 }
+
+.selected-filter {
+  @apply bg-flexoki-cyan-400 dark:bg-flexoki-cyan-600;
+}
+
+[id] {
+  @apply scroll-mt-32 xl:scroll-mt-20;
+}

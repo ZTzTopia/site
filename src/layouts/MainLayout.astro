@@ -4,6 +4,11 @@ import Layout from './Layout.astro';
 interface Props {
   title: string;
   description?: string;
+  keywords?: string[];
+  image?: string;
+  author?: string;
+  type?: 'website' | 'article';
+  publishDate?: Date;
 }
 
 const { ...rest } = Astro.props as Props;

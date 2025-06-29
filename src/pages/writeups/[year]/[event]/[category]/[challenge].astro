@@ -29,13 +29,64 @@ interface Props {
   eventChallenge: CollectionEntry<'eventChallenges'>;
 }
 
+interface Params {
+  year: string;
+  event: string;
+  category: string;
+  challenge: string;
+}
+
 const props: Props = Astro.props;
+const params = Astro.params as Params;
 
 const renderedEventChallenge = await render(props.eventChallenge);
 const headings: MarkdownHeading[] = renderedEventChallenge.headings;
+
+const events = await getCollection(
+  'events',
+  ({ id }) =>
+    id.split('/')[0] === params.year && id.split('/')[1] === params.event
+);
+
+const eventName = events[0]?.data?.title ?? '';
+const challengeTitle = props.eventChallenge.data.title;
+const challengeCategory = params.category;
+const year = params.year;
+const points = props.eventChallenge.data.points;
+const difficulty = points < 200 ? 'easy' : (points < 400 ? 'medium' : 'hard');
+
+const pageTitle = `${challengeTitle} - ${eventName} Writeup`;
+const pageDescription = `Detailed solution for the ${challengeTitle} challenge (${challengeCategory}) from ${eventName} CTF ${year}. ${points} points, ${difficulty} difficulty.`;
+
+const keywords = [
+  `${eventName}`,
+  `${eventName} writeup`,
+  `${eventName} solutions`,
+
+  `${eventName} ${challengeCategory}`,
+  `${eventName} ${challengeCategory} writeup`,
+  `${eventName} ${challengeCategory} solution`,
+
+  `${challengeTitle}`,
+  `${challengeTitle} writeup`,
+  `${challengeTitle} solution`,
+
+  `${eventName} ${challengeTitle}`,
+  `${eventName} ${challengeTitle} writeup`,
+  `${eventName} ${challengeTitle} solution`,
+].filter(Boolean);
+
+const publishDate = new Date(parseInt(year), 0, 1);
 ---
 
-<WriteupLayout title=`Writeup for ${props.eventChallenge.data.title}` {headings}>
+<WriteupLayout 
+  title={pageTitle}
+  description={pageDescription}
+  keywords={keywords}
+  type="article"
+  publishDate={publishDate}
+  {headings}
+>
   <h1 class="text-4xl font-bold" id="_halll">{props.eventChallenge.data.title}</h1>
   <ChallengeMeta event={props.eventChallenge} />
   <renderedEventChallenge.Content />

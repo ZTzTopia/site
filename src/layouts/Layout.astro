@@ -9,11 +9,21 @@ import ScrollToTop from '../components/ScrollToTop.astro';
 interface Props {
   title: string;
   description?: string;
+  keywords?: string[];
+  image?: string;
+  author?: string;
+  type?: 'website' | 'article';
+  publishDate?: Date;
 }
 
 const {
   title,
   description = 'Software Engineer and CTF Player from Tangerang, Indonesia',
+  keywords,
+  image,
+  author,
+  type,
+  publishDate
 } = Astro.props as Props;
 
 const navItems = [
@@ -81,15 +91,15 @@ paths = paths.filter((path) => path.label !== '');
 <!doctype html>
 <html lang="en">
   <head>
-    <Head title={title} description={description} />
-
-    <style is:global>
-      @reference 'tailwindcss';
-
-      [id] {
-        @apply scroll-mt-32 xl:scroll-mt-20;
-      }
-    </style>
+    <Head
+      title={title}
+      description={description}
+      keywords={keywords || []}
+      image={image || ''}
+      author={author || 'ztz0'}
+      type={type || 'website'}
+      publishDate={publishDate || new Date('2023-01-01')}
+    />
   </head>
   <body
     class="bg-flexoki-light-bg dark:bg-flexoki-dark-bg text-flexoki-light-tx dark:text-flexoki-dark-tx antialiased"

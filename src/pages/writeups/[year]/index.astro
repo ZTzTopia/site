@@ -44,9 +44,39 @@ const sortedEventCollections = eventCollections.sort((a, b) => {
     new Date(a.data.start as Date).getTime()
   );
 });
+
+const eventNames = sortedEventCollections.map((event) => event.data.title);
+const totalEvents = sortedEventCollections.length;
+
+const pageTitle = `${year} CTF Writeups`;
+const pageDescription = `Collection of ${totalEvents} CTF event writeups from ${year}. Includes detailed solutions for ${eventNames.slice(0, 5).join(', ')} and more.`;
+
+// Generate keywords
+const keywords = [
+  `${year} ctf`,
+  `${year} ctf writeups`,
+  `${year} ctf solutions`,
+
+  `${year} capture the flag`,
+  `${year} capture the flag writeups`,
+  `${year} capture the flag solutions`,
+
+  ...eventNames,
+  ...eventNames.map((name) => `${name} writeup`),
+  ...eventNames.map((name) => `${name} solution`),
+].filter(Boolean);
+
+// Publication date
+const publishDate = new Date(parseInt(year), 0, 1);
 ---
 
-<MainLayout title={`${year} Writeups`}>
+<MainLayout
+  title={pageTitle}
+  description={pageDescription}
+  keywords={keywords}
+  type="article"
+  publishDate={publishDate}
+>
   <div class="grid md:grid-cols-2 gap-2">
     {
       sortedEventCollections.length === 0 ? (
