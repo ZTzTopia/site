@@ -47,7 +47,8 @@ const eventChallenges = defineCollection({
     submitted: z.boolean().optional(),
     points: z.number().default(-1),
     solves: z.number().default(-1),
-    flag: z.string().optional()
+    flag: z.string().optional(),
+    flags: z.array(z.string()).optional(),
   })
 });
 
