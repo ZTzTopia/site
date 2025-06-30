@@ -333,11 +333,11 @@ body ::-webkit-scrollbar-thumb {
   }
 
   &:hover .copy-button:not(.keep-svg) {
-    @apply opacity-100;
+    @apply md:opacity-100;
   }
 
   .copy-button:not(.keep-svg) {
-    @apply opacity-0;
+    @apply md:opacity-0;
   }
 
   .copy-button {
