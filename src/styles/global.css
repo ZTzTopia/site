@@ -250,10 +250,8 @@ body ::-webkit-scrollbar-thumb {
   --tw-prose-code: var(--color-flexoki-light-cy);
   --tw-prose-th-borders: var(--color-flexoki-light-ui);
   --tw-prose-td-borders: var(--color-flexoki-light-ui-2);
-}
 
-@variant dark {
-  .prose-z {
+  @variant dark {
     --tw-prose-body: var(--color-flexoki-dark-tx);
     --tw-prose-headings: var(--color-flexoki-dark-tx);
     --tw-prose-bold: var(--color-flexoki-dark-tx);
@@ -280,10 +278,8 @@ body ::-webkit-scrollbar-thumb {
   --astro-code-token-string-expression: var(--color-flexoki-light-cy);
   --astro-code-token-punctuation: var(--color-flexoki-light-tx-2);
   --astro-code-token-link: var(--color-flexoki-light-cy);
-}
 
-@variant dark {
-  .astro-code {
+  @variant dark {
     --astro-code-background: var(--color-flexoki-dark-bg-2);
     --astro-code-foreground: var(--color-flexoki-dark-tx);
     --astro-code-token-constant: var(--color-flexoki-dark-ye);
@@ -300,6 +296,17 @@ body ::-webkit-scrollbar-thumb {
 
 .code-wrapper {
   @apply text-xs overflow-y-hidden my-4;
+
+  .header-container {
+    @apply text-xs rounded-t text-flexoki-light-tx dark:text-flexoki-dark-tx bg-flexoki-light-ui dark:bg-flexoki-dark-ui pl-4 pr-2 py-2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-container+ pre {
+    @apply rounded-t-none;
+  }
 
   pre {
     @apply rounded border border-flexoki-light-ui dark:border-flexoki-dark-ui py-4;
@@ -326,21 +333,22 @@ body ::-webkit-scrollbar-thumb {
   }
 
   .button-container {
-    @apply top-3 right-3 cursor-pointer;
-    display: flex;
-    justify-content: flex-end;
-    position: absolute;
+    @apply cursor-pointer;
   }
 
-  &:hover .copy-button:not(.keep-svg) {
-    @apply md:opacity-100;
+  pre:has(+ .button-container) + .button-container {
+    @apply absolute flex justify-end top-3 right-3;
   }
 
-  .copy-button:not(.keep-svg) {
+  pre:has(+ .button-container) + .button-container .copy-button:not(.keep-svg) {
     @apply md:opacity-0;
   }
 
-  .copy-button {
+  pre:has(+ .button-container):hover + .button-container .copy-button:not(.keep-svg) {
+    @apply md:opacity-100;
+  }
+
+  .button-container .copy-button {
     @apply p-2 rounded bg-flexoki-light-ui dark:bg-flexoki-dark-ui border border-flexoki-light-ui-2 dark:border-flexoki-dark-ui-2 transition duration-100 ease-in-out;
 
     &:hover:not(.copied) {
@@ -375,27 +383,34 @@ body ::-webkit-scrollbar-thumb {
     height: 16px;
     pointer-events: none;
   }
+
+  .language {
+    @apply top-3 right-3;
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+  }
 }
 
 h2:hover .autolink,
 h3:hover .autolink,
 h4:hover .autolink,
 h5:hover .autolink {
-  @apply opacity-100
+  @apply opacity-100;
 }
 
 .autolink {
-  text-decoration: none;
-  @apply opacity-0 transition duration-100 ease-in-out ml-1;
+  @apply no-underline opacity-0 transition-opacity duration-100 ease-in-out ml-1;
 }
 
 .autolink::after {
   content: "#";
-  @apply px-1;
+  @apply pl-1;
 }
 
 .selected-filter {
-  @apply bg-flexoki-cyan-400 dark:bg-flexoki-cyan-600;
+  @apply bg-flexoki-cyan-400;
+  @apply dark:bg-flexoki-cyan-600;
 }
 
 [id] {

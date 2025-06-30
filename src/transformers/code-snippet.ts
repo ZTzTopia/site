@@ -5,6 +5,8 @@ export const codeSnippetTransformer = (): ShikiTransformer => {
   return {
     name: "shiki-transformer-code-snippet",
     pre(node) {
+      const { meta } = this.options;
+  
       const wrapper = h(
         "div",
         {
@@ -13,7 +15,28 @@ export const codeSnippetTransformer = (): ShikiTransformer => {
         node,
       );
 
-      // TODO: Implement filename from meta, maybe language too?
+      /* if (this.options.lang) {
+        const languageSpan = h(
+          "span",
+          {
+            class: "language",
+          },
+          this.options.lang
+        );
+        wrapper.children.push(languageSpan);
+      } */
+
+      const headerContainer = h("div", { class: "header-container" }, []);
+
+      const matchFilename = meta?.__raw?.match(/filename=['"]([^'"]+)['"]/);
+      if (matchFilename) {
+        const fileName = matchFilename[0]
+          .replace('filename="', "")
+          .replace("filename='", "")
+          .replace('"', "")
+          .replace("'", "");
+        headerContainer.children.push(h("span", { class: "title" }, fileName));
+      }
 
       const copyButton = h(
         "div",
@@ -26,7 +49,13 @@ export const codeSnippetTransformer = (): ShikiTransformer => {
 
       const buttonContainer = h("div", { class: "button-container" }, []);
       buttonContainer.children.push(copyButton);
-      wrapper.children.push(buttonContainer);
+
+      if (matchFilename) {
+        headerContainer.children.push(buttonContainer);
+        wrapper.children.unshift(headerContainer);
+      } else {
+        wrapper.children.push(buttonContainer);
+      }
 
       return wrapper;
     }
