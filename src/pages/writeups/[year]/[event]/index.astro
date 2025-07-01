@@ -4,6 +4,7 @@ import ChallengeCard from '../../../../components/ChallengeCard.astro';
 import MainLayout from '../../../../layouts/MainLayout.astro';
 import Prose from '../../../../components/Prose.astro';
 import Chip from '../../../../components/Chip.astro';
+import Card from '../../../../components/Card.astro';
 
 export async function getStaticPaths() {
   const eventCollections = await getCollection('events');
@@ -39,15 +40,19 @@ const renderedEvent = await render(props.event);
 
 const eventChallengeCollections = await getCollection(
   'eventChallenges',
-  ({ id }) =>
-    id.split('/')[0] === params.year && id.split('/')[1] === params.event
+  ({ id, data }) =>
+    id.split('/')[0] === params.year &&
+    id.split('/')[1] === params.event &&
+    data.draft !== true
 );
 
-const allCategories = eventChallengeCollections.flatMap(challenge =>
-  Array.isArray(challenge.data.category)
-    ? challenge.data.category
-    : [challenge.data.category]
-).filter(Boolean);
+const allCategories = eventChallengeCollections
+  .flatMap((challenge) =>
+    Array.isArray(challenge.data.category)
+      ? challenge.data.category
+      : [challenge.data.category]
+  )
+  .filter(Boolean);
 
 const uniqueCategories = [...new Set(allCategories)];
 const categoryList = uniqueCategories.join(', ');
@@ -62,9 +67,9 @@ const keywords = [
   `${props.event.data.title} writeups`,
   `${props.event.data.title} solutions`,
 
-  ...eventChallengeCollections.map(c => c.data.title),
-  ...eventChallengeCollections.map(c => `${c.data.title} writeup`),
-  ...eventChallengeCollections.map(c => `${c.data.title} solution`),
+  ...eventChallengeCollections.map((c) => c.data.title),
+  ...eventChallengeCollections.map((c) => `${c.data.title} writeup`),
+  ...eventChallengeCollections.map((c) => `${c.data.title} solution`),
 ].filter(Boolean);
 
 const publishDate = new Date(parseInt(eventYear), 0, 1);
@@ -84,13 +89,25 @@ const publishDate = new Date(parseInt(eventYear), 0, 1);
         <renderedEvent.Content />
       </Prose>
 
+      <Card href={props.event.data.url} target="_blank">
+        <div slot="content">
+          <p class="font-medium">{props.event.data.title}</p>
+        </div>
+      </Card>
+
       <div>
         <div class="flex flex-wrap gap-2 items-center">
           <span class="font-medium">Filter by category:</span>
-          <Chip id="filter-all" data-category="all" class="selected-filter">All</Chip>
-          {uniqueCategories.map(category => (
-            <Chip id={`filter-${category}`} data-category={category}>{category}</Chip>
-          ))}
+          <Chip id="filter-all" data-category="all" class="selected-filter"
+            >All</Chip
+          >
+          {
+            uniqueCategories.map((category) => (
+              <Chip id={`filter-${category}`} data-category={category}>
+                {category}
+              </Chip>
+            ))
+          }
         </div>
       </div>
 
@@ -100,7 +117,9 @@ const publishDate = new Date(parseInt(eventYear), 0, 1);
             <p>No challenges found :(</p>
           ) : (
             eventChallengeCollections.map((eventChallenge) => {
-              const challengeCategories = Array.isArray(eventChallenge.data.category)
+              const challengeCategories = Array.isArray(
+                eventChallenge.data.category
+              )
                 ? eventChallenge.data.category
                 : [eventChallenge.data.category];
 
@@ -133,9 +152,9 @@ const publishDate = new Date(parseInt(eventYear), 0, 1);
 
     document.getElementById('filter-all')?.classList.add('selected-filter');
 
-    filterButtons.forEach(button => {
+    filterButtons.forEach((button) => {
       button.addEventListener('click', () => {
-        filterButtons.forEach(btn => btn.classList.remove('selected-filter'));
+        filterButtons.forEach((btn) => btn.classList.remove('selected-filter'));
         button.classList.add('selected-filter');
 
         const selectedCategory = button.getAttribute('data-category');
@@ -151,8 +170,11 @@ const publishDate = new Date(parseInt(eventYear), 0, 1);
           if (selectedCategory === 'all') {
             card.style.display = 'block';
           } else if (selectedCategory?.length > 0) {
-            const cardCategories = card.getAttribute('data-categories')?.split(',') || [];
-            card.style.display = cardCategories.includes(selectedCategory) ? 'block' : 'none';
+            const cardCategories =
+              card.getAttribute('data-categories')?.split(',') || [];
+            card.style.display = cardCategories.includes(selectedCategory)
+              ? 'block'
+              : 'none';
           }
         });
       });

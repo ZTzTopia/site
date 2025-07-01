@@ -37,14 +37,17 @@ const props: Props = Astro.props;
 
 const eventChallengeCollections = await getCollection(
   'eventChallenges',
-  ({ id }) =>
-    id.split('/')[0] === params.year && id.split('/')[1] === params.event && id.split('/')[2] === params.category
+  ({ id, data }) =>
+    id.split('/')[0] === params.year &&
+    id.split('/')[1] === params.event &&
+    id.split('/')[2] === params.category &&
+    data.draft !== true
 );
 
 const categoryName = params.category;
 const year = params.year;
 
-const challengeNames = eventChallengeCollections.map(c => c.data.title);
+const challengeNames = eventChallengeCollections.map((c) => c.data.title);
 
 const pageTitle = `${categoryName} Challenges for ${props.event.data.title} CTF`;
 const pageDescription = `Explore ${eventChallengeCollections.length} ${categoryName} challenges from ${props.event.data.title} CTF (${year}). Detailed solutions and writeups for ${challengeNames.slice(0, 5).join(', ')} and more.`;
@@ -59,9 +62,9 @@ const keywords = [
   `${props.event.data.title} ${categoryName} writeups`,
   `${props.event.data.title} ${categoryName} solutions`,
 
-  ...eventChallengeCollections.map(c => c.data.title),
-  ...eventChallengeCollections.map(c => `${c.data.title} writeup`),
-  ...eventChallengeCollections.map(c => `${c.data.title} solution`),
+  ...eventChallengeCollections.map((c) => c.data.title),
+  ...eventChallengeCollections.map((c) => `${c.data.title} writeup`),
+  ...eventChallengeCollections.map((c) => `${c.data.title} solution`),
 ].filter(Boolean);
 
 const publishDate = new Date(parseInt(year), 0, 1);

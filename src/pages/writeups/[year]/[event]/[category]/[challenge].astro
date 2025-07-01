@@ -6,7 +6,7 @@ import WriteupLayout from '../../../../../layouts/WriteupLayout.astro';
 import ChallengeFlag from '../../../../../components/ChallengeFlag.astro';
 
 export async function getStaticPaths() {
-  const eventChallengeCollections = await getCollection('eventChallenges');
+  const eventChallengeCollections = await getCollection('eventChallenges', ({ data }) => data.draft !== true);
   const paths = eventChallengeCollections.map((eventChallenge) => {
     const slugs = eventChallenge.id.split('/');
     return {

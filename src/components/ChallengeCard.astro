@@ -37,11 +37,13 @@ const { ...rest } = Astro.props;
       >
         {event.data.points} points
       </span>
-      <span
-        class="bg-flexoki-light-ui dark:bg-flexoki-dark-ui text-xs font-medium px-2.5 py-0.5 rounded"
-      >
-        {event.data.solves} solves
-      </span>
+      {
+        event.data.solves !== -1 && (
+          <span class="bg-flexoki-light-ui dark:bg-flexoki-dark-ui text-xs font-medium px-2.5 py-0.5 rounded">
+            {event.data.solves} solves
+          </span>
+        )
+      }
       {
         Array.isArray(event.data.category)
           ? event.data.category.map(
