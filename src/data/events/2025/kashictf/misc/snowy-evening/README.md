@@ -2,7 +2,7 @@
 title: "SNOWy Evening"
 category: Miscellaneous
 tags: 
-draft: true
+draft: false
 completedDuringEvent: true
 submitted: true
 flag: KashiCTF{Love_Hurts_5734b5f}
@@ -11,9 +11,11 @@ flag: KashiCTF{Love_Hurts_5734b5f}
 
 ---
 
+The challenge provides a poem in the form of a text file.
+
 ![alt text](image-1.png)
 
-Search with keyword `Whitespace steganography` and found this tool [SNOW](https://github.com/mattkwan-zz/snow). Download the tool and run it on the poem file.
+After analyzing the given poem, a keyword search for Whitespace steganography led to the discovery of the [SNOW](https://github.com/mattkwan-zz/snow) tool, which hides data in text files using whitespace characters.
 
 ```sh
 $ /mnt/c/Users/zenta/Downloads/snwdos32/SNOW.EXE --help
@@ -22,7 +24,7 @@ Usage: SNOW.EXE [-C][-Q][-S][-p passwd][-l line-len] [-f file | -m message]
                                         [infile [outfile]]
 ```
 
-Based on the help message, we can use `-p` to specify the password.
+Based on the help message, we can use `-p` to specify the password. From the description, we know that the password is `Aakash`. The `-C` option is used to uncompress the output. The input file is `poemm.txt`.
 
 ```sh
 $ /mnt/c/Users/zenta/Downloads/snwdos32/SNOW.EXE -p Aakash -C poemm.txt
@@ -86,6 +88,8 @@ mOoMMMmoOmoOmoOMMMMOOMOomoOMoOmOomoomoOMoOMoOMoOMoOMoOMoOMoOMoOMoO
 MoOMoOMoOMoOMoomOo
 ```
 
-The text is a Cow language.
+The text contained patterns resembling **Cow Programming Language**, an esoteric language that uses `O`, `M`, and `o` characters.
+
+To decode this, an online Cow Language Interpreter was used: https://frank-buss.de/cow.html
 
 ![alt text](image.png)

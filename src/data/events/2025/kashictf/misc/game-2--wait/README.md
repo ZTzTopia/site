@@ -13,9 +13,9 @@ flag: KashiCTF{Ch4kr4_Vyuh}
 
 ---
 
-So we have a game that we can play. We can play the game and see that we have to wait for `17800` seconds to get the flag.
+So we have a game that we can play. We can play the game and see that we have to wait for `172800` seconds to get the flag.
 
-We can use `Cheat Engine` to change the value of the timer to `0` and get the flag. Search for the value like `3600` or `86400` and change it to `0`.
+We can use **Cheat Engine** to change the value of the timer to `0` and get the flag. Search for the value like `3600` or `86400` and change it to `0`.
 
 ![alt text](image.png)
 

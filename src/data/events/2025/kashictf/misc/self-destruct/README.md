@@ -8,23 +8,27 @@ submitted: true
 flag: KashiCTF{Love_Hurts_5734b5f}
 ---
 > Explore the virtual machine and you might just find the flag. Or a surprise. Maybe....
+>
+> **NOTE**: The attachment is a VirtualBox image. Do not run it outside VirtualBox. It is recommended to backup the .vdi file before launching the VM.
+>
+> VM Parameters: (VirtualBox)
+> Type: Linux
+> Version: Debian (32 bits)
+> RAM: 1024MB
+> Storage: attached .vdi file
+>
+> Username: kashictf
+> Password: kashictf
+>
+> Attachments: [Self Destruct Debian.vdi](https://drive.google.com/file/d/1DFJn8cXhMBxq_NIixJo_J73Dkz9H2iSc/view?usp=drive_link)
 
-NOTE: The attachment is a VirtualBox image. Do not run it outside VirtualBox. It is recommended to backup the .vdi file before launching the VM.
-
-VM Parameters: (VirtualBox)
-Type: Linux
-Version: Debian (32 bits)
-RAM: 1024MB
-Storage: attached .vdi file
-
-Username: kashictf
-Password: kashictf
-
-Attachments: [Self Destruct Debian.vdi](https://drive.google.com/file/d/1DFJn8cXhMBxq_NIixJo_J73Dkz9H2iSc/view?usp=drive_link)
-
-by Argus817
+by `Argus817`
 
 ---
+
+## Exploring the User's Home Directory
+
+After booting the VM, I logged in with the provided credentials. I started by checking the user's home directory.
 
 ```sh
 $ ls -la ./home/kashictf/
@@ -38,19 +42,22 @@ drwxrwxrwx 1 ztz ztz 4096 Feb 20 20:29 ..
 -rwxrwxrwx 1 ztz ztz   41 Feb 20 22:56 .sush_history
 ```
 
+We find several hidden files, including `.bash_history` and `.sush_history`. Checking their contents reveals parts of the flag:
+
 ```sh
 $ cat ./home/kashictf/.bash_history
 ls
 echo "fLaG Part 5: 'ht??_No_Er'"
 exit
-```
-
-```sh
 $ cat ./home/kashictf/.sush_history
 ls
 echo "fLaG Part 3: 'eserve_roo'"
 exit
 ```
+
+## Searching for More Flag Parts
+
+Next, I searched for the flag parts in the entire filesystem. We use `grep` to search for the string `"fLaG Part"` in all files.
 
 ```sh
 $ grep -r "fLaG Part" . 2>/dev/null
@@ -61,7 +68,9 @@ $ grep -r "fLaG Part" . 2>/dev/null
 ./home/kashictf/.sush_history:echo "fLaG Part 3: 'eserve_roo'"
 ```
 
-Because i dont find the part with grep instead just check some important files in `/etc/` directory. And also check the `/etc/passwd` file.
+## Interesting /etc/passwd Entry
+
+Because i dont find the part with `grep` instead just check some important files in `/etc/` directory. And also check the `/etc/passwd` file.
 
 ```sh
 $ cat ./etc/passwd
@@ -137,4 +146,14 @@ The interesting part is the `/bin/sush` binary. Let's check it out.
 $ strings ./bin/sush | grep "fLaG Part"              
 fLaG Part 7: 'ed_Th0}'
 fLaG Part 2: 'm_rf_no_pr'
+```
+
+```
+1: 'KashiCTF{r'  
+2: 'm_rf_no_pr'  
+3: 'eserve_roo'  
+4: 't_Am_1_Rig'  
+5: 'ht??_No_Er'  
+6: 'r0rs_4ll0w'  
+7: 'ed_Th0}'  
 ```
