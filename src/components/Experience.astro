@@ -1,6 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
-import Card from './Card.astro';
+import Card from './core/Card.astro';
 
 type Experience = CollectionEntry<'experiences'>;
 const experiences: Experience[] = await getCollection('experiences');

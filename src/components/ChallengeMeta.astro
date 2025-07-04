@@ -68,7 +68,7 @@ const getIcon = (category: string) => {
         }
       </div>
     </div>
-    <div
+    {event.data.points !== -1 && (<div
       class="flex gap-x-2 py-2 first:pt-0 last:pb-0 border-flexoki-base-100 dark:border-flexoki-base-900"
     >
       <div class="flex-1">
@@ -80,8 +80,8 @@ const getIcon = (category: string) => {
       <div class="flex-1">
         <span>{event.data.points}</span>
       </div>
-    </div>
-    <div
+    </div>)}
+    {event.data.solves !== -1 && (<div
       class="flex gap-x-2 py-2 first:pt-0 last:pb-0 border-flexoki-base-100 dark:border-flexoki-base-900"
     >
       <div class="flex-1">
@@ -93,7 +93,7 @@ const getIcon = (category: string) => {
       <div class="flex-1">
         <span>{event.data.solves}</span>
       </div>
-    </div>
+    </div>)}
     <div
       class="flex gap-x-2 py-2 first:pt-0 last:pb-0 border-flexoki-base-100 dark:border-flexoki-base-900"
     >

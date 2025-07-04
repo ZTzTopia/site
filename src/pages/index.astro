@@ -1,11 +1,11 @@
 ---
 import { Image } from 'astro:assets';
 import MainLayout from '../layouts/MainLayout.astro';
-import Prose from '../components/Prose.astro';
+import Prose from '../components/core/Prose.astro';
 import Projects from '../components/Projects.astro';
 // import Experience from "../components/Experience.astro";
 ---
-
+  
 <MainLayout title="Home">
   <Prose>
     <h1 class="font-medium">
@@ -13,12 +13,12 @@ import Projects from '../components/Projects.astro';
         <span
           class="inline-block duration-300 ease-in-out group-hover:-translate-y-full"
         >
-          Muhamad Zibrisky
+          ztz0
         </span>
         <span
           class="inline-block absolute left-0 top-0 duration-300 ease-in-out translate-y-full group-hover:translate-y-0"
         >
-          ztz0
+          Muhamad Zibrisky
         </span>
       </span>
     </h1>
@@ -37,6 +37,32 @@ import Projects from '../components/Projects.astro';
         />CTF</a
       > player. I actively participate in a Capture The Flag (CTF) competitions, where
       I sharpen my skills in cybersecurity, reverse engineering, and creative thinking.
+    </p>
+    <p>
+      Explore my CTF writeups on the <a
+      href="/writeups"
+      class="not-prose bg-flexoki-base-50 dark:bg-flexoki-base-950 text-xs font-medium px-2.5 py-0.5 rounded"
+      >🚩 Writeups page</a>. 
+      Check out my profiles on 
+      <a
+      href="https://tryhackme.com/p/ztz"
+      target="_blank"
+      rel="noopener"
+      class="not-prose bg-flexoki-base-50 dark:bg-flexoki-base-950 text-xs font-medium px-2.5 py-0.5 rounded ml-1"
+      ><Image
+          src="https://tryhackme.com/favicon-96x96.png"
+          alt="TryHackMe"
+          width={8}
+          height={8}
+          loading="eager"
+          class="inline-block mr-1"
+        />TryHackMe</a><!--  and 
+      <a
+      href="https://app.hackthebox.com/profile/<id>"
+      target="_blank"
+      rel="noopener"
+      class="not-prose bg-flexoki-base-50 dark:bg-flexoki-base-950 text-xs font-medium px-2.5 py-0.5 rounded ml-1"
+      >HackTheBox</a> -->.
     </p>
     <h2 class="font-medium">Projects</h2>
     <div class="not-prose">

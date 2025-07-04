@@ -3,10 +3,8 @@ import ProjectsComponent from "../components/Projects.astro"; // error ts(2440):
 import MainLayout from "../layouts/MainLayout.astro";
 import { getCollection } from 'astro:content';
 
-// Fetch projects to generate SEO content
 const projects = await getCollection('projects');
 
-// Extract project tags and names for keywords
 const projectTags = projects
   .flatMap(project => 
     Array.isArray(project.data.tags) 

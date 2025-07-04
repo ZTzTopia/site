@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import Card from './Card.astro';
+import Card from './core/Card.astro';
 import { Icon } from 'astro-icon/components';
 import { getBackgroundColorByCategory } from '../utils/color';
 
@@ -32,11 +32,15 @@ const { ...rest } = Astro.props;
   <div slot="content" class="flex flex-col gap-2">
     <p class="font-medium">{event.data.title}</p>
     <div class="flex flex-wrap items-center gap-2">
-      <span
-        class="bg-flexoki-light-ui dark:bg-flexoki-dark-ui text-xs font-medium px-2.5 py-0.5 rounded"
-      >
-        {event.data.points} points
-      </span>
+      {
+        event.data.points !== -1 && (
+          <span
+            class="bg-flexoki-light-ui dark:bg-flexoki-dark-ui text-xs font-medium px-2.5 py-0.5 rounded"
+          >
+            {event.data.points} points
+          </span>
+        )
+      }
       {
         event.data.solves !== -1 && (
           <span class="bg-flexoki-light-ui dark:bg-flexoki-dark-ui text-xs font-medium px-2.5 py-0.5 rounded">

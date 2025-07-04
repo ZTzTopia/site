@@ -2,9 +2,9 @@
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import ChallengeCard from '../../../../components/ChallengeCard.astro';
 import MainLayout from '../../../../layouts/MainLayout.astro';
-import Prose from '../../../../components/Prose.astro';
-import Chip from '../../../../components/Chip.astro';
-import Card from '../../../../components/Card.astro';
+import Prose from '../../../../components/core/Prose.astro';
+import Chip from '../../../../components/core/Chip.astro';
+import Card from '../../../../components/core/Card.astro';
 
 export async function getStaticPaths() {
   const eventCollections = await getCollection('events');
@@ -124,15 +124,12 @@ const publishDate = new Date(parseInt(eventYear), 0, 1);
                 : [eventChallenge.data.category];
 
               return (
-                <div
+                <ChallengeCard
+                  event={eventChallenge}
+                  href={`/writeups/${eventChallenge.id.split('/').slice(0, -1).join('/')}`}
                   class="challenge-card"
                   data-categories={challengeCategories.join(',')}
-                >
-                  <ChallengeCard
-                    event={eventChallenge}
-                    href={`/writeups/${eventChallenge.id.split('/').slice(0, -1).join('/')}`}
-                  />
-                </div>
+                />
               );
             })
           )

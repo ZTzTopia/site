@@ -312,7 +312,7 @@ body ::-webkit-scrollbar-thumb {
     @apply rounded border border-flexoki-light-ui dark:border-flexoki-dark-ui py-4;
 
     code {
-      @apply px-4;
+      @apply pr-12 md:pr-4 px-4;
       min-width: 100%;
       width: fit-content;
       line-height: 1.5rem;
