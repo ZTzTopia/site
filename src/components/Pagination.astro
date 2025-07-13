@@ -9,7 +9,7 @@ interface Props {
 
 const { page } = Astro.props as Props;
 
-const pageNumbers: number[] = [];
+let pageNumbers: number[] = [];
 const currentPage = page.currentPage;
 const lastPage = page.lastPage;
 const delta = 1;
@@ -18,21 +18,19 @@ for (let i = Math.max(1, currentPage - delta); i <= Math.min(lastPage, currentPa
   pageNumbers.push(i);
 }
 
-if (pageNumbers) {
-  if (pageNumbers[0] > 1) {
-    pageNumbers.unshift(1);
-    if (pageNumbers.length > 1 && pageNumbers[1] > 2) {
-      pageNumbers.splice(1, 0, -1);
-    }
+if (pageNumbers.length > 0 && (pageNumbers[0] ?? 0) > 1) {
+  pageNumbers.unshift(1);
+  if (pageNumbers.length > 1 && (pageNumbers[1] ?? 0) > 2) {
+    pageNumbers.splice(1, 0, -1);
+  }
+}
+
+if (pageNumbers.length > 0 && (pageNumbers[pageNumbers.length - 1] ?? 0) < lastPage) {
+  if ((pageNumbers[pageNumbers.length - 1] ?? 0) < lastPage - 1) {
+    pageNumbers.push(-1);
   }
 
-  if (pageNumbers[pageNumbers.length - 1] < lastPage) {
-    if (pageNumbers[pageNumbers.length - 1] < lastPage - 1) {
-      pageNumbers.push(-1);
-    }
-
-    pageNumbers.push(lastPage);
-  }
+  pageNumbers.push(lastPage);
 }
 ---
 
