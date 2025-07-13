@@ -1,7 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 import TableOfContentList from './TableOfContentList.astro';
-import { buildHierarchy } from '../utils/markdown';
+import { buildHierarchy } from '../../utils/markdown';
 import type { MarkdownHeading } from 'astro';
 
 const { headings } = Astro.props as { headings: MarkdownHeading[] };
@@ -11,22 +11,24 @@ const { headings } = Astro.props as { headings: MarkdownHeading[] };
   class="block xl:hidden sticky z-10 w-full bg-flexoki-light-bg/[0.75] dark:bg-flexoki-dark-bg/[0.75] backdrop-blur-sm border-dashed border-b-1 border-flexoki-base-100 dark:border-flexoki-base-900"
   id="nav"
 >
-  <div class="mx-auto px-4 max-w-screen-md text-sm items-center min-h-[3.5rem]">
-    <details class="group items-center min-h-[3.5rem]">
-      <summary class="items-center min-h-[3.5rem]">
-        <div class="flex flex-row justify-between items-center min-h-[3.5rem]">
-          On This Page
-          <Icon
-            name="lucide:chevron-down"
-            class="transition group-open:transform group-open:rotate-180"
-          />
+  <z-toc>
+    <div class="mx-auto px-4 max-w-screen-md text-sm items-center min-h-[3.5rem]">
+      <details class="group items-center min-h-[3.5rem]">
+        <summary class="items-center min-h-[3.5rem]">
+          <div class="flex flex-row justify-between items-center min-h-[3.5rem]">
+            On This Page
+            <Icon
+              name="lucide:chevron-down"
+              class="transition group-open:transform group-open:rotate-180"
+            />
+          </div>
+        </summary>
+        <div class="max-h-48 overflow-hidden overflow-y-auto group-open:pb-4">
+          <TableOfContentList headings={buildHierarchy(headings)} depth={0} />
         </div>
-      </summary>
-      <div class="max-h-48 overflow-hidden overflow-y-auto group-open:pb-4">
-        <TableOfContentList headings={buildHierarchy(headings)} depth={0} />
-      </div>
-    </details>
-  </div>
+      </details>
+    </div>
+  </z-toc>
 </nav>
 
 <style>
