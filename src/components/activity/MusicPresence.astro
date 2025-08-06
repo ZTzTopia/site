@@ -78,7 +78,10 @@ import Skeleton from '../core/Skeleton.astro';
 <script>
   import { initMusicPresence } from './MusicPresence';
 
-  document.addEventListener('DOMContentLoaded', () => {
+  const onIdle = (cb: IdleRequestCallback) =>
+    (window.requestIdleCallback || ((cb) => setTimeout(cb, 1)))(cb);
+
+  onIdle(() => {
     const container = document.getElementById(
       'music-presence'
     ) as HTMLDivElement | null;
