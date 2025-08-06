@@ -3,6 +3,8 @@ import { Image } from 'astro:assets';
 import MainLayout from '../layouts/MainLayout.astro';
 import Prose from '../components/core/Prose.astro';
 import Projects from '../components/Projects.astro';
+import MusicPresence from '../components/activity/MusicPresence.astro';
+import Card from '../components/core/Card.astro';
 // import Experience from "../components/Experience.astro";
 ---
 
@@ -65,7 +67,7 @@ import Projects from '../components/Projects.astro';
         rel="noopener"
         class="not-prose bg-flexoki-base-50 dark:bg-flexoki-base-950 text-xs font-medium px-2.5 py-0.5 rounded ml-1"
         ><Image
-          src="https://www.hackthebox.com/images/favicon.png"
+          src="https://www.hackthebox.com/images/landingv3/favicon.png"
           alt="HackTheBox"
           width={8}
           height={8}
@@ -74,6 +76,15 @@ import Projects from '../components/Projects.astro';
         />HackTheBox</a
       >.
     </p>
+    <div class="not-prose flex flex-col md:flex-row gap-1 mt-4">
+      <MusicPresence />
+      <Card class="rounded-none rounded-b md:rounded-none md:rounded-r">
+        <div slot="content" class="text-xs md:w-42">
+          TODO: Add Experiences, Awards, Wakatime, Discord, Github, and more
+          here (because someone said my website too simple).
+        </div>
+      </Card>
+    </div>
     <h2 class="font-medium">Projects</h2>
     <div class="not-prose">
       <Projects limit={4} />
