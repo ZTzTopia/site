@@ -52,16 +52,17 @@ const { items }: Props = Astro.props;
           </div>
         </Dropdown>
 
-        <div class="hidden md:flex items-center gap-4">
+        <div class="hidden md:flex items-center gap-2 group">
           {
             items.map((item: Item) => {
               return (
                 <a
                   href={item.url}
                   class:list={[
-                    'hover:text-flexoki-light-cy-2 dark:hover:text-flexoki-dark-cy-2',
+                    'px-3 py-2 rounded',
+                    'text-flexoki-base-800 dark:text-flexoki-base-400 hover:bg-flexoki-light-ui dark:hover:bg-flexoki-dark-ui',
                     {
-                      'text-flexoki-light-cy dark:text-flexoki-dark-cy':
+                      'text-flexoki-light-tx dark:text-flexoki-dark-tx bg-flexoki-light-ui dark:bg-flexoki-dark-ui group-hover:bg-transparent':
                         Astro.url.pathname === '/' && item.url === '/'
                           ? true
                           : item.url !== '/' &&
