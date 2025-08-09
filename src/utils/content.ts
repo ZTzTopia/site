@@ -36,7 +36,9 @@ export async function getEventChallenges(
 
 export async function getEventYears(): Promise<string[]> {
   const events = await getCollection('events');
-  const years = [...new Set(events.map(event => event.id.split('/')[0]))];
+  const years = [
+    ...new Set(events.map((event) => event.id.split('/')[0])),
+  ].filter((year): year is string => typeof year === 'string');
   return years.sort((a, b) => b.localeCompare(a));
 }
 
@@ -44,9 +46,13 @@ export async function getCategories(): Promise<string[]> {
   const challenges = await getCollection('challenges');
   const categories = new Set<string>();
 
-  challenges.forEach(challenge => {
+  challenges.forEach((challenge) => {
     const challengeCategories = challenge.data.categories || [];
-    challengeCategories.forEach(category => categories.add(category));
+    challengeCategories.forEach((category) => {
+      if (typeof category === 'string') {
+        categories.add(category);
+      }
+    });
   });
 
   return [...categories].sort();
