@@ -16,7 +16,7 @@ function createSvgIcon(className: string, path: string) {
       "stroke-linejoin": "round",
       class: `lucide lucide-${className}-icon lucide-${className}`,
     },
-    [h("path", { d: path })]
+    [h("path", { d: path }), h("rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2" })]
   );
 }
 

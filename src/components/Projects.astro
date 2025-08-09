@@ -2,6 +2,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import Card from './core/Card.astro';
 import { getBackgroundColorByKey } from '../utils/color';
+import { determineCardEdgeClasses } from '../utils/helper';
 
 const { limit = 0 } = Astro.props as {
   limit?: number;
@@ -18,26 +19,34 @@ if (limit > 0) {
 
 {
   projects && (
-    <div class="grid md:grid-cols-2 gap-2">
-      {projects.map((project: ProjectCollection) => (
-        <Card href={project.data.url} target="_blank">
+    <div class="grid md:grid-cols-2 gap-1">
+      {projects.map((project: ProjectCollection, index: number) => (
+        <Card
+          href={project.data.url}
+          target="_blank"
+          class:list={[
+            'rounded-none',
+            `${determineCardEdgeClasses(index, projects.length, 1)}`,
+            'md:rounded-none',
+            `${determineCardEdgeClasses(index, projects.length, 2, 'md')}`,
+          ]}
+        >
           <div slot="content" class="flex flex-col gap-2">
             <p class="font-medium">{project.data.title}</p>
             <p class="text-flexoki-light-tx-2 dark:text-flexoki-dark-tx-2">
               {project.data.description}
             </p>
             <div class="flex flex-wrap items-center gap-2">
-              {project.data.tags !== undefined && (Array.isArray(project.data.tags) ? (
-                project.data.tags.map((tag) => tag.trim() !== '' && (
-                  <span class={`text-xs font-medium px-2.5 py-0.5 rounded ${getBackgroundColorByKey(tag)}`}>
-                    {tag}
-                  </span>
-                ))
-              ) : project.data.tags!.trim() !== '' && (
-                <span class={`text-xs font-medium px-2.5 py-0.5 rounded ${getBackgroundColorByKey(project.data.tags!)}`}>
-                  {project.data.tags}
-                </span>
-              ))}
+              {project.data.tags.map(
+                (tag) =>
+                  tag && tag.trim() !== '' && (
+                    <span
+                      class={`text-xs font-medium px-2.5 py-0.5 rounded ${getBackgroundColorByKey(tag)}`}
+                    >
+                      {tag}
+                    </span>
+                  )
+              )}
             </div>
           </div>
         </Card>

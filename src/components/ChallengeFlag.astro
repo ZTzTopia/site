@@ -30,7 +30,7 @@ const { event } = Astro.props as { event: CollectionEntry<'eventChallenges'> };
         <Icon name="lucide:flag" />
         <div class="flex-1">
           <strong>{event.data.title}</strong> Flag:{' '}
-          <strong><code class="break-all">{event.data.flag}</code></strong>
+          <strong><code class="break-all rounded blur-xs hover:blur-none duration-300">{event.data.flag}</code></strong>
         </div>
       </>
         )

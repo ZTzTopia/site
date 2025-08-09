@@ -1,0 +1,38 @@
+---
+import MainLayout from '../../../layouts/MainLayout.astro';
+import { getEvents } from '../../../utils/content';
+
+const events = await getEvents();
+
+const flattenedYears = [
+  ...new Set(
+    events.flatMap((event) => {
+      return event.id.split('/')[0];
+    })
+  ),
+];
+
+const pageTitle = 'All Tags';
+const pageDescription = 'Browse all tags used in events.';
+---
+
+<MainLayout title={pageTitle} description={pageDescription}>
+  <div class="flex flex-col gap-4">
+    <h1 class="text-3xl font-bold">Years</h1>
+    <p class="text-lg">Explore all years used across events.</p>
+    <ul class="flex flex-wrap gap-2">
+      {
+        flattenedYears.map((year) => (
+          <li>
+            <a
+              href={`/writeups/${year}`}
+              class="flex flex-row items-center gap-x-2 text-xs font-medium px-2.5 py-0.5 rounded bg-flexoki-light-ui dark:bg-flexoki-dark-ui"
+            >
+              {year}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</MainLayout>

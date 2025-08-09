@@ -1,21 +1,19 @@
 ---
-import Layout from './Layout.astro';
+import BaseLayout from './BaseLayout.astro';
 
 interface Props {
   title: string;
   description?: string;
-  keywords?: string[];
   image?: string;
   author?: string;
   type?: 'website' | 'article';
-  publishDate?: Date;
 }
 
 const { ...rest } = Astro.props as Props;
 ---
 
-<Layout {...rest}>
+<BaseLayout {...rest}>
   <div class="pt-4 px-4 mx-auto max-w-screen-md text-sm">
     <slot />
   </div>
-</Layout>
+</BaseLayout>

@@ -1,10 +1,11 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import ChallengeCard from '../../../../components/ChallengeCard.astro';
-import MainLayout from '../../../../layouts/MainLayout.astro';
-import Prose from '../../../../components/core/Prose.astro';
-import Chip from '../../../../components/core/Chip.astro';
-import Card from '../../../../components/core/Card.astro';
+import PageLayout from '../../../../layouts/PageLayout.astro';
+import Prose from '../../../../components/Core/Prose.astro';
+import Chip from '../../../../components/Core/Chip.astro';
+import Card from '../../../../components/Core/Card.astro';
+import { determineCardEdgeClasses } from '../../../../utils/helper';
 
 export async function getStaticPaths() {
   const eventCollections = await getCollection('events');
@@ -36,64 +37,78 @@ interface Props {
 const params = Astro.params as Params;
 const props: Props = Astro.props;
 
-const renderedEvent = await render(props.event);
-
-const eventChallengeCollections = await getCollection(
-  'eventChallenges',
+const challenges = await getCollection(
+  'challenges',
   ({ id, data }) =>
     id.split('/')[0] === params.year &&
     id.split('/')[1] === params.event &&
     data.draft !== true
 );
 
-const allCategories = eventChallengeCollections
-  .flatMap((challenge) =>
-    Array.isArray(challenge.data.category)
-      ? challenge.data.category
-      : [challenge.data.category]
-  )
-  .filter(Boolean);
+const eventMeta = {
+  // 'Date': props.event.data.start,
+  Location: props.event.data.location,
+  Format: props.event.data.format,
+  URL: props.event.data.url || 'N/A',
+};
 
-const uniqueCategories = [...new Set(allCategories)];
-const categoryList = uniqueCategories.join(', ');
-const totalChallenges = eventChallengeCollections.length;
-const eventYear = params.year;
-
-const pageTitle = `${props.event.data.title} CTF Writeups`;
-const pageDescription = `Detailed writeups for ${totalChallenges} challenges from ${props.event.data.title} (${eventYear}). Categories include: ${categoryList}.`;
-
-const keywords = [
-  `${props.event.data.title}`,
-  `${props.event.data.title} writeups`,
-  `${props.event.data.title} solutions`,
-
-  ...eventChallengeCollections.map((c) => c.data.title),
-  ...eventChallengeCollections.map((c) => `${c.data.title} writeup`),
-  ...eventChallengeCollections.map((c) => `${c.data.title} solution`),
-].filter(Boolean);
-
-const publishDate = new Date(parseInt(eventYear), 0, 1);
+const uniqueCategories = [
+  ...new Set(
+    challenges
+      .map((challenge) => challenge.data.categories)
+      .flat()
+      .filter(Boolean)
+  ),
+];
+const renderedEvent = await render(props.event);
 ---
 
-<MainLayout
-  title={pageTitle}
-  description={pageDescription}
-  keywords={keywords}
-  type="article"
-  publishDate={publishDate}
->
+<PageLayout title="Competition" type="article">
   <div class="flex flex-col gap-4">
     <h1 class="text-4xl font-bold">{props.event.data.title}</h1>
     <div class="flex flex-col gap-4">
-      <Prose>
-        <renderedEvent.Content />
-      </Prose>
+      <span>{props.event.data.description}</span>
 
-      <Card href={props.event.data.url} target="_blank">
+      <!-- <Prose>
+        <renderedEvent.Content />
+      </Prose> -->
+
+      <!-- <Card href={props.event.data.url} target="_blank">
         <div slot="content">
           <p class="font-medium">{props.event.data.title}</p>
         </div>
-      </Card>
+      </Card> -->
+
+      <div class="grid md:grid-cols-3 gap-1">
+        {
+          Object.entries(eventMeta).map(([key, value], index) => (
+            <Card
+              class:list={[
+                'rounded-none',
+                determineCardEdgeClasses(
+                  index,
+                  Object.entries(eventMeta).length,
+                  1
+                ),
+                'md:rounded-none',
+                determineCardEdgeClasses(
+                  index,
+                  Object.entries(eventMeta).length,
+                  3,
+                  'md'
+                ),
+              ]}
+            >
+              <div slot="content">
+                <p class="flex flex-col text-sm">
+                  <span class="font-medium">{key}</span>
+                  <span class="font-normal text-flexoki-base-600 dark:text-flexoki-base-500">{value}</span>
+                </p>
+              </div>
+            </Card>
+          ))
+        }
+      </div>
 
       <div>
         <div class="flex flex-wrap gap-2 items-center">
@@ -111,24 +126,24 @@ const publishDate = new Date(parseInt(eventYear), 0, 1);
         </div>
       </div>
 
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-1">
         {
-          eventChallengeCollections.length === 0 ? (
+          challenges.length === 0 ? (
             <p>No challenges found :(</p>
           ) : (
-            eventChallengeCollections.map((eventChallenge) => {
-              const challengeCategories = Array.isArray(
-                eventChallenge.data.category
-              )
-                ? eventChallenge.data.category
-                : [eventChallenge.data.category];
-
+            challenges.map((eventChallenge, index) => {
               return (
                 <ChallengeCard
                   event={eventChallenge}
                   href={`/writeups/${eventChallenge.id.split('/').slice(0, -1).join('/')}`}
-                  class="challenge-card"
-                  data-categories={challengeCategories.join(',')}
+                  class:list={[
+                    'challenge-card',
+                    'rounded-none',
+                    determineCardEdgeClasses(index, challenges.length, 1),
+                    'md:rounded-none',
+                    determineCardEdgeClasses(index, challenges.length, 3, 'md'),
+                  ]}
+                  data-categories={uniqueCategories.join(',')}
                 />
               );
             })
@@ -137,7 +152,7 @@ const publishDate = new Date(parseInt(eventYear), 0, 1);
       </div>
     </div>
   </div>
-</MainLayout>
+</PageLayout>
 
 <script>
   const onIdle = (cb: IdleRequestCallback) =>

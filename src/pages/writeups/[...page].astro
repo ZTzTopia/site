@@ -1,23 +1,22 @@
 ---
-import { getCollection } from 'astro:content';
-import MainLayout from '../../layouts/MainLayout.astro';
 import type { Page } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+import Button from '../../components/core/Button.astro';
 import EventCard from '../../components/EventCard.astro';
 import Pagination from '../../components/Pagination.astro';
+import PageLayout from '../../layouts/PageLayout.astro';
+import { getEvents } from '../../utils/content';
+import { determineCardEdgeClasses } from '../../utils/helper';
 
 export async function getStaticPaths({
   paginate,
 }: {
   paginate: (paths: any[], options: { pageSize: number }) => any;
 }) {
-  const eventCollections = await getCollection('events');
-  const sortedEventCollections = eventCollections.sort((a, b) => {
-    return (
-      new Date(b.data.end as Date).getTime() -
-      new Date(a.data.start as Date).getTime()
-    );
-  });
-  return paginate(sortedEventCollections, { pageSize: 16 });
+  const eventCollections = await getEvents(
+    (event) => event.data.start !== undefined || event.data.end !== undefined
+  );
+  return paginate(eventCollections, { pageSize: 10 });
 }
 
 interface Props {
@@ -26,54 +25,61 @@ interface Props {
 
 const { page } = Astro.props as Props;
 
-const allYears = [...new Set(page.data.map(event => event.id.split('/')[0]))].sort((a, b) => b.localeCompare(a));
-const recentEvents = page.data.slice(0, 5).map(event => event.data.title);
+const groupedEvents = page.data.reduce((acc, event) => {
+  const year = new Date(event.data.start).getFullYear();
 
-const pageTitle = "CTF Writeups Collection";
-const pageDescription = `Browse my comprehensive collection of CTF writeups and solutions from ${allYears.join(', ')}. Featuring recent events: ${recentEvents.join(', ')}.`;
+  if (!acc.has(year)) {
+    acc.set(year, []);
+  }
 
-const keywords = [
-  'ctf',
-  'ctf writeups',
-  'ctf solutions',
-
-  'capture the flag',
-  'capture the flag writeups',
-  'capture the flag solutions',
-
-  ...page.data.map(event => `${event.data.title}`),
-  ...page.data.map(event => `${event.data.title} writeup`),
-  ...page.data.map(event => `${event.data.title} solution`),
-].filter(Boolean);
-
-const currentPage = page.currentPage;
-const pageSuffix = currentPage > 1 ? ` - Page ${currentPage}` : '';
-const fullPageTitle = pageTitle + pageSuffix;
+  acc.get(year)!.push(event);
+  return acc;
+}, new Map<string, any[]>());
 ---
 
-<MainLayout 
-  title={fullPageTitle}
-  description={pageDescription}
-  keywords={keywords}
->
-  <div class="flex flex-col gap-4 min-h-[calc(100vh-14.35rem)]">
-    <div class="grid md:grid-cols-2 gap-2">
-      {page.data.length === 0 && <p>No writeups found :(</p>}
+<PageLayout title="Writeups">
+  <div class="flex flex-col gap-2">
+    <h1 class="text-3xl font-bold">Writeups</h1>
+    <div class="flex flex-col gap-4 min-h-[calc(100vh-14.35rem)]">
       {
-        [...page.data].map((event) => (
-          <a href={`/writeups/${event.id.split('/').slice(0, -1).join('/')}`}>
-            <EventCard event={event} />
-          </a>
+        groupedEvents.size === 0 && (
+          <p class="text-flexoki-light-tx-2 dark:text-flexoki-dark-tx-2">
+            No writeups found.
+          </p>
+        )
+      }
+
+      {
+        [...groupedEvents.entries()].map(([date, events]) => (
+          <div class="flex flex-col gap-2">
+            <div class="flex flex-row items-center justify-between gap-1 px-4">
+              <h2 class="text-lg font-semibold">{date}</h2>
+              {/* <span class="flex-1 w-full h-[0.1rem] bg-flexoki-light-ui dark:bg-flexoki-dark-ui" />
+              <p>{events.length} Competitions</p> */}
+            </div>
+            <div class="grid md:grid-cols-1 gap-1">
+              {events.map((event: CollectionEntry<'events'>, index: number) => (
+                <EventCard
+                  event={event}
+                  href={`/writeups/${event.id.split('/').slice(0, -1).join('/')}`}
+                  class:list={[
+                    'rounded-none',
+                    `${determineCardEdgeClasses(index, events.length, 1)}`,
+                  ]}
+                />
+              ))}
+            </div>
+          </div>
         ))
       }
-    </div>
 
-    {
-      page.lastPage !== 1 && (
-        <div class="flex gap-1 justify-end">
-          <Pagination page={page} />
-        </div>
-      )
-    }
+      {
+        page.lastPage !== 1 && (
+          <div class="flex gap-1 justify-end">
+            <Pagination page={page} />
+          </div>
+        )
+      }
+    </div>
   </div>
-</MainLayout>
+</PageLayout>

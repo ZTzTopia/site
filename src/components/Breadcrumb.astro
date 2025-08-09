@@ -18,7 +18,7 @@ const { items, ...rest } = Astro.props as Props;
 ---
 
 <Element as="nav" {...rest}>
-  <ol class="flex flex-wrap gap-1 items-center text-sm break-words">
+  <ol class="flex flex-wrap gap-1 items-end text-sm break-words">
     {
       items &&
         items.map((item, index) => {
@@ -33,23 +33,23 @@ const { items, ...rest } = Astro.props as Props;
           return (
             <>
               {index !== 0 && shouldShowLink && (
-                <li class="inline-flex items-center">
+                <li class="inline-flex">
                   <Icon name="lucide:chevron-right" />
                 </li>
               )}
 
               {isLastItem ? (
-                <li class="inline-flex items-center">
+                <li class="inline-flex">
                   <span class="text-flexoki-light-cy dark:text-flexoki-dark-cy">
                     {item.label}
                   </span>
                 </li>
               ) : isExpandable ? (
-                <li class="inline-flex items-center">
+                <li class="inline-flex">
                   <Dropdown>
                     <span
                       slot="trigger"
-                      class="flex items-center justify-center hover:cursor-pointer"
+                      class="flex justify-center hover:cursor-pointer"
                     >
                       ...
                     </span>
@@ -67,7 +67,7 @@ const { items, ...rest } = Astro.props as Props;
                   </Dropdown>
                 </li>
               ) : shouldShowLink ? (
-                <li class="inline-flex items-center">
+                <li class="inline-flex">
                   <a
                     href={item.href}
                     class="hover:text-flexoki-light-cy-2 hover:dark:text-flexoki-dark-cy-2"

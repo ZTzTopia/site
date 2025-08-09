@@ -2,11 +2,12 @@
 import type { MarkdownHeading } from 'astro';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import ChallengeMeta from '../../../../../components/ChallengeMeta.astro';
-import WriteupLayout from '../../../../../layouts/WriteupLayout.astro';
+import BlogLayout from '../../../../../layouts/BlogLayout.astro';
 import ChallengeFlag from '../../../../../components/ChallengeFlag.astro';
+import { getEventChallenges } from '../../../../../utils/content';
 
 export async function getStaticPaths() {
-  const eventChallengeCollections = await getCollection('eventChallenges', ({ data }) => data.draft !== true);
+  const eventChallengeCollections = await getEventChallenges(({ data }) => data.draft !== true);
   const paths = eventChallengeCollections.map((eventChallenge) => {
     const slugs = eventChallenge.id.split('/');
     return {
@@ -26,7 +27,7 @@ export async function getStaticPaths() {
 }
 
 interface Props {
-  eventChallenge: CollectionEntry<'eventChallenges'>;
+  eventChallenge: CollectionEntry<'challenges'>;
 }
 
 interface Params {
@@ -48,50 +49,25 @@ const events = await getCollection(
     id.split('/')[0] === params.year && id.split('/')[1] === params.event
 );
 
-const eventName = events[0]?.data?.title ?? '';
+const eventName = events[0]?.data.title;
 const challengeTitle = props.eventChallenge.data.title;
-const challengeCategory = params.category;
-const year = params.year;
-const points = props.eventChallenge.data.points;
-const difficulty = points < 200 ? 'easy' : (points < 400 ? 'medium' : 'hard');
+const challengeCategory = props.eventChallenge.data.categories.join(', ');
 
 const pageTitle = `${challengeTitle} - ${eventName} Writeup`;
-const pageDescription = `Detailed solution for the ${challengeTitle} challenge (${challengeCategory}) from ${eventName} CTF ${year}. ${points} points, ${difficulty} difficulty.`;
-
-const keywords = [
-  `${eventName}`,
-  `${eventName} writeup`,
-  `${eventName} solutions`,
-
-  `${eventName} ${challengeCategory}`,
-  `${eventName} ${challengeCategory} writeup`,
-  `${eventName} ${challengeCategory} solution`,
-
-  `${challengeTitle}`,
-  `${challengeTitle} writeup`,
-  `${challengeTitle} solution`,
-
-  `${eventName} ${challengeTitle}`,
-  `${eventName} ${challengeTitle} writeup`,
-  `${eventName} ${challengeTitle} solution`,
-].filter(Boolean);
-
-const publishDate = new Date(parseInt(year), 0, 1);
+const pageDescription = `Detailed solution for the ${challengeTitle} challenge (${challengeCategory}) from ${eventName}.`;
 ---
 
-<WriteupLayout 
+<BlogLayout 
   title={pageTitle}
   description={pageDescription}
-  keywords={keywords}
   type="article"
-  publishDate={publishDate}
   {headings}
 >
   <h1 class="text-4xl font-bold" id="_halll">{props.eventChallenge.data.title}</h1>
   <ChallengeMeta event={props.eventChallenge} />
   <renderedEventChallenge.Content />
   <ChallengeFlag event={props.eventChallenge} >
-</WriteupLayout>
+</BlogLayout>
 
 <script is:inline>
   for (let level = 0; level <= 6; level++) {

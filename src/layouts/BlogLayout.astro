@@ -1,25 +1,23 @@
 ---
 import type { MarkdownHeading } from 'astro';
 import Prose from '../components/core/Prose.astro';
-import MobileTableOfContent from '../components/toc/MobileTableOfContent.astro';
-import TableOfContent from '../components/toc/TableOfContent.astro';
-import Layout from './Layout.astro';
+import MobileTableOfContent from '../components/TableOfContent/MobileTableOfContent.astro';
+import TableOfContent from '../components/TableOfContent/TableOfContent.astro';
+import BaseLayout from './BaseLayout.astro';
 
 interface Props {
   title: string;
   description?: string;
   headings: MarkdownHeading[];
-  keywords?: string[];
   image?: string;
   author?: string;
   type?: 'website' | 'article';
-  publishDate?: Date;
 }
 
 const { headings, ...rest } = Astro.props as Props;
 ---
 
-<Layout {...rest}>
+<BaseLayout {...rest}>
   <MobileTableOfContent {headings} slot="top" />
   <div
     class="grid grid-cols-[minmax(0px,1fr)_min(736px,100%)_minmax(0px,1fr)] pt-4 px-4"
@@ -37,4 +35,4 @@ const { headings, ...rest } = Astro.props as Props;
       </Prose>
     </main>
   </div>
-</Layout>
+</BaseLayout>

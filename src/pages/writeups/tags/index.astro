@@ -1,0 +1,50 @@
+---
+import MainLayout from '../../../layouts/MainLayout.astro';
+import { getEventChallenges } from '../../../utils/content';
+
+const challenges = await getEventChallenges(
+  ({ data }) => data.draft !== true
+);
+
+const flattenedTags = [
+  ...new Set(
+    challenges.flatMap((challenge) => {
+      if (challenge.data.tags.length < 1) {
+        return [];
+      }
+
+      return challenge.data.tags
+        .map((tag) =>
+          tag === null || tag === undefined || tag.trim() === ''
+            ? null
+            : `#${tag.trim().toLowerCase()}`
+        )
+        .filter(Boolean);
+    })
+  ),
+];
+
+const pageTitle = 'All Tags';
+const pageDescription = 'Browse all tags used in events.';
+---
+
+<MainLayout title={pageTitle} description={pageDescription}>
+  <div class="flex flex-col gap-4">
+    <h1 class="text-3xl font-bold">Tags</h1>
+    <p class="text-lg">Explore all tags used across events.</p>
+    <ul class="flex flex-wrap gap-2">
+      {
+        flattenedTags.map((tag) => (
+          <li>
+            <a
+              href={`/tags/${tag?.slice(1)}`}
+              class="flex flex-row items-center gap-x-2 text-xs font-medium px-2.5 py-0.5 rounded bg-flexoki-light-ui dark:bg-flexoki-dark-ui"
+            >
+              {tag}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</MainLayout>

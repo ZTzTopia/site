@@ -4,7 +4,7 @@ import Card from './core/Card.astro';
 import { Icon } from 'astro-icon/components';
 import { getBackgroundColorByCategory } from '../utils/color';
 
-const { event } = Astro.props as { event: CollectionEntry<'eventChallenges'> };
+const { event } = Astro.props as { event: CollectionEntry<'challenges'> };
 
 const categoryIconMap: { [key: string]: string } = {
   crypto: 'lucide:lock',
@@ -26,6 +26,30 @@ const getIcon = (category: string) => {
 };
 
 const { ...rest } = Astro.props;
+
+const flattenedCategories = [
+  ...new Set(
+    event.data.categories
+      .map((category) =>
+        category === null || category === undefined || category.trim() === ''
+          ? null
+          : category.trim()
+      )
+      .filter(Boolean)
+  ),
+];
+
+const flattenedTags = [
+  ...new Set(
+    event.data.tags
+      .map((tag) =>
+        tag === null || tag === undefined || tag.trim() === ''
+          ? null
+          : `#${tag.trim().toLowerCase()}`
+      )
+      .filter(Boolean)
+  ),
+];
 ---
 
 <Card {...rest}>
@@ -33,47 +57,52 @@ const { ...rest } = Astro.props;
     <p class="font-medium">{event.data.title}</p>
     <div class="flex flex-wrap items-center gap-2">
       {
-        event.data.points !== -1 && (
+        flattenedCategories.map((category) => (
           <span
-            class="bg-flexoki-light-ui dark:bg-flexoki-dark-ui text-xs font-medium px-2.5 py-0.5 rounded"
+            class={`flex flex-row items-center gap-x-2 text-xs font-medium px-2.5 py-0.5 rounded
+            ${getBackgroundColorByCategory(category)}
+          `}
           >
-            {event.data.points} points
+            <Icon name={getIcon(category)} />
+            {category}
+          </span>
+        ))
+      }
+      {
+        (
+          event.data.blooded && <span class="bg-flexoki-light-ui dark:bg-flexoki-dark-ui text-xs font-medium px-2.5 py-0.5 rounded">
+            {/* <Icon name="lucide:droplet" class="text-xs" /> */}
+            🩸 First Blood
           </span>
         )
       }
+    </div>
+    <div class="flex flex-row gap-2">
+      <p class="text-flexoki-base-600 dark:text-flexoki-base-500">
+        <Icon name="lucide:trophy" class="inline-block mr-1" />
+        {event.data.points} point{event.data.points === 1 ? '' : 's'}
+      </p>
+      <p class="text-flexoki-base-600 dark:text-flexoki-base-500">
+        <Icon name="lucide:target" class="inline-block mr-1" />
+        {event.data.solves} solve{event.data.solves === 1 ? '' : 's'}
+      </p>
+    </div>
+    <div class="flex flex-row flex-wrap gap-2">
       {
-        event.data.solves !== -1 && (
-          <span class="bg-flexoki-light-ui dark:bg-flexoki-dark-ui text-xs font-medium px-2.5 py-0.5 rounded">
-            {event.data.solves} solves
-          </span>
-        )
+        flattenedTags
+          .slice(0, 5)
+          .map((tag) => (
+            <span class="px-2 py-1 bg-flexoki-base-100 dark:bg-flexoki-dark-ui rounded text-xs">
+              {tag}
+            </span>
+          ))
       }
       {
-        Array.isArray(event.data.category)
-          ? event.data.category.map(
-              (cat) =>
-                cat.trim() !== '' && (
-                  <span
-                    class={`flex flex-row items-center gap-x-2 text-xs font-medium px-2.5 py-0.5 rounded
-                  ${getBackgroundColorByCategory(cat)}
-                `}
-                  >
-                    <Icon name={getIcon(cat)} />
-                    {cat}
-                  </span>
-                )
-            )
-          : event.data.category &&
-            event.data.category.trim() !== '' && (
-              <span
-                class={`flex flex-row items-center gap-x-2 text-xs font-medium px-2.5 py-0.5 rounded
-                ${getBackgroundColorByCategory(event.data.category)}
-              `}
-              >
-                <Icon name={getIcon(event.data.category)} class="text-xs" />
-                {event.data.category}
-              </span>
-            )
+        flattenedTags.length > 5 && (
+          <span class="px-2 py-1 bg-flexoki-base-200 dark:bg-flexoki-dark-ui/80 rounded text-xs font-semibold">
+            +{flattenedTags.length - 5}
+          </span>
+        )
       }
     </div>
   </div>

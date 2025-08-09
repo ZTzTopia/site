@@ -8,7 +8,13 @@ const projects = defineCollection({
     title: z.string(),
     description: z.string().default("No description."),
     url: z.string(),
-    tags: z.union([z.string(), z.array(z.string()), z.null()]).optional(),
+    tags: z.union([
+      z.string(),
+      z.array(z.string()),
+      z.null()
+    ])
+      .optional()
+      .transform((val) => (Array.isArray(val) ? val : [val])),
   })
 });
 
@@ -17,14 +23,14 @@ const experiences = defineCollection({
   schema: z.object({
     id: z.number(),
     title: z.string(),
-    description: z.string(),
+    description: z.string().default("No description."),
     startDate: z.string(),
     endDate: z.string(),
   })
 });
 
 const events = defineCollection({
-  loader: glob({ pattern: "*/*/*.{md,mdx}", base: "./src/data/events" }),
+  loader: glob({ pattern: "*/*/*.{md,mdx}", base: "./src/data/writeups" }),
   schema: z.object({
     title: z.string(),
     description: z.string().default("No description."),
@@ -36,19 +42,38 @@ const events = defineCollection({
   })
 });
 
-const eventChallenges = defineCollection({
-  loader: glob({ pattern: "*/*/*/*/*.{md,mdx}", base: "./src/data/events" }),
+const challenges = defineCollection({
+  loader: glob({ pattern: "*/*/*/*/*.{md,mdx}", base: "./src/data/writeups" }),
   schema: z.object({
     title: z.string(),
-    category: z.union([z.string(), z.array(z.string()), z.null()]).optional(),
-    tags: z.union([z.string(), z.array(z.string()), z.null()]).optional(),
+    description: z.string().default("No description."),
+    categories: z.union([
+      z.string(),
+      z.array(z.string()),
+      z.null()
+    ])
+      .optional()
+      .transform((val) => (Array.isArray(val) ? val : [val])),
+    tags: z.union([
+      z.string(),
+      z.array(z.string()),
+      z.null()
+    ])
+      .optional()
+      .transform((val) => (Array.isArray(val) ? val : [val])),
     draft: z.boolean().optional(),
     completedDuringEvent: z.boolean().optional(),
     submitted: z.boolean().optional(),
-    points: z.number().default(-1),
-    solves: z.number().default(-1),
-    flag: z.string().optional(),
-    flags: z.array(z.string()).optional(),
+    blooded: z.boolean().optional(),
+    points: z.number().optional(),
+    solves: z.number().optional(),
+    flags: z.union([
+      z.string(),
+      z.array(z.string()),
+      z.null()
+    ])
+      .optional()
+      .transform((val) => (Array.isArray(val) ? val : [val])),
   })
 });
 
@@ -56,5 +81,5 @@ export const collections = {
   projects,
   experiences,
   events,
-  eventChallenges
+  challenges
 };

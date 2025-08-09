@@ -1,24 +1,24 @@
 ---
 import { Image } from 'astro:assets';
-import MainLayout from '../layouts/MainLayout.astro';
+import MusicPresence from '../components/Activity/MusicPresence.astro';
+import Card from '../components/core/Card.astro';
 import Prose from '../components/core/Prose.astro';
 import Projects from '../components/Projects.astro';
-import MusicPresence from '../components/activity/MusicPresence.astro';
-import Card from '../components/core/Card.astro';
+import PageLayout from '../layouts/PageLayout.astro';
 // import Experience from "../components/Experience.astro";
 ---
 
-<MainLayout title="Home">
+<PageLayout title="Home">
   <Prose>
     <h1 class="font-medium">
       <span class="block overflow-hidden group relative">
         <span
-          class="inline-block duration-300 ease-in-out group-hover:-translate-y-full"
+          class="inline-block transition-transform duration-300 ease-in-out group-hover:-translate-y-full"
         >
           ztz0
         </span>
         <span
-          class="inline-block absolute left-0 top-0 duration-300 ease-in-out translate-y-full group-hover:translate-y-0"
+          class="inline-block transition-transform absolute left-0 top-0 duration-300 ease-in-out translate-y-full group-hover:translate-y-0"
         >
           Muhamad Zibrisky
         </span>
@@ -102,4 +102,4 @@ import Card from '../components/core/Card.astro';
         <Experience />
       </div> -->
   </Prose>
-</MainLayout>
+</PageLayout>

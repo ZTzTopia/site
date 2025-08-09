@@ -1,12 +1,12 @@
 ---
 import { Icon } from "astro-icon/components";
-import MainLayout from "../layouts/MainLayout.astro";
 import Button from "../components/core/Button.astro";
 import Experience from "../components/Experience.astro";
 import Projects from "../components/Projects.astro";
+import PageLayout from "../layouts/PageLayout.astro";
 ---
 
-<MainLayout title="Components">
+<PageLayout title="Components">
   <div class="flex flex-col gap-8">
     <div class="not-prose grid grid-cols-[auto_minmax(0,_1fr)] items-center gap-4">
       <div class="col-start-2 grid grid-cols-13 justify-items-center gap-1.5 font-medium text-flexoki-light-tx dark:text-flexoki-dark-tx *:rotate-180 *:[writing-mode:vertical-lr] sm:gap-4 sm:*:rotate-0 sm:*:[writing-mode:horizontal-tb]">
@@ -252,4 +252,4 @@ import Projects from "../components/Projects.astro";
     <Experience />
     <Projects />
   </div>
-</MainLayout>
+</PageLayout>

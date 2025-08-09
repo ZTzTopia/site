@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
+@source inline('{md:,}rounded-{t,tl,tr,b,bl,br}');
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 

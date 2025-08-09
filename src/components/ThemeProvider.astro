@@ -1,10 +1,37 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
 <script is:inline>
-  const storedTheme =
-    typeof localStorage !== 'undefined' && localStorage.getItem('z-theme');
-  const theme =
-    storedTheme ||
-    (window.matchMedia('(prefers-color-scheme: light)').matches
-      ? 'light'
-      : 'dark');
-  document.documentElement.setAttribute('data-theme', theme === 'light' ? 'light' : 'dark');
+  window.zThemeProvider = (() => {
+    const storedTheme =
+      typeof localStorage !== 'undefined' && localStorage.getItem('z-theme');
+    const theme =
+      storedTheme ||
+      (window.matchMedia('(prefers-color-scheme: light)').matches
+        ? 'light'
+        : 'dark');
+    document.documentElement.setAttribute('data-theme', theme === 'light' ? 'light' : 'dark');
+    return {
+      updatePickers(theme = storedTheme || 'system') {
+        document.querySelectorAll('z-theme-select').forEach((picker) => {
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+      }
+    }
+  })();
 </script>
+
+<div class="hidden" id="theme-icons">
+  <Icon name="lucide:sun" class="light" />
+  <Icon name="lucide:moon" class="dark" />
+  <Icon name="lucide:computer" class="system" />
+</div>

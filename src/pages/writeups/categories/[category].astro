@@ -1,0 +1,68 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../../layouts/MainLayout.astro';
+import EventCard from '../../../components/EventCard.astro';
+import { getEventChallenges } from '../../../utils/content';
+import ChallengeCard from '../../../components/ChallengeCard.astro';
+
+export async function getStaticPaths() {
+  const challenges = await getEventChallenges(
+    ({ data }) => 
+      data.draft !== true
+  );
+
+  const flattenedTags = [
+    ...new Set(
+      challenges.flatMap((challenge) => {
+        if (challenge.data.category.length < 1) {
+          return [];
+        }
+
+        return challenge.data.category
+          .map((cat) =>
+            cat === null || cat === undefined || cat.trim() === ''
+              ? null
+              : cat.trim()
+          )
+          .filter(Boolean);
+      })
+    ),
+  ];
+
+  return flattenedTags.map((category) => ({
+    params: { category },
+  }));
+}
+
+interface Params {
+  category: string;
+}
+
+const { category } = Astro.params as Params;
+const challenges = await getEventChallenges(
+  ({ data }) => 
+    data.category.includes(category) &&
+    data.draft !== true
+);
+
+const pageTitle = `Events Categorized: ${category}`;
+const pageDescription = `Explore events categorized with \"${category}\".`;
+---
+
+<MainLayout title={pageTitle} description={pageDescription}>
+  <div class="flex flex-col gap-4">
+    <h1 class="text-3xl font-bold">Category: {category}</h1>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {challenges.length === 0 ? (
+        <p>No events found for this category.</p>
+      ) : (
+        challenges.map((challenge) => (
+          <ChallengeCard
+            event={challenge}
+            href={`/writeups/${challenge.id.split('/').slice(0, -1).join('/')}`}
+          />
+        ))
+      )}
+    </div>
+  </div>
+</MainLayout>

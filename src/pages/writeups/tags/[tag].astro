@@ -1,0 +1,68 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../../layouts/MainLayout.astro';
+import EventCard from '../../../components/EventCard.astro';
+import { getEventChallenges } from '../../../utils/content';
+import ChallengeCard from '../../../components/ChallengeCard.astro';
+
+export async function getStaticPaths() {
+  const challenges = await getEventChallenges(
+    ({ data }) => 
+      data.draft !== true
+  );
+
+  const flattenedTags = [
+    ...new Set(
+      challenges.flatMap((challenge) => {
+        if (challenge.data.tags.length < 1) {
+          return [];
+        }
+
+        return challenge.data.tags
+          .map((tag) =>
+            tag === null || tag === undefined || tag.trim() === ''
+              ? null
+              : tag.trim().toLowerCase()
+          )
+          .filter(Boolean);
+      })
+    ),
+  ];
+
+  return flattenedTags.map((tag) => ({
+    params: { tag },
+  }));
+}
+
+interface Params {
+  tag: string;
+}
+
+const { tag } = Astro.params as Params;
+const challenges = await getEventChallenges(
+  ({ data }) => 
+    data.tags.includes(tag) &&
+    data.draft !== true
+);
+
+const pageTitle = `Events Tagged: ${tag}`;
+const pageDescription = `Explore events tagged with \"${tag}\".`;
+---
+
+<MainLayout title={pageTitle} description={pageDescription}>
+  <div class="flex flex-col gap-4">
+    <h1 class="text-3xl font-bold">Tag: {tag}</h1>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {challenges.length === 0 ? (
+        <p>No events found for this tag.</p>
+      ) : (
+        challenges.map((challenge) => (
+          <ChallengeCard
+            event={challenge}
+            href={`/writeups/${challenge.id.split('/').slice(0, -1).join('/')}`}
+          />
+        ))
+      )}
+    </div>
+  </div>
+</MainLayout>

@@ -4,10 +4,9 @@ import Button from './core/Button.astro';
 import Dropdown from './Dropdown.astro';
 ---
 
-<!-- TODO: Change trigger icon? -->
 <z-theme-select>
   <Dropdown side="right">
-    <Button slot="trigger" variant="outline" size="icon" class="hover:cursor-pointer">
+    <Button slot="trigger" variant="outline" size="icon" class="hover:cursor-pointer" id="z-theme-select">
       <Icon name="lucide:sun" />
     </Button>
     <div class="flex flex-col p-1">
@@ -23,6 +22,10 @@ import Dropdown from './Dropdown.astro';
     </div>
   </Dropdown>
 </z-theme-select>
+
+<script is:inline>
+	zThemeProvider.updatePickers();
+</script>
 
 <script>
   type Theme = 'system' | 'dark' | 'light';
@@ -50,6 +53,7 @@ import Dropdown from './Dropdown.astro';
 
   function onThemeChange(theme: Theme): void {
     document.documentElement.setAttribute('data-theme', theme === 'system' ? getPreferredColorScheme() : theme);
+    zThemeProvider.updatePickers(theme);
     storeTheme(theme);
   }
 

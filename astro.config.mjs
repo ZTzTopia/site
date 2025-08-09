@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import icon from 'astro-icon';
 import sitemap from '@astrojs/sitemap';
+import compress from 'astro-compress';
 
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeUniqueHeadingIds from './src/plugins/rehype/rehype-unique-heading-ids';
@@ -17,13 +18,10 @@ export default defineConfig({
     '/flags': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
   },
   output: 'static',
-  integrations: [
-    icon(),
-    sitemap({
-      filter: (page) => 
-        !page.includes('/components/')
-    })
-  ],
+  integrations: [icon(), sitemap({
+    filter: (page) => 
+      !page.includes('/components/')
+  }), compress()],
   markdown: {
     rehypePlugins: [
       rehypeUniqueHeadingIds,
