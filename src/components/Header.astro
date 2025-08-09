@@ -60,7 +60,7 @@ const { items }: Props = Astro.props;
                   href={item.url}
                   class:list={[
                     'px-3 py-2 rounded',
-                    'text-flexoki-base-800 dark:text-flexoki-base-400 hover:bg-flexoki-light-ui dark:hover:bg-flexoki-dark-ui',
+                    'text-flexoki-base-800 dark:text-flexoki-base-400 hover:text-flexoki-light-tx hover:dark:text-flexoki-dark-tx hover:bg-flexoki-light-ui hover:dark:bg-flexoki-dark-ui',
                     {
                       'text-flexoki-light-tx dark:text-flexoki-dark-tx bg-flexoki-light-ui dark:bg-flexoki-dark-ui group-hover:bg-transparent':
                         Astro.url.pathname === '/' && item.url === '/'
