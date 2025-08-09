@@ -1,10 +1,30 @@
 ---
+import { Icon } from 'astro-icon/components';
 import PageLayout from '../layouts/PageLayout.astro';
+import Button from '../components/core/Button.astro';
 ---
 
 <PageLayout title="Page not found">
-  <div class="flex flex-col">
-    <h1 class="text-lg font-medium">404: Page not found</h1>
-    <p>Oops! The page you're looking for doesn't exist.</p>
+  <div
+    class="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-center"
+  >
+    <div class="relative">
+      <Icon
+        name="lucide:ghost"
+        class="w-24 h-24 text-flexoki-light-cy dark:text-flexoki-dark-cy animate-bounce"
+      />
+    </div>
+    <h1 class="text-4xl font-bold">404: Page not found</h1>
+    <p class="text-lg text-flexoki-light-tx-2 dark:text-flexoki-dark-tx-2">
+      Oops! The page you're looking for doesn't exist.<br />
+      Maybe you took a wrong turn in cyberspace.
+    </p>
+    <Button
+      variant="secondary"
+      onclick="window.history.back()"
+    >
+      <Icon name="lucide:arrow-left-circle" class="inline-block mr-1" />
+      Back to Previous Page
+    </Button>
   </div>
 </PageLayout>
