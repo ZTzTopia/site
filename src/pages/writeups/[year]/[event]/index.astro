@@ -156,7 +156,7 @@ const renderedEvent = await render(props.event);
 
 <script>
   const onIdle = (cb: IdleRequestCallback) =>
-    (window.requestIdleCallback || ((cb) => setTimeout(cb, 1)))(cb);
+    (window.requestIdleCallback || ((cb) => setTimeout(cb, 150)))(cb);
 
   onIdle(() => {
     const filterButtons = document.querySelectorAll('[data-category]');

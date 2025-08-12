@@ -22,7 +22,7 @@ export class TableOfContent extends HTMLElement {
   }
 
   private onIdle = (cb: IdleRequestCallback) =>
-    (window.requestIdleCallback || ((cb) => setTimeout(cb, 1)))(cb);
+    (window.requestIdleCallback || ((cb) => setTimeout(cb, 150)))(cb);
 
   constructor() {
     super();

@@ -75,7 +75,7 @@ import Link from '../Core/Link.astro';
   import { initMusicPresence } from './MusicPresence';
 
   const onIdle = (cb: IdleRequestCallback) =>
-    (window.requestIdleCallback || ((cb) => setTimeout(cb, 1)))(cb);
+    (window.requestIdleCallback || ((cb) => setTimeout(cb, 150)))(cb);
 
   onIdle(() => {
     const container = document.getElementById(
