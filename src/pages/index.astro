@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import CTFTimeIcon from '../assets/ctftime.png';
 import MusicPresence from '../components/Activity/MusicPresence.astro';
 import Card from '../components/Core/Card.astro';
 import Prose from '../components/Core/Prose.astro';
@@ -30,7 +31,7 @@ import PageLayout from '../layouts/PageLayout.astro';
         href="https://ctftime.org/user/209558"
         class="not-prose bg-flexoki-base-50 dark:bg-flexoki-base-950 text-xs font-medium px-2.5 py-0.5 rounded"
         ><Image
-          src="https://ctftime.org/favicon.png"
+          src={CTFTimeIcon}
           alt="CTFTime"
           width={8}
           height={8}
