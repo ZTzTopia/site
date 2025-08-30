@@ -6,9 +6,9 @@
   ],
   "exclude": [
     "dist",
-    "src/data/events/**/*.ts",
-    "src/data/events/**/*.tsx",
-    "src/data/events/**/*.js",
-    "src/data/events/**/*.jsx"
+    "src/data/writeups/**/*.ts",
+    "src/data/writeups/**/*.tsx",
+    "src/data/writeups/**/*.js",
+    "src/data/writeups/**/*.jsx"
   ]
 }

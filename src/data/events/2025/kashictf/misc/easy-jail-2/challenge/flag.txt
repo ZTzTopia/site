@@ -1,1 +1,0 @@
-KashiCTF{fake_flag_hehe}

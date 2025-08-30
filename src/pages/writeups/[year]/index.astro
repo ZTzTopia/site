@@ -1,7 +1,7 @@
 ---
 import { type CollectionEntry, getCollection } from 'astro:content';
 import PageLayout from '../../../layouts/PageLayout.astro';
-import EventCard from '../../../components/EventCard.astro';
+import EventCard from '../../../components/CardEvent.astro';
 
 export async function getStaticPaths() {
   const eventCollections = await getCollection('events');

@@ -1,11 +1,12 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
-import ChallengeCard from '../../../../components/ChallengeCard.astro';
+import CardChallenge from '../../../../components/CardChallenge.astro';
 import PageLayout from '../../../../layouts/PageLayout.astro';
-import Prose from '../../../../components/Core/Prose.astro';
+// import Prose from '../../../../components/Core/Prose.astro';
 import Chip from '../../../../components/Core/Chip.astro';
-import Card from '../../../../components/Core/Card.astro';
+// import Card from '../../../../components/Core/Card.astro';
 import { determineCardEdgeClasses } from '../../../../utils/helper';
+import CardIcon from '../../../../components/CardIcon.astro';
 
 export async function getStaticPaths() {
   const eventCollections = await getCollection('events');
@@ -60,7 +61,7 @@ const uniqueCategories = [
       .filter(Boolean)
   ),
 ];
-const renderedEvent = await render(props.event);
+// const renderedEvent = await render(props.event);
 ---
 
 <PageLayout title="Competition" type="article">
@@ -82,7 +83,7 @@ const renderedEvent = await render(props.event);
       <div class="grid md:grid-cols-3 gap-1">
         {
           Object.entries(eventMeta).map(([key, value], index) => (
-            <Card
+            <CardIcon
               class:list={[
                 'rounded-none',
                 determineCardEdgeClasses(
@@ -99,13 +100,13 @@ const renderedEvent = await render(props.event);
                 ),
               ]}
             >
-              <div slot="content">
+              <div>
                 <p class="flex flex-col text-sm">
                   <span class="font-medium">{key}</span>
                   <span class="font-normal text-flexoki-base-600 dark:text-flexoki-base-500">{value}</span>
                 </p>
               </div>
-            </Card>
+            </CardIcon>
           ))
         }
       </div>
@@ -133,7 +134,7 @@ const renderedEvent = await render(props.event);
           ) : (
             challenges.map((eventChallenge, index) => {
               return (
-                <ChallengeCard
+                <CardChallenge
                   event={eventChallenge}
                   href={`/writeups/${eventChallenge.id.split('/').slice(0, -1).join('/')}`}
                   class:list={[
@@ -160,7 +161,7 @@ const renderedEvent = await render(props.event);
 
   onIdle(() => {
     const filterButtons = document.querySelectorAll('[data-category]');
-    const challengeCards = document.querySelectorAll('.challenge-card');
+    const CardChallenges = document.querySelectorAll('.challenge-card');
 
     document.getElementById('filter-all')?.classList.add('selected-filter');
 
@@ -174,7 +175,7 @@ const renderedEvent = await render(props.event);
           return;
         }
 
-        challengeCards.forEach((card: Element) => {
+        CardChallenges.forEach((card: Element) => {
           if (!(card instanceof HTMLElement)) {
             return;
           }

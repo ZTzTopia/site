@@ -1,0 +1,3 @@
+[submodule "src/data/writeups"]
+	path = src/data/writeups
+	url = https://github.com/ZTzTopia/ctf.git

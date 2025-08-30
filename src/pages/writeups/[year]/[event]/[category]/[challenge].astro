@@ -1,13 +1,17 @@
 ---
 import type { MarkdownHeading } from 'astro';
+import { Icon } from 'astro-icon/components';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
-import ChallengeMeta from '../../../../../components/ChallengeMeta.astro';
+import CardIcon from '../../../../../components/CardIcon.astro';
+import Card from '../../../../../components/core/Card.astro';
 import BlogLayout from '../../../../../layouts/BlogLayout.astro';
-import ChallengeFlag from '../../../../../components/ChallengeFlag.astro';
 import { getEventChallenges } from '../../../../../utils/content';
+import { determineCardEdgeClasses } from '../../../../../utils/helper';
 
 export async function getStaticPaths() {
-  const eventChallengeCollections = await getEventChallenges(({ data }) => data.draft !== true);
+  const eventChallengeCollections = await getEventChallenges(
+    ({ data }) => data.draft !== true
+  );
   const paths = eventChallengeCollections.map((eventChallenge) => {
     const slugs = eventChallenge.id.split('/');
     return {
@@ -57,28 +61,95 @@ const pageTitle = `${challengeTitle} - ${eventName} Writeup`;
 const pageDescription = `Detailed solution for the ${challengeTitle} challenge (${challengeCategory}) from ${eventName}.`;
 ---
 
-<BlogLayout 
+<BlogLayout
   title={pageTitle}
   description={pageDescription}
   type="article"
   {headings}
 >
-  <h1 class="text-4xl font-bold" id="_halll">{props.eventChallenge.data.title}</h1>
-  <ChallengeMeta event={props.eventChallenge} />
-  <renderedEventChallenge.Content />
-  <ChallengeFlag event={props.eventChallenge} >
-</BlogLayout>
+  <h1 class="text-4xl font-bold" id="_halll">
+    {props.eventChallenge.data.title}
+  </h1>
 
-<script is:inline>
-  for (let level = 0; level <= 6; level++) {
-    document.querySelectorAll(`main h${level}`).forEach((heading) => {
-      const newLevel = Math.max(1, level - 2); // Ensure minimum level is h1
-      const newHeading = document.createElement(`h${newLevel}`);
-      newHeading.innerHTML = heading.innerHTML;
-      Array.from(heading.attributes).forEach((attr) =>
-        newHeading.setAttribute(attr.name, attr.value)
-      );
-      heading.replaceWith(newHeading);
-    });
-  }
-</script>
+  <div class="not-prose grid md:grid-cols-2 gap-1">
+    <CardIcon
+      class:list={[
+        'rounded-none',
+        determineCardEdgeClasses(0, 2, 1),
+        'md:rounded-none',
+        determineCardEdgeClasses(0, 2, 4, 'md'),
+      ]}
+    >
+      <p class="flex flex-col text-sm">
+        <span class="font-medium">Points</span>
+        <span
+          class="font-normal text-flexoki-base-600 dark:text-flexoki-base-500"
+          >{props.eventChallenge.data.points}</span
+        >
+      </p>
+    </CardIcon>
+
+    <CardIcon
+      class:list={[
+        'rounded-none',
+        determineCardEdgeClasses(1, 2, 1),
+        'md:rounded-none',
+        determineCardEdgeClasses(1, 2, 4, 'md'),
+      ]}
+    >
+      <p class="flex flex-col text-sm">
+        <span class="font-medium">Solves</span>
+        <span
+          class="font-normal text-flexoki-base-600 dark:text-flexoki-base-500"
+          >{props.eventChallenge.data.solves}</span
+        >
+      </p>
+    </CardIcon>
+  </div>
+
+  <renderedEventChallenge.Content />
+  
+  <Card
+    class="bg-flexoki-light-bg-2 dark:bg-flexoki-dark-bg-2 items-center not-prose"
+  >
+    <div
+      slot="content"
+      class:list={[
+        'flex',
+        {
+          'flex-row': props.eventChallenge.data.flags.length <= 1,
+          'flex-col': props.eventChallenge.data.flags.length > 1,
+        },
+        'gap-2 items-center justify-center',
+      ]}
+    >
+      {
+        props.eventChallenge.data.flags.length > 1 ? (
+          props.eventChallenge.data.flags.map((flag, i) => (
+            <div class="flex items-center gap-2">
+              <Icon name="lucide:flag" />
+              <div class="flex-1">
+                <strong>{props.eventChallenge.data.title}</strong> Flag {i + 1}:{' '}
+                <strong>
+                  <code class="break-all">{flag}</code>
+                </strong>
+              </div>
+            </div>
+          ))
+        ) : (
+          <>
+            <Icon name="lucide:flag" />
+            <div class="flex-1">
+              <strong>{props.eventChallenge.data.title}</strong> Flag:{' '}
+              <strong>
+                <code class="break-all rounded blur-xs hover:blur-none duration-300">
+                  {props.eventChallenge.data.flags[0]}
+                </code>
+              </strong>
+            </div>
+          </>
+        )
+      }
+    </div>
+  </Card>
+</BlogLayout>

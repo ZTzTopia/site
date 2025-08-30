@@ -1,5 +1,5 @@
 ---
-import MainLayout from '../../../layouts/MainLayout.astro';
+import PageLayout from '../../../layouts/PageLayout.astro';
 import { getEvents } from '../../../utils/content';
 
 const events = await getEvents();
@@ -16,7 +16,7 @@ const pageTitle = 'All Tags';
 const pageDescription = 'Browse all tags used in events.';
 ---
 
-<MainLayout title={pageTitle} description={pageDescription}>
+<PageLayout title={pageTitle} description={pageDescription}>
   <div class="flex flex-col gap-4">
     <h1 class="text-3xl font-bold">Years</h1>
     <p class="text-lg">Explore all years used across events.</p>
@@ -35,4 +35,4 @@ const pageDescription = 'Browse all tags used in events.';
       }
     </ul>
   </div>
-</MainLayout>
+</PageLayout>

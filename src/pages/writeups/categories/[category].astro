@@ -1,9 +1,7 @@
----
-import { getCollection } from 'astro:content';
-import MainLayout from '../../../layouts/MainLayout.astro';
-import EventCard from '../../../components/EventCard.astro';
-import { getEventChallenges } from '../../../utils/content';
+<!-- ---
 import ChallengeCard from '../../../components/ChallengeCard.astro';
+import PageLayout from '../../../layouts/PageLayout.astro';
+import { getEventChallenges } from '../../../utils/content';
 
 export async function getStaticPaths() {
   const challenges = await getEventChallenges(
@@ -49,7 +47,7 @@ const pageTitle = `Events Categorized: ${category}`;
 const pageDescription = `Explore events categorized with \"${category}\".`;
 ---
 
-<MainLayout title={pageTitle} description={pageDescription}>
+<PageLayout title={pageTitle} description={pageDescription}>
   <div class="flex flex-col gap-4">
     <h1 class="text-3xl font-bold">Category: {category}</h1>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -65,4 +63,4 @@ const pageDescription = `Explore events categorized with \"${category}\".`;
       )}
     </div>
   </div>
-</MainLayout>
+</PageLayout> -->

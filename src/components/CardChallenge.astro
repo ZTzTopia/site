@@ -1,0 +1,115 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Card from './core/Card.astro';
+import { Icon } from 'astro-icon/components';
+import { getBackgroundColorByCategory } from '../utils/color-icon';
+
+const { event } = Astro.props as { event: CollectionEntry<'challenges'> };
+
+const categoryIconMap: { [key: string]: string } = {
+  crypto: 'lucide:lock',
+  web: 'lucide:globe',
+  pwn: 'lucide:skull',
+  bin: 'lucide:skull',
+  rev: 'lucide:eye',
+  forensics: 'lucide:search',
+  misc: 'lucide:apple',
+};
+
+const getIcon = (category: string) => {
+  const categoryLowerCased = category?.toLowerCase() || '';
+  const matchedKey = Object.keys(categoryIconMap).find((key) =>
+    categoryLowerCased.includes(key)
+  );
+
+  return matchedKey ? categoryIconMap[matchedKey] : 'lucide:tag';
+};
+
+const { ...rest } = Astro.props;
+
+const flattenedCategories = [
+  ...new Set(
+    event.data.categories
+      .map((category) =>
+        category === null || category === undefined || category.trim() === ''
+          ? null
+          : category.trim()
+      )
+      .filter(Boolean)
+  ),
+];
+
+const flattenedTags = [
+  ...new Set(
+    event.data.tags
+      .map((tag) =>
+        tag === null || tag === undefined || tag.trim() === ''
+          ? null
+          : `#${tag.trim().toLowerCase()}`
+      )
+      .filter(Boolean)
+  ),
+];
+---
+
+<Card {...rest}>
+  <div slot="content" class="flex flex-col gap-2">
+    <p class="font-medium">{event.data.title}</p>
+    {
+      (flattenedCategories.length > 0 || event.data.blooded) && (
+        <div class="flex flex-wrap items-center gap-2">
+          {flattenedCategories.map((category) => (
+            <span
+              class={`flex flex-row items-center gap-x-2 text-xs font-medium px-2.5 py-0.5 rounded
+              ${getBackgroundColorByCategory(category)}
+            `}
+            >
+              <Icon name={getIcon(category)} />
+              {category}
+            </span>
+          ))}
+          {event.data.blooded && (
+            <span class="bg-flexoki-light-ui dark:bg-flexoki-dark-ui text-xs font-medium px-2.5 py-0.5 rounded">
+              <Icon name="lucide:droplet" class="text-xs" />
+              First Blood
+            </span>
+          )}
+        </div>
+      )
+    }
+    {
+      (event.data.points || event.data.points) && (
+        <div class="flex flex-row gap-2">
+          {event.data.points && event.data.points >= 1 && (
+            <p class="text-flexoki-base-600 dark:text-flexoki-base-500">
+              <Icon name="lucide:trophy" class="inline-block mr-1" />
+              {event.data.points} point{event.data.points === 1 ? '' : 's'}
+            </p>
+          )}
+          {event.data.solves && event.data.solves >= 1 && (
+            <p class="text-flexoki-base-600 dark:text-flexoki-base-500">
+              <Icon name="lucide:target" class="inline-block mr-1" />
+              {event.data.solves} solve{event.data.solves === 1 ? '' : 's'}
+            </p>
+          )}
+        </div>
+      )
+    }
+    {
+      flattenedTags.length > 0 && (
+        <div class="flex flex-row flex-wrap gap-2">
+          {flattenedTags.slice(0, 5).map((tag) => (
+            <span class="px-2 py-1 bg-flexoki-base-100 dark:bg-flexoki-dark-ui rounded text-xs">
+              {tag}
+            </span>
+          ))}
+          {flattenedTags.length > 5 && (
+            <span class="px-2 py-1 bg-flexoki-base-200 dark:bg-flexoki-dark-ui/80 rounded text-xs font-semibold">
+              +{flattenedTags.length - 5}
+            </span>
+          )}
+        </div>
+      )
+    }
+  </div>
+</Card>

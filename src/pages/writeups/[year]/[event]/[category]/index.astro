@@ -1,7 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import PageLayout from '../../../../../layouts/PageLayout.astro';
-import ChallengeCard from '../../../../../components/ChallengeCard.astro';
+import CardChallenge from '../../../../../components/CardChallenge.astro';
 import { getEventChallenges } from '../../../../../utils/content';
 
 export async function getStaticPaths() {
@@ -68,7 +68,7 @@ const pageDescription = `Explore ${eventChallengeCollections.length} ${categoryN
             <p>No challenges found :(</p>
           ) : (
             eventChallengeCollections.map((eventChallenge) => (
-              <ChallengeCard 
+              <CardChallenge 
                 event={eventChallenge} 
                 href={`/writeups/${eventChallenge.id.split('/').slice(0, -1).join('/')}`}
               />
