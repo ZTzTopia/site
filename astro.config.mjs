@@ -25,7 +25,7 @@ export default defineConfig({
   markdown: {
     rehypePlugins: [
       rehypeUniqueHeadingIds,
-      [rehypeShiftHeading, { shift: 1 }],
+      // [rehypeShiftHeading, { shift: 1 }],
       [
         rehypeAutolinkHeadings,
         {
