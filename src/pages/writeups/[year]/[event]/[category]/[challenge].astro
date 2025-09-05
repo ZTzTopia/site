@@ -73,7 +73,7 @@ const flattenedTags = [
           </span>
         ))}
 
-        {!props.challenge.data.blooded && (
+        {props.challenge.data.blooded && (
           <span class="flex flex-row items-center gap-x-2 text-xs font-medium px-2.5 py-0.5 rounded text-flexoki-dark-tx dark:text-flexoki-light-tx bg-flexoki-light-re dark:bg-flexoki-dark-re">
             <Icon name="lucide:droplet" />
             First Blood
