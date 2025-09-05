@@ -46,7 +46,7 @@ const challenges = defineCollection({
   loader: glob({ pattern: "*/*/*/*/*.{md,mdx}", base: "./src/data/writeups" }),
   schema: z.object({
     title: z.string(),
-    description: z.string().default("No description."),
+    description: z.string().default("No short description."),
     categories: z.union([
       z.string(),
       z.array(z.string()),

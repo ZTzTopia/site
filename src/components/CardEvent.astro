@@ -3,7 +3,7 @@ import { Icon } from 'astro-icon/components';
 import type { CollectionEntry } from 'astro:content';
 import { getBackgroundColorByCategory, getIconByCategory } from '../utils/color-icon';
 import { getEventChallenges } from '../utils/content';
-import Card from './core/Card.astro';
+import Card from './Core/Card.astro';
 
 const { event, ...rest } = Astro.props as { event: CollectionEntry<'events'> };
 
@@ -53,8 +53,8 @@ const flattenedTags = [
 // event.data.end
 // Make like Jan 15 - 17, 2025 or Jan 28 - Feb 1 2025
 
-const startDate = new Date(event.data.start);
-const endDate = new Date(event.data.end);
+const startDate = event.data.start ? new Date(String(event.data.start)) : null;
+const endDate = event.data.end ? new Date(String(event.data.end)) : null;
 
 const formatDateRange = (start: Date, end: Date) => {
   const options: Intl.DateTimeFormatOptions = {
@@ -86,7 +86,7 @@ const formatDateRange = (start: Date, end: Date) => {
       <div class="flex flex-row gap-2">
         <p class="text-flexoki-base-600 dark:text-flexoki-base-500">
           <Icon name="lucide:calendar" class="inline-block mr-1" />
-          {formatDateRange(startDate, endDate)}
+          {formatDateRange(startDate!, endDate!)}
         </p>
         <p class="text-flexoki-base-600 dark:text-flexoki-base-500">
           <Icon name="lucide:target" class="inline-block mr-1" />
@@ -104,9 +104,9 @@ const formatDateRange = (start: Date, end: Date) => {
               <div class="flex flex-row flex-wrap gap-2">
                 {flattenedCategories.map((category) => (
                   <span
-                    class={`flex flex-row items-center gap-x-2 text-xs font-medium px-2.5 py-0.5 rounded ${getBackgroundColorByCategory(category)}`}
+                    class={`flex flex-row items-center gap-x-2 text-xs font-medium px-2.5 py-0.5 rounded ${getBackgroundColorByCategory(category!)}`}
                   >
-                    <Icon name={getIconByCategory(category)} />
+                    <Icon name={getIconByCategory(category!)} />
                     {category}
                   </span>
                 ))}

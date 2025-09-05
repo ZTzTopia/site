@@ -1,13 +1,16 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
-import PageLayout from '../../../../../layouts/PageLayout.astro';
+import { getCollection } from 'astro:content';
 import CardChallenge from '../../../../../components/CardChallenge.astro';
+import PageLayout from '../../../../../layouts/PageLayout.astro';
 import { getEventChallenges } from '../../../../../utils/content';
+import { determineCardEdgeClasses } from '../../../../../utils/helper';
 
 export async function getStaticPaths() {
-  const eventChallengeCollections = await getEventChallenges(({ data }) => data.draft !== true);
-  const paths = eventChallengeCollections.map((eventChallenge) => {
-    const slugs = eventChallenge.id.split('/');
+  const challenges = await getEventChallenges(
+    ({ data }) => data.draft !== true
+  );
+  const paths = challenges.map((event) => {
+    const slugs = event.id.split('/');
     return {
       params: {
         year: slugs[0],
@@ -15,7 +18,7 @@ export async function getStaticPaths() {
         category: slugs[2],
       },
       props: {
-        eventChallenge,
+        event,
       },
     };
   });
@@ -29,14 +32,14 @@ interface Params {
   category: string;
 }
 
-interface Props {
-  event: CollectionEntry<'events'>;
-}
+// interface Props {
+//   event: CollectionEntry<'events'>;
+// }
 
 const params = Astro.params as Params;
-const props: Props = Astro.props;
+// const props: Props = Astro.props;
 
-const eventChallengeCollections = await getCollection(
+const challenges = await getCollection(
   'challenges',
   ({ id, data }) =>
     id.split('/')[0] === params.year &&
@@ -44,33 +47,28 @@ const eventChallengeCollections = await getCollection(
     id.split('/')[2] === params.category &&
     data.draft !== true
 );
-
-const categoryName = params.category;
-const year = params.year;
-
-const challengeNames = eventChallengeCollections.map((c) => c.data.title);
-
-const pageTitle = `${categoryName} Challenges for ${props.event.data.title} CTF`;
-const pageDescription = `Explore ${eventChallengeCollections.length} ${categoryName} challenges from ${props.event.data.title} CTF (${year}). Detailed solutions and writeups for ${challengeNames.slice(0, 5).join(', ')} and more.`;
 ---
 
-<PageLayout
-  title={pageTitle}
-  description={pageDescription}
-  type="article"
->
+<PageLayout title="Writeups" type="article">
   <div class="flex flex-col gap-4">
     <h1 class="text-4xl font-bold">{params.category}</h1>
     <div class="flex flex-col gap-4">
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+      <div class="grid md:grid-cols-3 gap-1">
         {
-          eventChallengeCollections.length === 0 ? (
+          challenges.length === 0 ? (
             <p>No challenges found :(</p>
           ) : (
-            eventChallengeCollections.map((eventChallenge) => (
-              <CardChallenge 
-                event={eventChallenge} 
+            challenges.map((eventChallenge, index) => (
+              <CardChallenge
+                event={eventChallenge}
                 href={`/writeups/${eventChallenge.id.split('/').slice(0, -1).join('/')}`}
+                class:list={[
+                  'challenge-card',
+                  'rounded-none',
+                  determineCardEdgeClasses(index, challenges.length, 1),
+                  'md:rounded-none',
+                  determineCardEdgeClasses(index, challenges.length, 3, 'md'),
+                ]}
               />
             ))
           )

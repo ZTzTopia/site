@@ -1,10 +1,14 @@
 ---
 import type { MarkdownHeading } from 'astro';
 import { Icon } from 'astro-icon/components';
-import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { render, type CollectionEntry } from 'astro:content';
 import CardIcon from '../../../../../components/CardIcon.astro';
-import Card from '../../../../../components/core/Card.astro';
+import Card from '../../../../../components/Core/Card.astro';
 import BlogLayout from '../../../../../layouts/BlogLayout.astro';
+import {
+  getBackgroundColorByCategory,
+  getIconByCategory,
+} from '../../../../../utils/color-icon';
 import { getEventChallenges } from '../../../../../utils/content';
 import { determineCardEdgeClasses } from '../../../../../utils/helper';
 
@@ -22,7 +26,7 @@ export async function getStaticPaths() {
         challenge: slugs[3],
       },
       props: {
-        eventChallenge: eventChallenge,
+        challenge: eventChallenge,
       },
     };
   });
@@ -31,84 +35,114 @@ export async function getStaticPaths() {
 }
 
 interface Props {
-  eventChallenge: CollectionEntry<'challenges'>;
-}
-
-interface Params {
-  year: string;
-  event: string;
-  category: string;
-  challenge: string;
+  challenge: CollectionEntry<'challenges'>;
 }
 
 const props: Props = Astro.props;
-const params = Astro.params as Params;
 
-const renderedEventChallenge = await render(props.eventChallenge);
+const renderedEventChallenge = await render(props.challenge);
 const headings: MarkdownHeading[] = renderedEventChallenge.headings;
 
-const events = await getCollection(
-  'events',
-  ({ id }) =>
-    id.split('/')[0] === params.year && id.split('/')[1] === params.event
-);
+const flattenedCategories = [
+  ...new Set(
+    (props.challenge.data.categories as string[])
+      .filter((category) => typeof category === 'string' && category.trim())
+      .map((category) => category.trim())
+  ),
+];
 
-const eventName = events[0]?.data.title;
-const challengeTitle = props.eventChallenge.data.title;
-const challengeCategory = props.eventChallenge.data.categories.join(', ');
-
-const pageTitle = `${challengeTitle} - ${eventName} Writeup`;
-const pageDescription = `Detailed solution for the ${challengeTitle} challenge (${challengeCategory}) from ${eventName}.`;
+const flattenedTags = [
+  ...new Set(
+    (props.challenge.data.tags as string[])
+      .filter((tag) => typeof tag === 'string' && tag.trim())
+      .map((tag) => `#${tag.trim().toLowerCase()}`)
+  ),
+];
 ---
 
-<BlogLayout
-  title={pageTitle}
-  description={pageDescription}
-  type="article"
-  {headings}
->
-  <h1 class="text-4xl font-bold" id="_halll">
-    {props.eventChallenge.data.title}
+<BlogLayout title="Writeups" type="article" {headings}>
+  {
+    flattenedCategories.length > 0 && (
+      <div class="flex flex-row flex-wrap gap-2">
+        {flattenedCategories.map((category) => (
+          <span
+            class={`flex flex-row items-center gap-x-2 text-xs font-medium px-2.5 py-0.5 rounded ${getBackgroundColorByCategory(category)}`}
+          >
+            <Icon name={getIconByCategory(category)} />
+            {category}
+          </span>
+        ))}
+
+        {!props.challenge.data.blooded && (
+          <span class="flex flex-row items-center gap-x-2 text-xs font-medium px-2.5 py-0.5 rounded text-flexoki-dark-tx dark:text-flexoki-light-tx bg-flexoki-light-re dark:bg-flexoki-dark-re">
+            <Icon name="lucide:droplet" />
+            First Blood
+          </span>
+        )}
+      </div>
+    )
+  }
+
+  <h1 class="text-4xl font-bold mt-2" id="_halll">
+    {props.challenge.data.title}
   </h1>
 
-  <div class="not-prose grid md:grid-cols-2 gap-1">
-    <CardIcon
-      class:list={[
-        'rounded-none',
-        determineCardEdgeClasses(0, 2, 1),
-        'md:rounded-none',
-        determineCardEdgeClasses(0, 2, 4, 'md'),
-      ]}
-    >
-      <p class="flex flex-col text-sm">
-        <span class="font-medium">Points</span>
-        <span
-          class="font-normal text-flexoki-base-600 dark:text-flexoki-base-500"
-          >{props.eventChallenge.data.points}</span
-        >
-      </p>
-    </CardIcon>
+  <p>
+    {props.challenge.data.description}
+  </p>
 
-    <CardIcon
-      class:list={[
-        'rounded-none',
-        determineCardEdgeClasses(1, 2, 1),
-        'md:rounded-none',
-        determineCardEdgeClasses(1, 2, 4, 'md'),
-      ]}
-    >
-      <p class="flex flex-col text-sm">
-        <span class="font-medium">Solves</span>
-        <span
-          class="font-normal text-flexoki-base-600 dark:text-flexoki-base-500"
-          >{props.eventChallenge.data.solves}</span
-        >
-      </p>
-    </CardIcon>
+  <div class="flex flex-col gap-2">
+    <div class="not-prose grid md:grid-cols-2 gap-1">
+      <CardIcon
+        class:list={[
+          'rounded-none',
+          determineCardEdgeClasses(0, 2, 1),
+          'md:rounded-none',
+          determineCardEdgeClasses(0, 2, 4, 'md'),
+        ]}
+      >
+        <p class="flex flex-col text-sm">
+          <span class="font-medium">Points</span>
+          <span
+            class="font-normal text-flexoki-base-600 dark:text-flexoki-base-500"
+            >{props.challenge.data.points}</span
+          >
+        </p>
+      </CardIcon>
+
+      <CardIcon
+        class:list={[
+          'rounded-none',
+          determineCardEdgeClasses(1, 2, 1),
+          'md:rounded-none',
+          determineCardEdgeClasses(1, 2, 4, 'md'),
+        ]}
+      >
+        <p class="flex flex-col text-sm">
+          <span class="font-medium">Solves</span>
+          <span
+            class="font-normal text-flexoki-base-600 dark:text-flexoki-base-500"
+            >{props.challenge.data.solves}</span
+          >
+        </p>
+      </CardIcon>
+    </div>
+
+    {
+      flattenedTags.length > 0 && (
+        <div class="flex flex-row flex-wrap gap-2">
+          {flattenedTags.map((tag) => (
+            <span class="flex flex-row items-center gap-x-2 text-xs font-medium px-2.5 py-0.5 rounded bg-flexoki-light-ui dark:bg-flexoki-dark-ui">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )
+    }
   </div>
 
   <renderedEventChallenge.Content />
-  
+
   <Card
     class="bg-flexoki-light-bg-2 dark:bg-flexoki-dark-bg-2 items-center not-prose"
   >
@@ -117,19 +151,19 @@ const pageDescription = `Detailed solution for the ${challengeTitle} challenge (
       class:list={[
         'flex',
         {
-          'flex-row': props.eventChallenge.data.flags.length <= 1,
-          'flex-col': props.eventChallenge.data.flags.length > 1,
+          'flex-row': props.challenge.data.flags.length <= 1,
+          'flex-col': props.challenge.data.flags.length > 1,
         },
         'gap-2 items-center justify-center',
       ]}
     >
       {
-        props.eventChallenge.data.flags.length > 1 ? (
-          props.eventChallenge.data.flags.map((flag, i) => (
+        props.challenge.data.flags.length > 1 ? (
+          props.challenge.data.flags.map((flag, i) => (
             <div class="flex items-center gap-2">
               <Icon name="lucide:flag" />
               <div class="flex-1">
-                <strong>{props.eventChallenge.data.title}</strong> Flag {i + 1}:{' '}
+                <strong>{props.challenge.data.title}</strong> Flag {i + 1}:{' '}
                 <strong>
                   <code class="break-all">{flag}</code>
                 </strong>
@@ -140,10 +174,10 @@ const pageDescription = `Detailed solution for the ${challengeTitle} challenge (
           <>
             <Icon name="lucide:flag" />
             <div class="flex-1">
-              <strong>{props.eventChallenge.data.title}</strong> Flag:{' '}
+              <strong>{props.challenge.data.title}</strong> Flag:{' '}
               <strong>
                 <code class="break-all rounded blur-xs hover:blur-none duration-300">
-                  {props.eventChallenge.data.flags[0]}
+                  {props.challenge.data.flags[0]}
                 </code>
               </strong>
             </div>

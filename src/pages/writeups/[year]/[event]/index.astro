@@ -1,12 +1,12 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import CardChallenge from '../../../../components/CardChallenge.astro';
-import PageLayout from '../../../../layouts/PageLayout.astro';
-// import Prose from '../../../../components/Core/Prose.astro';
-import Chip from '../../../../components/Core/Chip.astro';
-// import Card from '../../../../components/Core/Card.astro';
-import { determineCardEdgeClasses } from '../../../../utils/helper';
 import CardIcon from '../../../../components/CardIcon.astro';
+import Chip from '../../../../components/Core/Chip.astro';
+import Link from '../../../../components/Core/Link.astro';
+import Prose from '../../../../components/Core/Prose.astro';
+import PageLayout from '../../../../layouts/PageLayout.astro';
+import { determineCardEdgeClasses } from '../../../../utils/helper';
 
 export async function getStaticPaths() {
   const eventCollections = await getCollection('events');
@@ -47,10 +47,10 @@ const challenges = await getCollection(
 );
 
 const eventMeta = {
-  // 'Date': props.event.data.start,
-  Location: props.event.data.location,
-  Format: props.event.data.format,
-  URL: props.event.data.url || 'N/A',
+  // 'Date': { value: props.event.data.start, icon: 'lucide:calendar' },
+  Location: { value: props.event.data.location, icon: 'lucide:map-pin' },
+  Format: { value: props.event.data.format, icon: 'lucide:book' },
+  URL: { value: props.event.data.url || 'N/A', icon: 'lucide:link' },
 };
 
 const uniqueCategories = [
@@ -61,29 +61,22 @@ const uniqueCategories = [
       .filter(Boolean)
   ),
 ];
-// const renderedEvent = await render(props.event);
+const renderedEvent = await render(props.event);
 ---
 
 <PageLayout title="Competition" type="article">
   <div class="flex flex-col gap-4">
     <h1 class="text-4xl font-bold">{props.event.data.title}</h1>
     <div class="flex flex-col gap-4">
-      <span>{props.event.data.description}</span>
-
-      <!-- <Prose>
+      <Prose>
         <renderedEvent.Content />
-      </Prose> -->
-
-      <!-- <Card href={props.event.data.url} target="_blank">
-        <div slot="content">
-          <p class="font-medium">{props.event.data.title}</p>
-        </div>
-      </Card> -->
+      </Prose>
 
       <div class="grid md:grid-cols-3 gap-1">
         {
           Object.entries(eventMeta).map(([key, value], index) => (
             <CardIcon
+              icon={value.icon}
               class:list={[
                 'rounded-none',
                 determineCardEdgeClasses(
@@ -103,7 +96,15 @@ const uniqueCategories = [
               <div>
                 <p class="flex flex-col text-sm">
                   <span class="font-medium">{key}</span>
-                  <span class="font-normal text-flexoki-base-600 dark:text-flexoki-base-500">{value}</span>
+                  <span class="font-normal text-flexoki-base-600 dark:text-flexoki-base-500">
+                    {key === 'URL' && value.value !== 'N/A' ? (
+                      <Link href={value.value} target="_blank" rel="noopener noreferrer">
+                        To Website
+                      </Link>
+                    ) : (
+                      value.value
+                    )}
+                  </span>
                 </p>
               </div>
             </CardIcon>
@@ -127,7 +128,7 @@ const uniqueCategories = [
         </div>
       </div>
 
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-1">
+      <div class="grid md:grid-cols-3 gap-1">
         {
           challenges.length === 0 ? (
             <p>No challenges found :(</p>

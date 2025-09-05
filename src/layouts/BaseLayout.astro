@@ -17,9 +17,9 @@ interface Props {
 const {
   title,
   description = 'Software Engineer and CTF Player from Tangerang, Indonesia',
-  image,
-  author,
-  type,
+  image = '',
+  author = '',
+  type = 'website',
 } = Astro.props as Props;
 
 const navItems = [
@@ -87,7 +87,14 @@ paths = paths.filter((path) => path.label !== '');
 <!doctype html>
 <html lang="en">
   <head>
-    <Head {...{ title, description, image, author, type }} />
+    <!-- TODO: Only pass defined props -->
+    <Head
+      title={title}
+      description={description}
+      image={image}
+      author={author}
+      type={type}
+    />
   </head>
   <body
     class="bg-flexoki-light-bg dark:bg-flexoki-dark-bg text-flexoki-light-tx dark:text-flexoki-dark-tx antialiased"
