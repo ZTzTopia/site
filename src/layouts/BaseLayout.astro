@@ -1,14 +1,16 @@
 ---
-import '../styles/global.css';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
 import Head from '../components/Head.astro';
+import Header from '../components/Header.astro';
 import ScrollToTop from '../components/ScrollToTop.astro';
+import '../styles/global.css';
 
 interface Props {
   title: string;
   description?: string;
+  nofollow?: boolean;
+  noindex?: boolean;
   image?: string;
   author?: string;
   type?: 'website' | 'article';
@@ -17,6 +19,8 @@ interface Props {
 const {
   title,
   description = 'Software Engineer and CTF Player from Tangerang, Indonesia',
+  nofollow = false,
+  noindex = false,
   image = '',
   author = '',
   type = 'website',
@@ -87,10 +91,11 @@ paths = paths.filter((path) => path.label !== '');
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- TODO: Only pass defined props -->
     <Head
       title={title}
       description={description}
+      nofollow={nofollow}
+      noindex={noindex}
       image={image}
       author={author}
       type={type}

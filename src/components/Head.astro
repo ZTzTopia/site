@@ -1,5 +1,4 @@
 ---
-// import { ClientRouter } from 'astro:transitions';
 import { SEO } from "astro-seo";
 import { stripTrailingSlash } from '../utils/path';
 import ThemeProvider from './ThemeProvider.astro';
@@ -7,6 +6,8 @@ import ThemeProvider from './ThemeProvider.astro';
 interface Props {
   title: string;
   description: string;
+  noindex?: boolean;
+  nofollow?: boolean;
   image?: string;
   author?: string;
   type?: 'website' | 'article';
@@ -15,6 +16,8 @@ interface Props {
 const { 
   title, 
   description, 
+  nofollow = false,
+  noindex = false,
   image = '',
   author = "ztz0",
   type = "website",
@@ -39,6 +42,8 @@ const ogImage = image !== '' && Astro.site
   charset="utf-8"
   description={description}
   canonical={canonical.href}
+  nofollow={nofollow}
+  noindex={noindex}
   openGraph={{
     basic: {
       title: title,
@@ -50,7 +55,7 @@ const ogImage = image !== '' && Astro.site
   twitter={{
     card: ogImage ? "summary_large_image" : "summary",
     site: "@ztz0",
-    creator: `@${author}`,
+    creator: `@${author || "ztz0"}`,
     title: title,
     description: description,
     ...(ogImage && { image: ogImage }),
@@ -66,7 +71,7 @@ const ogImage = image !== '' && Astro.site
     ],
   }}
 />
-<script type="application/ld+json">
+<script type="application/ld+json" set:html=
   {
     JSON.stringify({
       "@context": "https://schema.org",
@@ -76,18 +81,16 @@ const ogImage = image !== '' && Astro.site
       "image": ogImage,
       "author": {
         "@type": "Person",
-        "name": author
+        "name": author || "ztz0"
       },
       "publisher": {
         "@type": "Person",
         "name": "ztz0"
       },
-      ...(publishDate !== new Date('2023-01-01') && {
-        "datePublished": publishDate.toISOString()
-      })
+      // "datePublished": publishDate.toISOString()
     })
   }
-</script>
+/>
 {Astro.site && <link rel="sitemap" href={sitemap} />}
 
 <ThemeProvider />
