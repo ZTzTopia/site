@@ -1,10 +1,13 @@
 ---
 import { Icon } from 'astro-icon/components';
-import PageLayout from '../layouts/PageLayout.astro';
 import Button from '../components/Core/Button.astro';
+import PageLayout from '../layouts/PageLayout.astro';
 ---
 
-<PageLayout title="Page not found">
+<PageLayout 
+  title="Page not found"
+  noindex={true}
+>
   <div
     class="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-center"
   >
