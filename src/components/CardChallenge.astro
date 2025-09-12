@@ -60,7 +60,7 @@ const flattenedTags = [
         <div class="flex flex-wrap items-center gap-2">
           {flattenedCategories.map((category) => (
             <span
-              class={`flex flex-row items-center gap-x-2 text-xs font-medium px-2.5 py-0.5 rounded
+              class={`flex flex-row items-center gap-x-1 text-xs font-medium px-2.5 py-0.5 rounded
               ${getBackgroundColorByCategory(category!)}
             `}
             >
@@ -81,14 +81,14 @@ const flattenedTags = [
       (event.data.points || event.data.points) && (
         <div class="flex flex-row gap-2">
           {event.data.points && event.data.points >= 1 && (
-            <p class="text-flexoki-base-600 dark:text-flexoki-base-500">
-              <Icon name="lucide:trophy" class="inline-block mr-1" />
+            <p class="flex flex-row items-center gap-1 text-flexoki-base-600 dark:text-flexoki-base-500">
+              <Icon name="lucide:trophy" />
               {event.data.points} point{event.data.points === 1 ? '' : 's'}
             </p>
           )}
           {event.data.solves && event.data.solves >= 1 && (
-            <p class="text-flexoki-base-600 dark:text-flexoki-base-500">
-              <Icon name="lucide:target" class="inline-block mr-1" />
+            <p class="flex flex-row items-center gap-1 text-flexoki-base-600 dark:text-flexoki-base-500">
+              <Icon name="lucide:target" />
               {event.data.solves} solve{event.data.solves === 1 ? '' : 's'}
             </p>
           )}
