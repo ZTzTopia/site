@@ -1,8 +1,8 @@
 ---
 import PageLayout from '../../../layouts/PageLayout.astro';
-import { getEventChallenges } from '../../../utils/content';
+import { getChallenges } from '../../../utils/content';
 
-const challenges = await getEventChallenges(
+const challenges = await getChallenges(
   ({ data }) => data.draft !== true
 );
 

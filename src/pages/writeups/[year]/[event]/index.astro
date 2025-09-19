@@ -53,18 +53,28 @@ const eventMeta = {
   URL: { value: props.event.data.url || 'N/A', icon: 'lucide:link' },
 };
 
-const uniqueCategories = [
+const renderedEvent = await render(props.event);
+
+const categories = [
   ...new Set(
     challenges
-      .map((challenge) => challenge.data.categories)
-      .flat()
-      .filter(Boolean)
+      .flatMap((challenge) =>
+        (challenge.data.categories as string[])
+          .filter((category) => typeof category === 'string' && category.trim())
+          .map((category) => category.trim())
+      )
   ),
 ];
-const renderedEvent = await render(props.event);
+
+const title = `${props.event.data.title} Writeups`;
+const description = props.event.data.description || `Writeups for ${props.event.data.title} event.`;
 ---
 
-<PageLayout title="Competition" type="article">
+<PageLayout 
+  title={title}
+  description={description}
+  type="article"
+>
   <div class="flex flex-col gap-4">
     <h1 class="text-4xl font-bold">{props.event.data.title}</h1>
     <div class="flex flex-col gap-4">
@@ -119,7 +129,7 @@ const renderedEvent = await render(props.event);
             >All</Chip
           >
           {
-            uniqueCategories.map((category) => (
+            categories.map((category) => (
               <Chip id={`filter-${category}`} data-category={category}>
                 {category}
               </Chip>
@@ -133,11 +143,11 @@ const renderedEvent = await render(props.event);
           challenges.length === 0 ? (
             <p>No challenges found :(</p>
           ) : (
-            challenges.map((eventChallenge, index) => {
+            challenges.map((challenge, index) => {
               return (
                 <CardChallenge
-                  event={eventChallenge}
-                  href={`/writeups/${eventChallenge.id.split('/').slice(0, -1).join('/')}`}
+                  event={challenge}
+                  href={`/writeups/${challenge.id.split('/').slice(0, -1).join('/')}`}
                   class:list={[
                     'challenge-card',
                     'rounded-none',
@@ -145,7 +155,7 @@ const renderedEvent = await render(props.event);
                     'md:rounded-none',
                     determineCardEdgeClasses(index, challenges.length, 3, 'md'),
                   ]}
-                  data-categories={uniqueCategories.join(',')}
+                  data-categories={challenge.data.categories.join(',')}
                 />
               );
             })

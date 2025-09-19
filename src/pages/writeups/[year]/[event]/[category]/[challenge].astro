@@ -9,15 +9,15 @@ import {
   getBackgroundColorByCategory,
   getIconByCategory,
 } from '../../../../../utils/color-icon';
-import { getEventChallenges } from '../../../../../utils/content';
+import { getChallenges, getEvents } from '../../../../../utils/content';
 import { determineCardEdgeClasses } from '../../../../../utils/helper';
 
 export async function getStaticPaths() {
-  const eventChallengeCollections = await getEventChallenges(
+  const challenges = await getChallenges(
     ({ data }) => data.draft !== true
   );
-  const paths = eventChallengeCollections.map((eventChallenge) => {
-    const slugs = eventChallenge.id.split('/');
+  const paths = challenges.map((challenge) => {
+    const slugs = challenge.id.split('/');
     return {
       params: {
         year: slugs[0],
@@ -26,7 +26,7 @@ export async function getStaticPaths() {
         challenge: slugs[3],
       },
       props: {
-        challenge: eventChallenge,
+        challenge,
       },
     };
   });
@@ -34,16 +34,24 @@ export async function getStaticPaths() {
   return paths;
 }
 
+interface Params {
+  year: string | undefined;
+  event: string | undefined;
+  category: string | undefined;
+  challenge: string | undefined;
+}
+
 interface Props {
   challenge: CollectionEntry<'challenges'>;
 }
 
+const params: Params = Astro.params;
 const props: Props = Astro.props;
 
-const renderedEventChallenge = await render(props.challenge);
-const headings: MarkdownHeading[] = renderedEventChallenge.headings;
+const renderedChallenge = await render(props.challenge);
+const headings: MarkdownHeading[] = renderedChallenge.headings;
 
-const flattenedCategories = [
+const categories = [
   ...new Set(
     (props.challenge.data.categories as string[])
       .filter((category) => typeof category === 'string' && category.trim())
@@ -51,22 +59,38 @@ const flattenedCategories = [
   ),
 ];
 
-const flattenedTags = [
+const tags = [
   ...new Set(
     (props.challenge.data.tags as string[])
       .filter((tag) => typeof tag === 'string' && tag.trim())
       .map((tag) => `#${tag.trim().toLowerCase()}`)
   ),
 ];
+
+const event = (await getEvents(
+  ({ id }) => id.startsWith(`${params.year}/${params.event}`)
+))[0];
+
+if (!event) {
+  throw new Error(`Event not found: ${params.year}/${params.event}`);
+}
+
+const title = `${props.challenge.data.title} - ${event.data.title} Writeup`;
+const description = props.challenge.data.description || `Writeup for ${props.challenge.data.title} challenge at ${event.data.title}.`;
 ---
 
-<BlogLayout title="Writeups" type="article" {headings}>
+<BlogLayout 
+  title={title} 
+  description={description}
+  type="article" 
+  {headings}
+>
   {
-    flattenedCategories.length > 0 && (
+    categories.length > 0 && (
       <div class="flex flex-row flex-wrap gap-2">
-        {flattenedCategories.map((category) => (
+        {categories.map((category) => (
           <span
-            class={`flex flex-row items-center gap-x-2 text-xs font-medium px-2.5 py-0.5 rounded ${getBackgroundColorByCategory(category)}`}
+            class={`flex flex-row items-center gap-x-1 text-xs font-medium px-2.5 py-0.5 rounded ${getBackgroundColorByCategory(category)}`}
           >
             <Icon name={getIconByCategory(category)} />
             {category}
@@ -106,11 +130,10 @@ const flattenedTags = [
           <span class="font-medium">Points</span>
           <span
             class="font-normal text-flexoki-base-600 dark:text-flexoki-base-500"
-            >{props.challenge.data.points}</span
+            >{props.challenge.data.points ?? 'N/A'}</span
           >
         </p>
       </CardIcon>
-
       <CardIcon
         icon="lucide:target"
         class:list={[
@@ -124,16 +147,16 @@ const flattenedTags = [
           <span class="font-medium">Solves</span>
           <span
             class="font-normal text-flexoki-base-600 dark:text-flexoki-base-500"
-            >{props.challenge.data.solves}</span
+            >{props.challenge.data.solves ?? 'N/A'}</span
           >
         </p>
       </CardIcon>
     </div>
 
     {
-      flattenedTags.length > 0 && (
+      tags.length > 0 && (
         <div class="flex flex-row flex-wrap gap-2">
-          {flattenedTags.map((tag) => (
+          {tags.map((tag) => (
             <span class="flex flex-row items-center gap-x-2 text-xs font-medium px-2.5 py-0.5 rounded bg-flexoki-light-ui dark:bg-flexoki-dark-ui">
               {tag}
             </span>
@@ -143,7 +166,7 @@ const flattenedTags = [
     }
   </div>
 
-  <renderedEventChallenge.Content />
+  <renderedChallenge.Content />
 
   <Card
     class="bg-flexoki-light-bg-2 dark:bg-flexoki-dark-bg-2 items-center not-prose"

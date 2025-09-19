@@ -33,7 +33,7 @@ const events = defineCollection({
   loader: glob({ pattern: "*/*/*.{md,mdx}", base: "./src/data/writeups" }),
   schema: z.object({
     title: z.string(),
-    description: z.string().default("No description."),
+    description: z.string().optional(),
     start: z.date().optional(),
     end: z.date().optional(),
     location: z.string().optional(),
@@ -46,7 +46,7 @@ const challenges = defineCollection({
   loader: glob({ pattern: "*/*/*/*/*.{md,mdx}", base: "./src/data/writeups" }),
   schema: z.object({
     title: z.string(),
-    description: z.string().default("No short description."),
+    description: z.string().optional(),
     categories: z.union([
       z.string(),
       z.array(z.string()),

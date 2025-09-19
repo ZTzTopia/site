@@ -1,24 +1,20 @@
 ---
-import { getCollection } from 'astro:content';
 import CardChallenge from '../../../../../components/CardChallenge.astro';
 import PageLayout from '../../../../../layouts/PageLayout.astro';
-import { getEventChallenges } from '../../../../../utils/content';
-import { determineCardEdgeClasses } from '../../../../../utils/helper';
+import { getChallenges, getEvents } from '../../../../../utils/content';
+import { determineCardEdgeClasses, normalizeCategoryName } from '../../../../../utils/helper';
 
 export async function getStaticPaths() {
-  const challenges = await getEventChallenges(
+  const challenges = await getChallenges(
     ({ data }) => data.draft !== true
   );
-  const paths = challenges.map((event) => {
-    const slugs = event.id.split('/');
+  const paths = challenges.map((challenge) => {
+    const slugs = challenge.id.split('/');
     return {
       params: {
         year: slugs[0],
         event: slugs[1],
         category: slugs[2],
-      },
-      props: {
-        event,
       },
     };
   });
@@ -32,24 +28,31 @@ interface Params {
   category: string;
 }
 
-// interface Props {
-//   event: CollectionEntry<'events'>;
-// }
-
 const params = Astro.params as Params;
-// const props: Props = Astro.props;
 
-const challenges = await getCollection(
-  'challenges',
+const event = (await getEvents(
+  ({ id }) => id.startsWith(`${params.year}/${params.event}`)
+))[0];
+
+if (!event) {
+  throw new Error(`Event not found: ${params.year}/${params.event}`);
+}
+
+const challenges = await getChallenges(
   ({ id, data }) =>
-    id.split('/')[0] === params.year &&
-    id.split('/')[1] === params.event &&
-    id.split('/')[2] === params.category &&
+    id.startsWith(`${params.year}/${params.event}/${params.category}`) &&
     data.draft !== true
 );
+
+const title = `${normalizeCategoryName(params.category)} Challenges - ${event.data.title} Writeups`;
+const description = `A collection of writeups for ${normalizeCategoryName(params.category)} challenges at ${event.data.title}.`;
 ---
 
-<PageLayout title="Writeups" type="article">
+<PageLayout 
+  title={title}
+  description={description}
+  noindex={true}
+>
   <div class="flex flex-col gap-4">
     <h1 class="text-4xl font-bold">{params.category}</h1>
     <div class="flex flex-col gap-4">

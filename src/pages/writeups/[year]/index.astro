@@ -40,9 +40,16 @@ const events = await getEvents((event) => {
   const eventYear = new Date(event.data.start).getFullYear().toString();
   return eventYear === year;
 });
+
+const title = `Writeups from ${year} CTF Competitions`;
+const description = `A collection of writeups from various CTF competitions held in ${year}.`;
 ---
 
-<PageLayout title="Writeups">
+<PageLayout 
+  title={title}
+  description={description}
+  noindex={true}
+>
   <div class="flex flex-col gap-2">
     <div class="flex flex-row items-center justify-between gap-1 ps-4">
       <h2 class="text-lg font-semibold">{year}</h2>

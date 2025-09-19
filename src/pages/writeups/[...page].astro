@@ -36,7 +36,10 @@ const groupedEvents = page.data.reduce((acc, event) => {
 }, new Map<string, any[]>());
 ---
 
-<PageLayout title="Writeups">
+<PageLayout 
+  title="Writeups"
+  description="A collection of writeups for various CTF competitions."
+>
   <div class="flex flex-col gap-2">
     <h1 class="text-3xl font-bold">Writeups</h1>
     <div class="flex flex-col gap-4">

@@ -1,10 +1,10 @@
 ---
 import CardChallenge from '../../../components/CardChallenge.astro';
 import PageLayout from '../../../layouts/PageLayout.astro';
-import { getEventChallenges } from '../../../utils/content';
+import { getChallenges } from '../../../utils/content';
 
 export async function getStaticPaths() {
-  const challenges = await getEventChallenges(
+  const challenges = await getChallenges(
     ({ data }) => 
       data.draft !== true
   );
@@ -37,7 +37,7 @@ interface Params {
 }
 
 const { tag } = Astro.params as Params;
-const challenges = await getEventChallenges(
+const challenges = await getChallenges(
   ({ data }) => 
     data.tags.includes(tag) &&
     data.draft !== true

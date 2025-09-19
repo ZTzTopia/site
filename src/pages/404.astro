@@ -4,10 +4,7 @@ import Button from '../components/Core/Button.astro';
 import PageLayout from '../layouts/PageLayout.astro';
 ---
 
-<PageLayout 
-  title="Page not found"
-  noindex={true}
->
+<PageLayout title="Page not found" noindex={true}>
   <div
     class="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-center"
   >
@@ -22,12 +19,25 @@ import PageLayout from '../layouts/PageLayout.astro';
       Oops! The page you're looking for doesn't exist.<br />
       Maybe you took a wrong turn in cyberspace.
     </p>
-    <Button
-      variant="secondary"
-      onclick="window.history.back()"
-    >
+    <Button variant="secondary" id="back-button">
       <Icon name="lucide:arrow-left-circle" class="inline-block mr-1" />
       Back to Previous Page
     </Button>
   </div>
 </PageLayout>
+
+<script>
+  const backToPreviousPageButton = document.querySelector('#back-button');
+  if (backToPreviousPageButton === null) {
+    throw new Error('Button not found');
+  }
+
+  backToPreviousPageButton.addEventListener('click', () => {
+    const prev = document.referrer;
+    if (prev && prev.startsWith(window.location.origin)) {
+      window.history.back();
+    } else {
+      window.location.href = '/';
+    }
+  });
+</script>

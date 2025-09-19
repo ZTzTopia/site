@@ -28,7 +28,7 @@ export async function getEvents(
   });
 }
 
-export async function getEventChallenges(
+export async function getChallenges(
   filter?: (challenge: CollectionEntry<'challenges'>) => boolean
 ): Promise<CollectionEntry<'challenges'>[]> {
   return getCollection('challenges', filter);
