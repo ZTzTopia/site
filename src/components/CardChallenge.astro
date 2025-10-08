@@ -78,20 +78,20 @@ const flattenedTags = [
       )
     }
     {
-      (event.data.points || event.data.points) && (
+      (
         <div class="flex flex-row gap-2">
-          {event.data.points && event.data.points >= 1 && (
-            <p class="flex flex-row items-center gap-1 text-flexoki-base-600 dark:text-flexoki-base-500">
-              <Icon name="lucide:trophy" />
-              {event.data.points} point{event.data.points === 1 ? '' : 's'}
-            </p>
-          )}
-          {event.data.solves && event.data.solves >= 1 && (
-            <p class="flex flex-row items-center gap-1 text-flexoki-base-600 dark:text-flexoki-base-500">
-              <Icon name="lucide:target" />
-              {event.data.solves} solve{event.data.solves === 1 ? '' : 's'}
-            </p>
-          )}
+          <p class="flex flex-row items-center gap-1 text-flexoki-base-600 dark:text-flexoki-base-500">
+            <Icon name="lucide:trophy" />
+            {event.data.points
+              ? `${event.data.points} point${event.data.points === 1 ? '' : 's'}`
+              : 'N/A'}
+          </p>
+          <p class="flex flex-row items-center gap-1 text-flexoki-base-600 dark:text-flexoki-base-500">
+            <Icon name="lucide:target" />
+            {event.data.solves
+              ? `${event.data.solves} solve${event.data.solves === 1 ? '' : 's'}`
+              : 'N/A'}
+          </p>
         </div>
       )
     }
