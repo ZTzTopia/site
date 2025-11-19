@@ -159,23 +159,35 @@ function renderTrack(container: HTMLElement, track: Track | null) {
 }
 
 export function initMusicPresence(container: HTMLElement) {
-  if (!container) return;
+  if (!container) {
+    return;
+  }
 
   const cached = getCachedTrack();
   if (cached) {
     renderTrack(container, cached);
     fetchTrackWithRetry().then(track => {
-      if (track) {
-        setCachedTrack(track);
-        renderTrack(container, track);
+      if (!track) {
+        return;
       }
+
+      const cachedHash = `${cached.name}-${cached.artist['#text']}-${cached.album['#text']}-${cached["@attr"]?.nowplaying}`;
+      const fetchedHash = `${track.name}-${track.artist['#text']}-${track.album['#text']}-${track["@attr"]?.nowplaying}`;
+      if (cachedHash === fetchedHash) {
+        return;
+      }
+
+      setCachedTrack(track);
+      renderTrack(container, track);
     });
   } else {
     fetchTrackWithRetry().then(track => {
-      renderTrack(container, track);
-      if (track) {
-        setCachedTrack(track);
+      if (!track) {
+        return;
       }
+
+      renderTrack(container, track);
+      setCachedTrack(track);
     });
   }
 }
