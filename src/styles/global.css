@@ -349,6 +349,10 @@ body ::-webkit-scrollbar-thumb {
     @apply md:opacity-100;
   }
 
+  pre:has(+ .button-container) + .button-container .copy-button:not(.keep-svg):hover {
+    @apply md:opacity-100;
+  }
+
   .button-container .copy-button {
     @apply p-2 rounded bg-flexoki-light-ui dark:bg-flexoki-dark-ui border border-flexoki-light-ui-2 dark:border-flexoki-dark-ui-2 transition duration-100 ease-in-out;
 
