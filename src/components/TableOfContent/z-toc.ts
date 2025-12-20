@@ -4,6 +4,9 @@ export class TableOfContent extends HTMLElement {
   private resizeTimeout: NodeJS.Timeout | null = null;
   private links: HTMLAnchorElement[] = [];
 
+  private _inited = false;
+  private _onResize: (() => void) | null = null;
+
   protected get current(): HTMLAnchorElement | null {
     return this._current;
   }
@@ -21,21 +24,24 @@ export class TableOfContent extends HTMLElement {
     this._current = link;
   }
 
-  private onIdle = (cb: IdleRequestCallback) =>
+  private onIdle = (cb: () => void) =>
     (window.requestIdleCallback || ((cb) => setTimeout(cb, 150)))(cb);
 
   constructor() {
     super();
-    this.onIdle(() => this.init());
+    document.addEventListener('astro:page-load', () => this.onIdle(() => this.init()));
   }
 
   private init(): void {
+    if (this._inited) return;
+    this._inited = true;
+
     this._current = this.querySelector<HTMLAnchorElement>('a[aria-current="true"]');
     this.links = Array.from(this.querySelectorAll<HTMLAnchorElement>('a'));
 
     this.setupObservers();
 
-    document.addEventListener('resize', () => {
+    this._onResize = () => {
       if (this.observer) {
         this.observer.disconnect();
         this.observer = null;
@@ -48,7 +54,35 @@ export class TableOfContent extends HTMLElement {
       this.resizeTimeout = setTimeout(() => {
         this.setupObservers();
       }, 250);
-    });
+    };
+
+    window.addEventListener('resize', this._onResize);
+    document.addEventListener('astro:before-swap', () => this.destroy(), { once: true });
+  }
+
+  private destroy(): void {
+    if (this.observer) {
+      this.observer.disconnect();
+      this.observer = null;
+    }
+
+    if (this._onResize) {
+      window.removeEventListener('resize', this._onResize);
+      this._onResize = null;
+    }
+
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = null;
+    }
+
+    this.links = [];
+    this._current = null;
+    this._inited = false;
+  }
+
+  disconnectedCallback() {
+    this.destroy();
   }
 
   private setupObservers(): void {

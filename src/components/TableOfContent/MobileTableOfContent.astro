@@ -42,29 +42,50 @@ const { headings } = Astro.props as { headings: MarkdownHeading[] };
 </style>
 
 <script is:inline>
-  const header = document.querySelector('#header');
-  const nav = document.querySelector('#nav');
-  const details = document.querySelector('#nav details');
+  document.addEventListener('astro:page-load', () => {
+    const onIdle = (cb) =>
+      (window.requestIdleCallback || ((cb) => setTimeout(cb, 150)))(cb);
 
-  if (header && nav) {
-    const headerHeight = header.getBoundingClientRect().height;
-    nav.style.top = `${headerHeight}px`;
-  }
+    onIdle(() => {
+      const adjustNavTop = () => {
+        const header = document.querySelector('#header');  
+        if (!header) return;
 
-  window.addEventListener('resize', () => {
-    if (header && nav) {
-      const headerHeight = header.getBoundingClientRect().height;
-      nav.style.top = `${headerHeight}px`;
-    }
-  });
+        const nav = document.querySelector('#nav');
+        if (!nav) return;
 
-  document.addEventListener('click', (event) => {
-    if (
-      !header.contains(event.target) &&
-      !nav.contains(event.target) &&
-      details
-    ) {
-      details.removeAttribute('open');
-    }
+        const headerHeight = header.getBoundingClientRect().height;
+        nav.style.top = `${headerHeight}px`;
+      };
+
+      const onClick = (event) => {
+        const header = document.querySelector('#header');
+        if (!header) return;
+
+        const nav = document.querySelector('#nav');
+        if (!nav) return;
+
+        const details = document.querySelector('#nav details');
+        if (!details) return;
+
+        const target = event.target;
+        if (header.contains(target)) return;
+        if (nav.contains(target)) return;
+
+        if (details.hasAttribute('open')) {
+          details.removeAttribute('open');
+        }
+      };
+
+      adjustNavTop();
+
+      window.addEventListener('resize', adjustNavTop);
+      document.addEventListener('click', onClick);
+
+      document.addEventListener('astro:before-swap', () => {
+        window.removeEventListener('resize', adjustNavTop);
+        document.removeEventListener('click', onClick);
+      }, { once: true });
+    });
   });
 </script>

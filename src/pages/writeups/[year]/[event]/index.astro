@@ -167,41 +167,52 @@ const description = props.event.data.description || `Writeups for ${props.event.
 </PageLayout>
 
 <script>
-  const onIdle = (cb: IdleRequestCallback) =>
-    (window.requestIdleCallback || ((cb) => setTimeout(cb, 150)))(cb);
+  document.addEventListener('astro:page-load', () => {
+    const onIdle = (cb: () => void) =>
+      (window.requestIdleCallback || ((cb) => setTimeout(cb, 150)))(cb);
 
-  onIdle(() => {
-    const filterButtons = document.querySelectorAll('[data-category]');
-    const CardChallenges = document.querySelectorAll('.challenge-card');
+    onIdle(() => {
+      const filterButtons = document.querySelectorAll('[data-category]');
+      const cardChallenges = document.querySelectorAll('.challenge-card');
+      const registeredHandlers: Array<{ button: Element; handler: (e: Event) => void }> = [];
 
-    document.getElementById('filter-all')?.classList.add('selected-filter');
+      document.getElementById('filter-all')?.classList.add('selected-filter');
 
-    filterButtons.forEach((button) => {
-      button.addEventListener('click', () => {
-        filterButtons.forEach((btn) => btn.classList.remove('selected-filter'));
-        button.classList.add('selected-filter');
+      filterButtons.forEach((button) => {
+        const handler = () => {
+          filterButtons.forEach((btn) => btn.classList.remove('selected-filter'));
+          button.classList.add('selected-filter');
 
-        const selectedCategory = button.getAttribute('data-category');
-        if (!selectedCategory) {
-          return;
-        }
-
-        CardChallenges.forEach((card: Element) => {
-          if (!(card instanceof HTMLElement)) {
+          const selectedCategory = button.getAttribute('data-category');
+          if (!selectedCategory) {
             return;
           }
 
-          if (selectedCategory === 'all') {
-            card.style.display = 'block';
-          } else if (selectedCategory?.length > 0) {
-            const cardCategories =
-              card.getAttribute('data-categories')?.split(',') || [];
+          cardChallenges.forEach((card: Element) => {
+            if (!(card instanceof HTMLElement)) {
+              return;
+            }
+
+            if (selectedCategory === 'all') {
+              card.style.display = 'block';
+              return;
+            }
+
+            if (selectedCategory?.length == 0) return;
+            const cardCategories = card.getAttribute('data-categories')?.split(',') || [];
             card.style.display = cardCategories.includes(selectedCategory)
               ? 'block'
               : 'none';
-          }
-        });
+          });
+        };
+
+        button.addEventListener('click', handler);
+        registeredHandlers.push({ button, handler });
       });
+
+      document.addEventListener('astro:before-swap', () => {
+        registeredHandlers.forEach(({ button, handler }) => button.removeEventListener('click', handler));
+      }, { once: true });
     });
   });
 </script>

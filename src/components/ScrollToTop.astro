@@ -13,24 +13,31 @@ import Button from './Core/Button.astro';
 </Button>
 
 <script is:inline>
-  const onIdle = (cb) =>
-    (window.requestIdleCallback || ((cb) => setTimeout(cb, 150)))(cb);
+  document.addEventListener('astro:page-load', () => {
+    const onIdle = (cb) =>
+      (window.requestIdleCallback || ((cb) => setTimeout(cb, 150)))(cb);
 
-  onIdle(() => {
-    const scrollToTopButton = document.getElementById('scroll-to-top');
-    const footer = document.querySelector('footer');
+    onIdle(() => {
+      const scrollToTopButton = document.getElementById('scroll-to-top');
+      if (!scrollToTopButton) return;
 
-    if (scrollToTopButton && footer) {
-      scrollToTopButton.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
+      const footer = document.querySelector('footer');
+      if (!footer) return;
 
-      window.addEventListener('scroll', () => {
-        const footerVisible =
-          footer.getBoundingClientRect().top <= window.innerHeight;
+      const onClick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+      const onScroll = () => {
+        const footerVisible = footer.getBoundingClientRect().top <= window.innerHeight;
         const shouldShowButton = window.scrollY > 256 && !footerVisible;
         scrollToTopButton.classList.toggle('hidden', !shouldShowButton);
-      });
-    }
+      };
+
+      scrollToTopButton.addEventListener('click', onClick);
+      window.addEventListener('scroll', onScroll);
+
+      document.addEventListener('astro:before-swap', () => {
+        scrollToTopButton.removeEventListener('click', onClick);
+        window.removeEventListener('scroll', onScroll);
+      }, { once: true });
+    });
   });
 </script>

@@ -127,42 +127,54 @@ paths = paths.filter((path) => path.label !== '');
 </html>
 
 <script>
-  const onIdle = (cb: IdleRequestCallback) =>
-    (window.requestIdleCallback || ((cb) => setTimeout(cb, 150)))(cb);
+  document.addEventListener('astro:page-load', () => {
+    const onIdle = (cb: () => void) =>
+      (window.requestIdleCallback || ((cb) => setTimeout(cb, 150)))(cb);
 
-  onIdle(() => {
-    const copyButtons = document.querySelectorAll(
-      '.copy-button'
-    ) as NodeListOf<HTMLButtonElement>;
-    copyButtons.forEach((button) => {
-      if (!button.dataset.code) {
-        console.warn('Copy button without data-code attribute found:', button);
-        return;
-      }
+    onIdle(() => {
+      const added: Array<{ button: Element; handler: (e: Event) => void }> = [];
+      const copyButtons = document.querySelectorAll(
+        '.copy-button'
+      ) as NodeListOf<HTMLButtonElement>;
 
-      const timeouts: NodeJS.Timeout[] = [];
-      button.addEventListener('click', () => {
-        if (timeouts.length > 0) {
-          timeouts.forEach((timeout) => clearTimeout(timeout));
+      copyButtons.forEach((button) => {
+        if (!button.dataset.code) {
+          console.warn('Copy button without data-code attribute found:', button);
+          return;
         }
 
-        navigator.clipboard.writeText(button.dataset.code || '');
+        const timeouts: NodeJS.Timeout[] = [];
+        const handler = () => {
+          if (timeouts.length > 0) {
+            timeouts.forEach((timeout) => clearTimeout(timeout));
+          }
 
-        button.classList.add('keep-svg');
-        button.classList.add('copied');
+          navigator.clipboard.writeText(button.dataset.code || '');
 
-        timeouts.push(
-          setTimeout(() => {
-            button.classList.remove('copied');
-          }, 2000)
-        );
+          button.classList.add('keep-svg');
+          button.classList.add('copied');
 
-        timeouts.push(
-          setTimeout(() => {
-            button.classList.remove('keep-svg');
-          }, 1500)
-        );
+          // What if we still have timeouts and swap to another page?
+          timeouts.push(
+            setTimeout(() => {
+              button.classList.remove('copied');
+            }, 2000)
+          );
+
+          timeouts.push(
+            setTimeout(() => {
+              button.classList.remove('keep-svg');
+            }, 1500)
+          );
+        };
+
+        button.addEventListener('click', handler);
+        added.push({ button, handler });
       });
+
+      document.addEventListener('astro:before-swap', () => {
+        added.forEach(({ button, handler }) => button.removeEventListener('click', handler));
+      }, { once: true });
     });
   });
 </script>

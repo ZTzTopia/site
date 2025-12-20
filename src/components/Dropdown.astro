@@ -38,20 +38,26 @@ const {
 
 <script>
   class Dropdown extends HTMLElement {
+    private _dropdownButtonTrigger: HTMLElement | null = null;
+    private _onTriggerClick: ((e: Event) => void) | null = null;
+    private _onDocClick: ((e: Event) => void) | null = null;
+    private _inited = false;
+
     constructor() {
       super();
 
-      const onIdle = (cb: IdleRequestCallback) =>
+      const onIdle = (cb: () => void) =>
         (window.requestIdleCallback || ((cb) => setTimeout(cb, 150)))(cb);
 
-      onIdle(() => {
-        this.init();
-      });
+      document.addEventListener('astro:page-load', () => onIdle(() => this.init()));
     }
 
     init() {
-      const dropdownButtonTrigger = this.children[0];
-      if (!dropdownButtonTrigger) {
+      if (this._inited) return;
+      this._inited = true;
+
+      this._dropdownButtonTrigger = this.children[0] as HTMLElement | null;
+      if (!this._dropdownButtonTrigger) {
         return;
       }
 
@@ -60,18 +66,44 @@ const {
         return;
       }
 
-      dropdownButtonTrigger.addEventListener('click', () => {
+      this._onTriggerClick = () => {
         dropdownContent?.classList.toggle('hidden');
-      });
+      };
 
-      document.addEventListener('click', (event) => {
+      this._onDocClick = (event: Event) => {
+        if (!this._dropdownButtonTrigger) {
+          return;
+        }
+
         if (
-          !dropdownButtonTrigger.contains(event.target as Node) &&
+          !this._dropdownButtonTrigger.contains(event.target as Node) &&
           !dropdownContent?.contains(event.target as Node)
         ) {
           dropdownContent?.classList.add('hidden');
         }
-      });
+      };
+
+      this._dropdownButtonTrigger.addEventListener('click', this._onTriggerClick);
+      document.addEventListener('click', this._onDocClick);
+      document.addEventListener('astro:before-swap', () => this.destroy(), { once: true });
+    }
+
+    destroy() {
+      if (this._dropdownButtonTrigger && this._onTriggerClick) {
+        this._dropdownButtonTrigger.removeEventListener('click', this._onTriggerClick);
+        this._onTriggerClick = null;
+      }
+
+      if (this._onDocClick) {
+        document.removeEventListener('click', this._onDocClick);
+        this._onDocClick = null;
+      }
+
+      this._inited = false;
+    }
+
+    disconnectedCallback() {
+      this.destroy();
     }
   }
 

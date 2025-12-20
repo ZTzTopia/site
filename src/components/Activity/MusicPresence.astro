@@ -74,15 +74,17 @@ import Link from '../Core/Link.astro';
 <script>
   import { initMusicPresence } from './MusicPresence';
 
-  const onIdle = (cb: IdleRequestCallback) =>
+  const onIdle = (cb: () => void) =>
     (window.requestIdleCallback || ((cb) => setTimeout(cb, 150)))(cb);
 
-  onIdle(() => {
+  const init = () => {
     const container = document.getElementById(
       'music-presence'
     ) as HTMLDivElement | null;
     if (container) {
       initMusicPresence(container);
     }
-  });
+  };
+
+  document.addEventListener('astro:page-load', () => onIdle(init));
 </script>

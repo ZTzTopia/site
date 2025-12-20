@@ -2,6 +2,7 @@
 import { SEO } from "astro-seo";
 import { stripTrailingSlash } from '../utils/path';
 import ThemeProvider from './ThemeProvider.astro';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title: string;
@@ -33,6 +34,22 @@ const sitemap = `${base}/sitemap-index.xml`;
 const ogImage = image !== '' && Astro.site 
   ? new URL(image.startsWith('/') ? image : `/${image}`, Astro.site).href
   : undefined;
+
+const ldJson = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": type === "article" ? "TechArticle" : "WebPage",
+  headline: title,
+  description,
+  image: ogImage,
+  author: {
+    "@type": "Person",
+    name: author || "ztz0",
+  },
+  publisher: {
+    "@type": "Person",
+    name: "ztz0",
+  },
+});
 ---
 
 <SEO
@@ -71,26 +88,8 @@ const ogImage = image !== '' && Astro.site
     ],
   }}
 />
-<script type="application/ld+json" set:html=
-  {
-    JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": type === "article" ? "TechArticle" : "WebPage",
-      "headline": title,
-      "description": description,
-      "image": ogImage,
-      "author": {
-        "@type": "Person",
-        "name": author || "ztz0"
-      },
-      "publisher": {
-        "@type": "Person",
-        "name": "ztz0"
-      },
-      // "datePublished": publishDate.toISOString()
-    })
-  }
-/>
+<script type="application/ld+json" set:html={ldJson} />
 {Astro.site && <link rel="sitemap" href={sitemap} />}
 
 <ThemeProvider />
+<ClientRouter />
