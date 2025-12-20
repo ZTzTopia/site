@@ -6,21 +6,13 @@ const challenges = await getChallenges(
   ({ data }) => data.draft !== true
 );
 
-const flattenedTags = [
+const tags = [
   ...new Set(
-    challenges.flatMap((challenge) => {
-      if (challenge.data.tags.length < 1) {
-        return [];
-      }
-
-      return challenge.data.tags
-        .map((tag) =>
-          tag === null || tag === undefined || tag.trim() === ''
-            ? null
-            : `#${tag.trim().toLowerCase()}`
-        )
-        .filter(Boolean);
-    })
+    challenges.flatMap((challenge) => 
+      (challenge.data.tags as string[])
+        .filter((tag) => typeof tag === 'string' && tag.trim())
+        .map((tag) => `#${tag.trim().toLowerCase()}`)
+    )
   ),
 ];
 
@@ -31,13 +23,13 @@ const pageDescription = 'Browse all tags used in events.';
 <PageLayout title={pageTitle} description={pageDescription}>
   <div class="flex flex-col gap-4">
     <h1 class="text-3xl font-bold">Tags</h1>
-    <p class="text-lg">Explore all tags used across events.</p>
+    <p class="text-md">Explore all tags used across events.</p>
     <ul class="flex flex-wrap gap-2">
       {
-        flattenedTags.map((tag) => (
+        tags.map((tag) => (
           <li>
             <a
-              href={`/tags/${tag?.slice(1)}`}
+              href={`/writeups/tags/${tag?.slice(1)}`}
               class="flex flex-row items-center gap-x-2 text-xs font-medium px-2.5 py-0.5 rounded bg-flexoki-light-ui dark:bg-flexoki-dark-ui"
             >
               {tag}

@@ -1,0 +1,80 @@
+---
+import CardChallenge from '../../../components/CardChallenge.astro';
+import PageLayout from '../../../layouts/PageLayout.astro';
+import { getChallenges } from '../../../utils/content';
+import { determineCardEdgeClasses } from '../../../utils/helper';
+
+export async function getStaticPaths() {
+  const challenges = await getChallenges(
+    ({ data }) => 
+      data.draft !== true
+  );
+
+  const flattenedTags = [
+    ...new Set(
+      challenges.flatMap((challenge) => {
+        if (challenge.data.tags.length < 1) {
+          return [];
+        }
+
+        return (challenge.data.tags as string[])
+          .map((tag) =>
+            typeof(tag) === 'string'
+              ? tag.trim().toLowerCase()
+              : null
+          )
+          .filter(Boolean);
+      })
+    ),
+  ];
+
+  return flattenedTags.map((tag) => ({
+    params: { tag },
+  }));
+}
+
+interface Params {
+  tag: string;
+}
+
+const { tag } = Astro.params as Params;
+const challenges = await getChallenges(
+  ({ data }) => 
+    (data.tags as string[])
+      .map((t) => typeof(t) === 'string' && t.trim().toLowerCase()).includes(tag) &&
+    data.draft !== true
+);
+
+const pageTitle = `Events Tagged: ${tag}`;
+const pageDescription = `Explore events tagged with \"${tag}\".`;
+---
+
+<PageLayout title={pageTitle} description={pageDescription}>
+  <div class="flex flex-col gap-4">
+    <h1 class="text-3xl font-bold">Tag: {tag}</h1>
+    <div class="grid md:grid-cols-3 gap-1">
+      {
+        challenges.length === 0 ? (
+          <p>No challenges found :(</p>
+        ) : (
+          challenges.map((challenge, index) => {
+            return (
+              <CardChallenge
+                event={challenge}
+                href={`/writeups/${challenge.id.split('/').slice(0, -1).join('/')}`}
+                class:list={[
+                  'challenge-card',
+                  'rounded-none',
+                  determineCardEdgeClasses(index, challenges.length, 1),
+                  'md:rounded-none',
+                  determineCardEdgeClasses(index, challenges.length, 3, 'md'),
+                ]}
+                data-categories={challenge.data.categories.join(',')}
+              />
+            );
+          })
+        )
+      }
+    </div>
+  </div>
+</PageLayout>
