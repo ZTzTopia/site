@@ -79,14 +79,14 @@ const flattenedTags = [
     }
     {
       (
-        <div class="flex flex-row gap-2">
-          <p class="flex flex-row items-center gap-1 text-flexoki-base-600 dark:text-flexoki-base-500">
+        <div class="flex flex-col md:flex-row gap-2">
+          <p class="flex flex-row flex-wrap items-center gap-1 text-flexoki-base-600 dark:text-flexoki-base-500">
             <Icon name="lucide:trophy" />
             {event.data.points
               ? `${event.data.points} point${event.data.points === 1 ? '' : 's'}`
               : 'N/A'}
           </p>
-          <p class="flex flex-row items-center gap-1 text-flexoki-base-600 dark:text-flexoki-base-500">
+          <p class="flex flex-row flex-wrap items-center gap-1 text-flexoki-base-600 dark:text-flexoki-base-500">
             <Icon name="lucide:target" />
             {event.data.solves
               ? `${event.data.solves} solve${event.data.solves === 1 ? '' : 's'}`
