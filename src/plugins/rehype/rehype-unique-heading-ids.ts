@@ -1,6 +1,6 @@
 // https://github.com/withastro/astro/blob/main/packages/markdown/remark/src/rehype-collect-headings.ts
 
-import type { Expression, Super } from 'estree';
+// import type { Expression, Super } from 'estree';
 import Slugger from "github-slugger";
 import { visit } from "unist-util-visit";
 import type { MdxTextExpression } from 'mdast-util-mdx-expression';
@@ -118,7 +118,8 @@ function getMdxFrontmatterVariablePath(node: MdxTextExpression): string[] | Erro
 	if (statement?.type !== 'ExpressionStatement' || statement.expression.type !== 'MemberExpression')
 		return new Error();
 
-	let expression: Expression | Super = statement.expression;
+	// let expression: Expression | Super = statement.expression;
+  let expression: any = statement.expression;
 	const expressionPath: string[] = [];
 
 	// Traverse the expression, collecting the variable path.

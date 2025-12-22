@@ -6,7 +6,8 @@ import sitemap from '@astrojs/sitemap';
 import compress from 'astro-compress';
 
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import rehypeUniqueHeadingIds from './src/plugins/rehype/rehype-unique-heading-ids';
+import { rehypeHeadingIds } from '@astrojs/markdown-remark';
+// import rehypeUniqueHeadingIds from './src/plugins/rehype/rehype-unique-heading-ids';
 // import rehypeShiftHeading from './src/plugins/rehype/rehype-shift-heading';
 import { codeSnippetTransformer } from './src/transformers/code-snippet';
 
@@ -24,7 +25,8 @@ export default defineConfig({
   }), compress()],
   markdown: {
     rehypePlugins: [
-      rehypeUniqueHeadingIds,
+      rehypeHeadingIds,
+      // rehypeUniqueHeadingIds,
       // [rehypeShiftHeading, { shift: 1 }],
       [
         rehypeAutolinkHeadings,
