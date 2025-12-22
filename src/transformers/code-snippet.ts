@@ -68,7 +68,7 @@ export const codeSnippetTransformer = (): ShikiTransformer => {
         "div",
         {
           class: "copy-button",
-          "data-code": this.source,
+          // "data-code": this.source,
         },
         [copyIcon, checkIcon]
       );
