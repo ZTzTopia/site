@@ -61,19 +61,24 @@ export const determineCardEdgeClasses = (
   return '';
 };
 
-const CATEGORY_NAME = new Map<string[], string>([
-  [['pwn'], 'Binary Exploitation'],
-  [['rev', 'reverse'], 'Reverse Engineering'],
-  [['web'], 'Web Exploitation'],
-  [['crypto'], 'Cryptography'],
-  [['forensic'], 'Forensics'],
-  [['misc'], 'Miscellaneous'],
+const CATEGORY_LOOKUP = new Map<string, string>([
+  ['pwn', 'Binary Exploitation'],
+  ['binex', 'Binary Exploitation'],
+  ['rev', 'Reverse Engineering'],
+  ['reverse', 'Reverse Engineering'],
+  ['web', 'Web Exploitation'],
+  ['webex', 'Web Exploitation'],
+  ['cry', 'Cryptography'],
+  ['crypto', 'Cryptography'],
+  ['forensic', 'Forensics'],
+  ['misc', 'Miscellaneous'],
 ]);
 
 export const normalizeCategoryName = (category: string): string => {
-  const lowerCategory = category.toLowerCase();
-  for (const [keys, name] of CATEGORY_NAME.entries()) {
-    if (keys.includes(lowerCategory)) {
+  const lower = category.toLowerCase();
+
+  for (const [key, name] of CATEGORY_LOOKUP) {
+    if (lower.includes(key)) {
       return name;
     }
   }

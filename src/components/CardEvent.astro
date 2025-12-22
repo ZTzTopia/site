@@ -4,6 +4,7 @@ import type { CollectionEntry } from 'astro:content';
 import { getBackgroundColorByCategory, getIconByCategory } from '../utils/color-icon';
 import { getChallenges } from '../utils/content';
 import Card from './Core/Card.astro';
+import { normalizeCategoryName } from '../utils/helper';
 
 const { event, ...rest } = Astro.props as { event: CollectionEntry<'events'> };
 
@@ -107,7 +108,7 @@ const formatDateRange = (start: Date, end: Date) => {
                     class={`flex flex-row items-center gap-x-1 text-xs font-medium px-2.5 py-0.5 rounded ${getBackgroundColorByCategory(category!)}`}
                   >
                     <Icon name={getIconByCategory(category!)} />
-                    {category}
+                    {normalizeCategoryName(category!)}
                   </span>
                 ))}
               </div>

@@ -10,7 +10,7 @@ import {
   getIconByCategory,
 } from '../../../../../utils/color-icon';
 import { getChallenges, getEvents } from '../../../../../utils/content';
-import { determineCardEdgeClasses } from '../../../../../utils/helper';
+import { determineCardEdgeClasses, normalizeCategoryName } from '../../../../../utils/helper';
 import Link from '../../../../../components/Core/Link.astro';
 
 export async function getStaticPaths() {
@@ -94,7 +94,7 @@ const description = props.challenge.data.description || `Writeup for ${props.cha
             class={`flex flex-row items-center gap-x-1 text-xs font-medium px-2.5 py-0.5 rounded ${getBackgroundColorByCategory(category)}`}
           >
             <Icon name={getIconByCategory(category)} />
-            {category}
+            {normalizeCategoryName(category)}
           </span>
         ))}
 
