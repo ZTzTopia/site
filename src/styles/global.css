@@ -421,3 +421,28 @@ h5:hover .autolink {
 [id] {
   @apply scroll-mt-32 xl:scroll-mt-20;
 }
+
+.prose {
+  a.external-link {
+    @apply inline-flex;
+
+    .lucide-arrow-up-right {
+      @apply text-flexoki-light-cy dark:text-flexoki-dark-cy duration-75 -translate-y-0.5;
+      width: 1em;
+      height: 1em;
+      flex-shrink: 0;
+    }
+
+    &:visited {
+      .lucide-arrow-up-right {
+          @apply text-flexoki-cyan-300 dark:text-flexoki-cyan-500;
+      }
+    }
+
+    &:hover {
+      .lucide-arrow-up-right {
+          @apply translate-x-0.5 -translate-y-1 text-flexoki-light-cy-2 dark:text-flexoki-dark-cy-2;
+      }
+    }
+  }
+}

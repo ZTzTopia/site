@@ -31,10 +31,10 @@ const { headings, ...rest } = Astro.props as Props;
         <TableOfContent {headings} />
       </nav>
     </div>
-    <main class="row-start-2 col-start-2 space-y-4">
+    <article class="row-start-2 col-start-2 space-y-4">
       <Prose>
         <slot />
       </Prose>
-    </main>
+    </article>
   </div>
 </BaseLayout>
