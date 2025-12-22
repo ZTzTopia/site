@@ -9,7 +9,7 @@ const { headings } = Astro.props as { headings: MarkdownHeading[] };
 
 <nav
   class="block xl:hidden sticky z-10 w-full bg-flexoki-light-bg/[0.75] dark:bg-flexoki-dark-bg/[0.75] backdrop-blur-sm border-dashed border-b-1 border-flexoki-base-100 dark:border-flexoki-base-900"
-  id="nav"
+  id="mobile-toc-nav"
 >
   <z-toc>
     <div class="mx-auto px-4 max-w-screen-md text-sm items-center min-h-[3.5rem]">
@@ -47,27 +47,21 @@ const { headings } = Astro.props as { headings: MarkdownHeading[] };
       (window.requestIdleCallback || ((cb) => setTimeout(cb, 150)))(cb);
 
     onIdle(() => {
+      const header = document.querySelector('#header');
+      if (!header) return;
+
+      const nav = document.querySelector('#mobile-toc-nav');
+      if (!nav) return;
+
+      const details = document.querySelector('#mobile-toc-nav details');
+      if (!details) return;
+
       const adjustNavTop = () => {
-        const header = document.querySelector('#header');  
-        if (!header) return;
-
-        const nav = document.querySelector('#nav');
-        if (!nav) return;
-
         const headerHeight = header.getBoundingClientRect().height;
         nav.style.top = `${headerHeight}px`;
       };
 
       const onClick = (event) => {
-        const header = document.querySelector('#header');
-        if (!header) return;
-
-        const nav = document.querySelector('#nav');
-        if (!nav) return;
-
-        const details = document.querySelector('#nav details');
-        if (!details) return;
-
         const target = event.target;
         if (header.contains(target)) return;
         if (nav.contains(target)) return;
@@ -77,14 +71,16 @@ const { headings } = Astro.props as { headings: MarkdownHeading[] };
         }
       };
 
-      adjustNavTop();
+      const ro = new ResizeObserver(() => {
+        adjustNavTop();
+      });
+      ro.observe(header);
 
-      window.addEventListener('resize', adjustNavTop);
       document.addEventListener('click', onClick);
 
       document.addEventListener('astro:before-swap', () => {
-        window.removeEventListener('resize', adjustNavTop);
         document.removeEventListener('click', onClick);
+        ro.disconnect();
       }, { once: true });
     });
   });

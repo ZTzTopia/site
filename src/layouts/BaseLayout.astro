@@ -106,9 +106,9 @@ paths = paths.filter((path) => path.label !== '');
   >
     <div class="flex flex-col min-h-svh">
       <Header items={navItems} />
+      <slot name="top" />
 
       <main class="flex-1">
-        <slot name="top" />
         {
           paths.length !== 1 && (
             <Breadcrumb
@@ -139,7 +139,10 @@ paths = paths.filter((path) => path.label !== '');
 
       copyButtons.forEach((button) => {
         if (!button.dataset.code) {
-          console.warn('Copy button without data-code attribute found:', button);
+          console.warn(
+            'Copy button without data-code attribute found:',
+            button
+          );
           return;
         }
 
@@ -172,9 +175,15 @@ paths = paths.filter((path) => path.label !== '');
         added.push({ button, handler });
       });
 
-      document.addEventListener('astro:before-swap', () => {
-        added.forEach(({ button, handler }) => button.removeEventListener('click', handler));
-      }, { once: true });
+      document.addEventListener(
+        'astro:before-swap',
+        () => {
+          added.forEach(({ button, handler }) =>
+            button.removeEventListener('click', handler)
+          );
+        },
+        { once: true }
+      );
     });
   });
 </script>
