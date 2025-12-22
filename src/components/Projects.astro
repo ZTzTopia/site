@@ -23,7 +23,6 @@ if (limit > 0) {
       {projects.map((project: ProjectCollection, index: number) => (
         <Card
           href={project.data.url}
-          target="_blank"
           class:list={[
             'rounded-none',
             `${determineCardEdgeClasses(index, projects.length, 1)}`,

@@ -24,7 +24,7 @@ const remoteLink = rest.href?.toString().startsWith('http');
     },
   ]}
   {classList}
-  target={remoteLink ? '_blank' : undefined}
+  {...(remoteLink ? { target: "_blank", rel: "noopener noreferrer" } : {})}
   {...rest}
 >
   <div class="flex flex-col flex-1">

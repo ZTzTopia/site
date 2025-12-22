@@ -15,6 +15,7 @@ const remoteLink = rest.href?.toString().startsWith('http');
     "flex flex-row gap-0.5 items-center group": remoteLink
   }}
   {classList} 
+  {...(remoteLink ? { target: "_blank", rel: "noopener noreferrer" } : {})}
   {...rest}
 >
   <slot/>
