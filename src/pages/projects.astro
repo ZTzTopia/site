@@ -13,9 +13,7 @@ import PageLayout from '../layouts/PageLayout.astro';
     <ProjectsComponent />
     <div class="flex justify-end">
       <a
-        href="https://playground.ztz0.com/"
-        target="_blank"
-        rel="noopener noreferrer"
+        href={'https://playground.' + Astro.site?.hostname.replace('www.', '')}
         class="group inline-flex w-fit items-center gap-2 rounded-full border border-flexoki-purple-200 bg-flexoki-purple-50 px-4 py-2 text-sm text-flexoki-purple-700 transition-colors hover:border-flexoki-purple-300 hover:bg-flexoki-purple-100 dark:border-flexoki-purple-800 dark:bg-flexoki-purple-950 dark:text-flexoki-purple-300 dark:hover:border-flexoki-purple-700 dark:hover:bg-flexoki-purple-950"
       >
         <Icon name="lucide:sparkles" class="w-4 h-4" />
