@@ -1,14 +1,30 @@
 ---
+import { Icon } from 'astro-icon/components';
 import ProjectsComponent from '../components/Projects.astro'; // error ts(2440): Import declaration conflicts with local declaration of 'Projects'.
 import PageLayout from '../layouts/PageLayout.astro';
 ---
 
-<PageLayout 
+<PageLayout
   title="Projects"
   description="Explore my projects, showcasing my skills and interests in various fields."
 >
   <div class="flex flex-col gap-2">
     <h1 class="text-3xl font-bold">Projects</h1>
     <ProjectsComponent />
+    <div class="flex justify-end">
+      <a
+        href="https://playground.ztz0.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group inline-flex w-fit items-center gap-2 rounded-full border border-flexoki-purple-200 bg-flexoki-purple-50 px-4 py-2 text-sm text-flexoki-purple-700 transition-colors hover:border-flexoki-purple-300 hover:bg-flexoki-purple-100 dark:border-flexoki-purple-800 dark:bg-flexoki-purple-950 dark:text-flexoki-purple-300 dark:hover:border-flexoki-purple-700 dark:hover:bg-flexoki-purple-950"
+      >
+        <Icon name="lucide:sparkles" class="w-4 h-4" />
+        <span>Check out my vibe coded experiments</span>
+        <Icon
+          name="lucide:arrow-right"
+          class="w-4 h-4 transition-transform group-hover:translate-x-1"
+        />
+      </a>
+    </div>
   </div>
 </PageLayout>
