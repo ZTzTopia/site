@@ -9,6 +9,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { rehypeHeadingIds } from '@astrojs/markdown-remark';
 // import rehypeUniqueHeadingIds from './src/plugins/rehype/rehype-unique-heading-ids';
 // import rehypeShiftHeading from './src/plugins/rehype/rehype-shift-heading';
+import rehypeExternalLinks from './src/plugins/rehype/rehype-external-links';
 import { codeSnippetTransformer } from './src/transformers/code-snippet';
 
 // https://astro.build/config
@@ -40,6 +41,7 @@ export default defineConfig({
           test: ['h2', 'h3', 'h4', 'h5'],
         },
       ],
+      rehypeExternalLinks,
     ],
     shikiConfig: {
       theme: 'css-variables',
