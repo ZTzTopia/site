@@ -70,7 +70,7 @@ const title = `${props.event.data.title} Writeups`;
 const description = props.event.data.description || `Writeups for ${props.event.data.title} event.`;
 ---
 
-<PageLayout 
+<PageLayout
   title={title}
   description={description}
   type="article"
@@ -83,7 +83,21 @@ const description = props.event.data.description || `Writeups for ${props.event.
       </Prose>
 
       <div class="grid md:grid-cols-3 gap-1">
-        {
+        {params.year === '_' ? (
+          <CardIcon
+            icon='lucide:link'
+            class:list="col-span-3"
+          >
+            <p class="flex flex-col text-sm">
+              <span class="font-medium">URL</span>
+              <span class="font-normal text-flexoki-base-600 dark:text-flexoki-base-500">
+                <Link href={props.event.data.url || 'N/A'} target="_blank" rel="noopener noreferrer">
+                  To Website
+                </Link>
+              </span>
+            </p>
+          </CardIcon>
+        ) : (
           Object.entries(eventMeta).map(([key, value], index) => (
             <CardIcon
               icon={value.icon}
@@ -103,23 +117,21 @@ const description = props.event.data.description || `Writeups for ${props.event.
                 ),
               ]}
             >
-              <div>
-                <p class="flex flex-col text-sm">
-                  <span class="font-medium">{key}</span>
-                  <span class="font-normal text-flexoki-base-600 dark:text-flexoki-base-500">
-                    {key === 'URL' && value.value !== 'N/A' ? (
-                      <Link href={value.value} target="_blank" rel="noopener noreferrer">
-                        To Website
-                      </Link>
-                    ) : (
-                      value.value
-                    )}
-                  </span>
-                </p>
-              </div>
+              <p class="flex flex-col text-sm">
+                <span class="font-medium">{key}</span>
+                <span class="font-normal text-flexoki-base-600 dark:text-flexoki-base-500">
+                  {key === 'URL' && value.value !== 'N/A' ? (
+                    <Link href={value.value} target="_blank" rel="noopener noreferrer">
+                      To Website
+                    </Link>
+                  ) : (
+                    value.value
+                  )}
+                </span>
+              </p>
             </CardIcon>
           ))
-        }
+        )}
       </div>
 
       <div>

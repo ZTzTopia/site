@@ -1,12 +1,18 @@
 ---
 import { Icon } from 'astro-icon/components';
 import type { CollectionEntry } from 'astro:content';
-import { getBackgroundColorByCategory, getIconByCategory } from '../utils/color-icon';
+import { getBackgroundColorByCategory, getIconByCategory, getOSIcon, getPlatformIcon, getDifficultyColor } from '../utils/color-icon';
 import { getChallenges } from '../utils/content';
 import Card from './Core/Card.astro';
 import { normalizeCategoryName } from '../utils/helper';
+import type { HTMLAttributes } from 'astro/types';
 
-const { event, ...rest } = Astro.props as { event: CollectionEntry<'events'> };
+interface Props extends HTMLAttributes<'div'>, HTMLAttributes<'a'> {
+  event: CollectionEntry<'events'>;
+  class?: string;
+}
+
+const { event, class: classList, ...rest } = Astro.props satisfies Props;
 
 const challenges = await getChallenges(
   ({ id, data }) =>
@@ -14,76 +20,129 @@ const challenges = await getChallenges(
     data.draft !== true
 );
 
-const flattenedCategories = [
-  ...new Set(
-    challenges.flatMap((challenge) => {
-      if (challenge.data.categories.length < 1) {
-        return [];
+const difficultyCounts = challenges.reduce<Record<string, number>>(
+  (acc, challenge) => {
+    const difficulty = challenge.data.difficulty?.trim();
+    if (!difficulty) {
+      return acc;
+    }
+
+    acc[difficulty] = (acc[difficulty] || 0) + 1;
+    return acc;
+  },
+  {}
+);
+
+const categoryCounts = challenges.reduce<Record<string, number>>(
+  (acc, challenge) => {
+    for (const category of challenge.data.categories || []) {
+      const cleaned = category?.trim();
+      if (!cleaned) {
+        continue;
       }
 
-      return challenge.data.categories
-        .map((category) =>
-          category === null || category === undefined || category.trim() === ''
-            ? null
-            : category.trim()
-        )
-        .filter(Boolean);
-    })
-  ),
-];
+      acc[cleaned] = (acc[cleaned] || 0) + 1;
+    }
 
-const flattenedTags = [
-  ...new Set(
-    challenges.flatMap((challenge) => {
-      if (challenge.data.tags.length < 1) {
-        return [];
+    return acc;
+  },
+  {}
+);
+
+const tagCounts = challenges.reduce<Record<string, number>>(
+  (acc, challenge) => {
+    for (const tag of challenge.data.tags || []) {
+      const cleaned = tag?.trim();
+      if (!cleaned) {
+        continue;
       }
 
-      return challenge.data.tags
-        .map((tag) =>
-          tag === null || tag === undefined || tag.trim() === ''
-            ? null
-            : `#${tag.trim().toLowerCase()}`
-        )
-        .filter(Boolean);
-    })
-  ),
-];
+      acc[cleaned] = (acc[cleaned] || 0) + 1;
+    }
 
-// event.data.start
-// event.data.end
-// Make like Jan 15 - 17, 2025 or Jan 28 - Feb 1 2025
+    return acc;
+  },
+  {}
+);
+
+const osCounts = challenges.reduce<Record<string, number>>(
+  (acc, challenge) => {
+    const os = challenge.data.os?.trim();
+    if (!os) {
+      return acc;
+    }
+
+    acc[os] = (acc[os] || 0) + 1;
+    return acc;
+  },
+  {}
+);
 
 const startDate = event.data.start ? new Date(String(event.data.start)) : null;
 const endDate = event.data.end ? new Date(String(event.data.end)) : null;
 
+// TODO: Move to utils
 const formatDateRange = (start: Date, end: Date) => {
-  const options: Intl.DateTimeFormatOptions = {
+  const sameYear = start.getFullYear() === end.getFullYear();
+  const sameMonth = start.getMonth() === end.getMonth();
+  const sameDay =
+    sameYear && sameMonth && start.getDate() === end.getDate();
+
+  const dateFormatter = new Intl.DateTimeFormat(undefined, {
     month: 'short',
     day: 'numeric',
-    year: 'numeric',
-  };
-  if (start.getFullYear() === end.getFullYear()) {
-    options.year = undefined;
-    options.month = 'short';
-    options.day = 'numeric';
-    options.hour = 'numeric';
-    options.minute = 'numeric';
+  });
+
+  const timeFormatter = new Intl.DateTimeFormat(undefined, {
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+
+  const startDate = dateFormatter.format(start);
+  const endDate = dateFormatter.format(end);
+
+  const startTime = timeFormatter.format(start);
+  const endTime = timeFormatter.format(end);
+
+  const startYear = start.getFullYear();
+  const endYear = end.getFullYear();
+
+  if (sameDay) {
+    return `${startDate}, ${startTime} - ${endTime}, ${startYear}`;
   }
 
-  return `${start.toLocaleDateString(undefined, options)} - ${end.toLocaleDateString(undefined, options)}`;
+  if (sameYear && sameMonth) {
+    return `${startDate}, ${startTime} - ${endTime}, ${startYear}`;
+  }
+
+  if (sameYear) {
+    return `${startDate}, ${startTime} - ${endDate}, ${endTime}, ${startYear}`;
+  }
+
+  return `${startDate}, ${startTime}, ${startYear} - ${endDate}, ${endTime}, ${endYear}`;
 };
 ---
 
-<Card {...rest}>
-  <Fragment slot="content">
-    <div class="flex flex-col gap-2">
+<Card class={classList} {...rest}>
+  <div slot="content" class="flex flex-col gap-2">
+    {startDate === null ? (
+      <div class="flex flex-row items-center gap-2">
+        <Icon name={getPlatformIcon(event.data.title)} class="w-5 h-5" />
+        <span class="font-medium">{event.data.title}</span>
+      </div>
+    ) : (
       <div class="flex flex-col">
         <p class="font-medium">{event.data.title}</p>
         <p class="text-flexoki-base-600 dark:text-flexoki-base-500">
           {event.data.description}
         </p>
       </div>
+    )}
+    {startDate === null ? (
+      <p class="text-sm text-flexoki-base-600 dark:text-flexoki-base-500">
+        {challenges.length} room{challenges.length === 1 ? '' : 's'} completed
+      </p>
+    ) : (
       <div class="flex flex-col md:flex-row gap-2">
         <p class="flex flex-row flex-wrap items-center gap-1 text-flexoki-base-600 dark:text-flexoki-base-500">
           <Icon name="lucide:calendar" />
@@ -98,38 +157,60 @@ const formatDateRange = (start: Date, end: Date) => {
           Team
         </p>
       </div>
-      {
-        (flattenedCategories.length > 0 || flattenedTags.length > 0) && (
-          <div class="flex flex-col gap-2">
-            {flattenedCategories.length > 0 && (
-              <div class="flex flex-row flex-wrap gap-2">
-                {flattenedCategories.map((category) => (
-                  <span
-                    class={`flex flex-row items-center gap-x-1 text-xs font-medium px-2.5 py-0.5 rounded ${getBackgroundColorByCategory(category!)}`}
-                  >
-                    <Icon name={getIconByCategory(category!)} />
-                    {normalizeCategoryName(category!)}
-                  </span>
-                ))}
-              </div>
-            )}
-            {flattenedTags.length > 0 && (
-              <div class="flex flex-row flex-wrap gap-2">
-                {flattenedTags.slice(0, 5).map((tag) => (
-                  <span class="flex flex-row items-center text-xs font-medium px-2.5 py-0.5 rounded bg-flexoki-light-ui dark:bg-flexoki-dark-ui">
-                    {tag}
-                  </span>
-                ))}
-                {flattenedTags.length > 5 && (
-                  <span class="flex flex-row items-center text-xs font-medium px-2.5 py-0.5 rounded bg-flexoki-light-ui dark:bg-flexoki-dark-ui">
-                    +{flattenedTags.length - 5}
-                  </span>
-                )}
-              </div>
+    )}
+    {challenges.length > 0 && (
+      <div class="flex flex-col gap-2">
+        <div class="flex flex-row flex-wrap gap-1">
+          {Object.entries(difficultyCounts).map(([diff, count]) => (
+            count > 0 && (
+              <span class={`flex flex-row items-center gap-x-1 text-xs font-medium px-2.5 py-0.5 rounded capitalize ${getDifficultyColor(diff)}`}>
+                {diff}: {count}
+              </span>
+            )
+          ))}
+          {Object.entries(categoryCounts).map(([cat, count]) => (
+            count > 0 && (
+              <span
+                class={`flex flex-row items-center gap-x-1 text-xs font-medium px-2.5 py-0.5 rounded ${getBackgroundColorByCategory(cat)}`}
+              >
+                <Icon name={getIconByCategory(cat)} />
+                {normalizeCategoryName(cat)}: {count}
+              </span>
+            )
+          ))}
+          {Object.entries(osCounts).map(([os, count]) => (
+            count > 0 && (
+              <span
+                class="flex flex-row items-center gap-x-1 text-xs font-medium px-2.5 py-0.5 rounded capitalize bg-flexoki-light-ui dark:bg-flexoki-dark-ui"
+              >
+                <Icon name={getOSIcon(os)} />
+                {os}: {count}
+              </span>
+            )
+          ))}
+        </div>
+
+        {startDate !== null && Object.keys(tagCounts).length > 0 && (
+          <div class="flex flex-row flex-wrap gap-1">
+            {Object.entries(tagCounts).slice(0, 5).map(([tag, count]) => (
+              count > 0 && (
+                <span
+                  class="flex flex-row items-center gap-x-1 text-xs font-medium px-2.5 py-0.5 rounded bg-flexoki-light-ui dark:bg-flexoki-dark-ui"
+                >
+                  #{tag.toLocaleLowerCase()}: {count}
+                </span>
+              )
+            ))}
+            {Object.entries(tagCounts).length > 5 && (
+              <span
+                class="flex flex-row items-center gap-x-1 text-xs font-medium px-2.5 py-0.5 rounded bg-flexoki-light-ui dark:bg-flexoki-dark-ui"
+              >
+                +{Object.entries(tagCounts).length - 5} more
+              </span>
             )}
           </div>
-        )
-      }
-    </div>
-  </Fragment>
+        )}
+      </div>
+    )}
+  </div>
 </Card>

@@ -1,6 +1,6 @@
 ---
 import { type CollectionEntry, getCollection } from 'astro:content';
-import EventCard from '../../../components/CardEvent.astro';
+import CardEvent from '../../../components/CardEvent.astro';
 import PageLayout from '../../../layouts/PageLayout.astro';
 import { getEvents } from '../../../utils/content';
 import { determineCardEdgeClasses } from '../../../utils/helper';
@@ -30,54 +30,79 @@ interface Params {
   year: string;
 }
 
-const { year } = Astro.params as Params;
+const params = Astro.params satisfies Params;
 
 const events = await getEvents((event) => {
-  if (!event.data.start) {
+  if (params.year == '_') {
+    if (event.data.start === undefined || event.data.end === undefined) {
+      return true;
+    }
+
+    return false;
+  }
+
+  if (event.data.start === undefined || event.data.end === undefined) {
     return false;
   }
 
   const eventYear = new Date(event.data.start).getFullYear().toString();
-  return eventYear === year;
+  return eventYear === params.year;
 });
 
-const title = `Writeups from ${year} CTF Competitions`;
-const description = `A collection of writeups from various CTF competitions held in ${year}.`;
+const title = `Writeups from ${params.year} CTF Competitions`;
+const description = `A collection of writeups from various CTF competitions held in ${params.year}.`;
 ---
 
-<PageLayout 
+<PageLayout
   title={title}
   description={description}
   noindex={true}
 >
   <div class="flex flex-col gap-2">
-    <div class="flex flex-row items-center justify-between gap-1 ps-4">
-      <h2 class="text-lg font-semibold">{year}</h2>
-      <span
-        class="flex-1 w-full h-[0.1rem] bg-flexoki-light-ui dark:bg-flexoki-dark-ui"
-      ></span>
-      <p>{events.length} Competitions</p>
-    </div>
-    <div class="flex flex-col gap-1">
-      {
-        events.length === 0 ? (
-          <p>No events found :(</p>
-        ) : (
-          events.map((event, index) => (
-            <a
-              href={`/writeups/${year}/${event.id.split('/').slice(1, -1).join('/')}`}
-            >
-              <EventCard
-                event={event}
-                class:list={[
-                  'rounded-none',
-                  `${determineCardEdgeClasses(index, events.length, 1)}`,
-                ]}
-              />
-            </a>
-          ))
-        )
-      }
-    </div>
-  </div>
+    {params.year === '_' ? (
+      <div class="flex flex-col gap-1">
+        <h2 class="text-lg font-semibold">Platforms</h2>
+        {events.map((event, index) => (
+          <CardEvent
+            event={event}
+            href={`/writeups/${event.id.split('/').slice(0, -1).join('/')}`}
+            class:list={[
+              'rounded-none',
+              `${determineCardEdgeClasses(index, events.length, 1)}`,
+            ]}
+          />
+        ))}
+      </div>
+    ) : (
+      <>
+        <div class="flex flex-row items-center justify-between gap-1 ps-4">
+          <h2 class="text-lg font-semibold">{params.year}</h2>
+          <span
+            class="flex-1 w-full h-[0.1rem] bg-flexoki-light-ui dark:bg-flexoki-dark-ui"
+          ></span>
+          <p>{events.length} Competitions</p>
+        </div>
+        <div class="flex flex-col gap-1">
+          {
+            events.length === 0 ? (
+              <p>No events found :(</p>
+            ) : (
+              events.map((event, index) => (
+                <a
+                  href={`/writeups/${params.year}/${event.id.split('/').slice(1, -1).join('/')}`}
+                >
+                  <CardEvent
+                    event={event}
+                    class:list={[
+                      'rounded-none',
+                      `${determineCardEdgeClasses(index, events.length, 1)}`,
+                    ]}
+                  />
+                </a>
+              ))
+            )
+          }
+        </div>
+      </>
+    )}
 </PageLayout>
