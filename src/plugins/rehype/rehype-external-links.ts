@@ -11,16 +11,17 @@ export default function rehypeExternalLinks() {
           return;
         }
 
-        const isSameOrigin = href.includes(typeof window !== 'undefined' ? window.location.origin : '');
-        if (isSameOrigin) {
-          return;
-        }
+        // What im thinking while write this sht lol??
+        // const isSameOrigin = href.includes(typeof window !== 'undefined' ? window.location.origin : '');
+        // if (isSameOrigin) {
+        //   return;
+        // }
 
         node.properties.target = '_blank';
         node.properties.rel = 'noopener noreferrer';
 
         const existingClass = node.properties.className;
-        const newClasses = ['flex', 'flex-row', 'gap-0.5', 'items-center', 'group', 'external-link'];
+        const newClasses = [/*'flex', 'flex-row', */'gap-0.5', 'items-center', 'group', 'external-link'];
 
         if (Array.isArray(existingClass)) {
           node.properties.className = [...existingClass, ...newClasses];
