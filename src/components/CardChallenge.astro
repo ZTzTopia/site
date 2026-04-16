@@ -1,9 +1,8 @@
 ---
 import { Icon } from 'astro-icon/components';
 import type { CollectionEntry } from 'astro:content';
-import { getBackgroundColorByCategory } from '../utils/color-icon';
 import Card from './Core/Card.astro';
-import { normalizeCategoryName } from '../utils/helper';
+import { normalizeCategoryName, getBackgroundColorByCategory } from '../utils/helper';
 
 const { event } = Astro.props as { event: CollectionEntry<'challenges'> };
 

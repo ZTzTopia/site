@@ -1,7 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import Card from './Core/Card.astro';
-import { getBackgroundColorByKey } from '../utils/color-icon';
+import { getBackgroundColorByKey } from '../utils/helper';
 import { determineCardEdgeClasses } from '../utils/helper';
 
 const { limit = 0 } = Astro.props as {
