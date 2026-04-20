@@ -47,11 +47,11 @@ const challenges = defineCollection({
     categories: z
       .union([z.string(), z.array(z.string()), z.null()])
       .optional()
-      .transform((val) => (Array.isArray(val) ? val : [val])),
+      .transform((val) => (val ? (Array.isArray(val) ? val : [val]) : [])),
     tags: z
       .union([z.string(), z.array(z.string()), z.null()])
       .optional()
-      .transform((val) => (Array.isArray(val) ? val : [val])),
+      .transform((val) => (val ? (Array.isArray(val) ? val : [val]) : [])),
     draft: z.boolean().optional(),
     completedDuringEvent: z.boolean().optional(),
     submitted: z.boolean().optional(),
@@ -61,7 +61,7 @@ const challenges = defineCollection({
     flags: z
       .union([z.string(), z.array(z.string()), z.null()])
       .optional()
-      .transform((val) => (Array.isArray(val) ? val : [val])),
+      .transform((val) => (val ? (Array.isArray(val) ? val : [val]) : [])),
 
     difficulty: z.enum(['easy', 'medium', 'hard', 'insane']).optional(),
     os: z.enum(['linux', 'windows', 'none']).optional(),
