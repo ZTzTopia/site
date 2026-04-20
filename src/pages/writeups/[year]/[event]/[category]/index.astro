@@ -8,8 +8,18 @@ export async function getStaticPaths() {
   const challenges = await getChallenges(
     ({ data }) => data.draft !== true
   );
-  const paths = challenges.map((challenge) => {
+  const seen = new Set<string>();
+
+  return challenges.flatMap((challenge) => {
     const slugs = challenge.id.split('/');
+    const key = `${slugs[0]}/${slugs[1]}/${slugs[2]}`;
+
+    if (seen.has(key)) {
+      return [];
+    }
+
+    seen.add(key);
+
     return {
       params: {
         year: slugs[0],
@@ -18,8 +28,6 @@ export async function getStaticPaths() {
       },
     };
   });
-
-  return paths;
 }
 
 interface Params {
