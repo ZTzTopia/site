@@ -182,12 +182,11 @@ export function initMusicPresence(container: HTMLElement) {
     });
   } else {
     fetchTrackWithRetry().then(track => {
-      if (!track) {
-        return;
-      }
-
       renderTrack(container, track);
-      setCachedTrack(track);
+
+      if (track) {
+        setCachedTrack(track);
+      }
     });
   }
 }
