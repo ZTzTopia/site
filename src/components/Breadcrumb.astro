@@ -17,7 +17,7 @@ interface Props extends HTMLAttributes<'div'> {
 const { items, ...rest } = Astro.props as Props;
 ---
 
-<Element as="nav" {...rest}>
+<Element as="nav" aria-label="breadcrumb" {...rest}>
   <ol class="flex flex-wrap gap-1 items-center text-sm break-words">
     {
       items &&
@@ -47,12 +47,15 @@ const { items, ...rest } = Astro.props as Props;
               ) : isExpandable ? (
                 <li class="inline-flex">
                   <Dropdown>
-                    <span
+                    <Button
                       slot="trigger"
-                      class="flex justify-center hover:cursor-pointer"
+                      variant="ghost"
+                      size="sm"
+                      aria-label="More breadcrumb items"
+                      aria-expanded="false"
                     >
                       ...
-                    </span>
+                    </Button>
                     <div class="flex flex-col p-1">
                       {items.slice(1, items.length - 3).map((hiddenItem) => (
                         <Button

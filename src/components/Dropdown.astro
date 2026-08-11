@@ -41,6 +41,7 @@ const {
     private _dropdownButtonTrigger: HTMLElement | null = null;
     private _onTriggerClick: ((e: Event) => void) | null = null;
     private _onDocClick: ((e: Event) => void) | null = null;
+    private _onKeydown: ((e: KeyboardEvent) => void) | null = null;
     private _inited = false;
 
     constructor() {
@@ -66,8 +67,15 @@ const {
         return;
       }
 
+      this._dropdownButtonTrigger.setAttribute('aria-haspopup', 'true');
+      this._dropdownButtonTrigger.setAttribute('aria-expanded', 'false');
+
       this._onTriggerClick = () => {
         dropdownContent?.classList.toggle('hidden');
+        this._dropdownButtonTrigger?.setAttribute(
+          'aria-expanded',
+          String(!dropdownContent?.classList.contains('hidden'))
+        );
       };
 
       this._onDocClick = (event: Event) => {
@@ -80,11 +88,21 @@ const {
           !dropdownContent?.contains(event.target as Node)
         ) {
           dropdownContent?.classList.add('hidden');
+          this._dropdownButtonTrigger.setAttribute('aria-expanded', 'false');
+        }
+      };
+
+      this._onKeydown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape' && !dropdownContent?.classList.contains('hidden')) {
+          dropdownContent?.classList.add('hidden');
+          this._dropdownButtonTrigger?.setAttribute('aria-expanded', 'false');
+          this._dropdownButtonTrigger?.focus();
         }
       };
 
       this._dropdownButtonTrigger.addEventListener('click', this._onTriggerClick);
       document.addEventListener('click', this._onDocClick);
+      document.addEventListener('keydown', this._onKeydown);
       document.addEventListener('astro:before-swap', () => this.destroy(), { once: true });
     }
 
@@ -97,6 +115,11 @@ const {
       if (this._onDocClick) {
         document.removeEventListener('click', this._onDocClick);
         this._onDocClick = null;
+      }
+
+      if (this._onKeydown) {
+        document.removeEventListener('keydown', this._onKeydown);
+        this._onKeydown = null;
       }
 
       this._inited = false;
