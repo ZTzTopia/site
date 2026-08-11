@@ -202,12 +202,14 @@ const groupedEvents = page.data.reduce<Record<string, Array<CollectionEntry<'eve
         }
 
         {
-          Object.entries(groupedEvents).map(([date, events]) => (
+          Object.entries(groupedEvents)
+            .sort(([a], [b]) => Number(b) - Number(a))
+            .map(([date, events]) => (
             <div class="flex flex-col gap-2">
               <div class="flex flex-row items-center justify-between gap-1 ps-4">
                 <h2 class="text-lg font-semibold">{date}</h2>
                 <span class="flex-1 w-full h-[0.1rem] bg-flexoki-light-ui dark:bg-flexoki-dark-ui" />
-                <p>{events.length} Competitions</p>
+                <p>{events.length} {events.length === 1 ? 'Competition' : 'Competitions'}</p>
               </div>
               <div class="flex flex-col gap-1">
                 {events.map((event: CollectionEntry<'events'>, index: number) => (
