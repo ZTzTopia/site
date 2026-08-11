@@ -45,16 +45,23 @@ if (pageNumbers.length > 0 && (pageNumbers[pageNumbers.length - 1] ?? 0) < lastP
       return <Button variant="ghost" size="sm" disabled>...</Button>;
     }
     
-    const isCurrentPage = page.currentPage === pageNumber;
-    const variant = isCurrentPage ? 'outline' : 'ghost';
-    const pageUrl = isCurrentPage 
-      ? page.url.current
-      : pageNumber === 1 
-        ? '/writeups' 
-        : `/writeups/${pageNumber}`;
-    
+    if (page.currentPage === pageNumber) {
+      return (
+        <span
+          aria-current="page"
+          class="px-4 py-2 rounded text-sm bg-flexoki-paper dark:bg-flexoki-black border border-flexoki-base-100 dark:border-flexoki-base-900 text-flexoki-black dark:text-flexoki-base-200"
+        >
+          {pageNumber}
+        </span>
+      );
+    }
+
+    const pageUrl = pageNumber === 1
+      ? '/writeups'
+      : `/writeups/${pageNumber}`;
+
     return (
-      <Button variant={variant} size="sm" href={pageUrl}>
+      <Button variant="ghost" size="sm" href={pageUrl}>
         {pageNumber}
       </Button>
     );
