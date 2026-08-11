@@ -1,10 +1,12 @@
 ---
 import type { Page } from 'astro';
 import type { CollectionEntry } from 'astro:content';
+import CardChallenge from '../../components/CardChallenge.astro';
 import CardEvent from '../../components/CardEvent.astro';
+import CardIcon from '../../components/CardIcon.astro';
 import Pagination from '../../components/Pagination.astro';
 import PageLayout from '../../layouts/PageLayout.astro';
-import { getEvents } from '../../utils/content';
+import { getChallenges, getEvents } from '../../utils/content';
 import { determineCardEdgeClasses } from '../../utils/helper';
 import { Icon } from 'astro-icon/components';
 
@@ -34,6 +36,16 @@ interface Props {
 
 const { page, featuredTLEvents } = Astro.props as Props;
 
+const latestEvent = (await getEvents(
+  (event) => event.data.start !== undefined || event.data.end !== undefined
+))[0];
+const latestWriteups = latestEvent
+  ? await getChallenges(
+      ({ id, data }) =>
+        id.startsWith(`${latestEvent.id}/`) && data.draft !== true
+    )
+  : [];
+
 const groupedEvents = page.data.reduce<Record<string, Array<CollectionEntry<'events'>>>>((acc, event) => {
   const year = new Date(event.data.start).getFullYear();
 
@@ -52,6 +64,111 @@ const groupedEvents = page.data.reduce<Record<string, Array<CollectionEntry<'eve
 >
   <div class="flex flex-col gap-2">
     <h1 class="text-3xl font-bold">Writeups</h1>
+    {
+      latestEvent && (
+        <div class="flex flex-col gap-2">
+          <h2 class="text-lg font-semibold">Latest</h2>
+          <CardEvent event={latestEvent} href={`/writeups/${latestEvent.id}`} />
+          {
+            latestWriteups.length > 0 && (
+              <>
+                <div class="grid md:grid-cols-3 gap-1">
+                  {latestWriteups.slice(0, 3).map((challenge, index) => (
+                    <CardChallenge
+                      event={challenge}
+                      href={`/writeups/${challenge.id}`}
+                      class:list={[
+                        'challenge-card',
+                        'rounded-none',
+                        determineCardEdgeClasses(
+                          index,
+                          Math.min(latestWriteups.length, 3),
+                          1
+                        ),
+                        'md:rounded-none',
+                        determineCardEdgeClasses(
+                          index,
+                          Math.min(latestWriteups.length, 3),
+                          3,
+                          'md'
+                        ),
+                      ]}
+                    />
+                  ))}
+                </div>
+                <a
+                  href={`/writeups/${latestEvent.id}`}
+                  class="text-sm flex flex-row items-center group justify-end"
+                >
+                  View all {latestWriteups.length} writeups
+                  <Icon
+                    name="lucide:arrow-right"
+                    class="ml-1 group-hover:translate-x-1 transition-transform"
+                  />
+                </a>
+              </>
+            )
+          }
+        </div>
+      )
+    }
+    <h2 class="text-lg font-semibold">Browse</h2>
+    <div class="grid md:grid-cols-3 gap-1">
+      <CardIcon
+        href="/writeups/years"
+        icon="lucide:calendar"
+        class:list={[
+          'transition-colors hover:bg-flexoki-base-100 dark:hover:bg-flexoki-base-900',
+          'rounded-none',
+          determineCardEdgeClasses(0, 3, 1),
+          'md:rounded-none',
+          determineCardEdgeClasses(0, 3, 3, 'md'),
+        ]}
+      >
+        <div class="flex flex-col flex-1 gap-1">
+          <p class="font-medium">Browse by Year</p>
+          <p class="text-sm text-flexoki-base-600 dark:text-flexoki-base-500">
+            Competitions grouped by year.
+          </p>
+        </div>
+      </CardIcon>
+      <CardIcon
+        href="/writeups/categories"
+        icon="lucide:folder"
+        class:list={[
+          'transition-colors hover:bg-flexoki-base-100 dark:hover:bg-flexoki-base-900',
+          'rounded-none',
+          determineCardEdgeClasses(1, 3, 1),
+          'md:rounded-none',
+          determineCardEdgeClasses(1, 3, 3, 'md'),
+        ]}
+      >
+        <div class="flex flex-col flex-1 gap-1">
+          <p class="font-medium">Browse by Category</p>
+          <p class="text-sm text-flexoki-base-600 dark:text-flexoki-base-500">
+            Challenges grouped by category.
+          </p>
+        </div>
+      </CardIcon>
+      <CardIcon
+        href="/writeups/tags"
+        icon="lucide:tag"
+        class:list={[
+          'transition-colors hover:bg-flexoki-base-100 dark:hover:bg-flexoki-base-900',
+          'rounded-none',
+          determineCardEdgeClasses(2, 3, 1),
+          'md:rounded-none',
+          determineCardEdgeClasses(2, 3, 3, 'md'),
+        ]}
+      >
+        <div class="flex flex-col flex-1 gap-1">
+          <p class="font-medium">Browse by Tags</p>
+          <p class="text-sm text-flexoki-base-600 dark:text-flexoki-base-500">
+            Find writeups by topic.
+          </p>
+        </div>
+      </CardIcon>
+    </div>
     <div class="flex flex-col md:flex-col gap-4">
       {featuredTLEvents && featuredTLEvents.length > 0 && (
         <div class="flex flex-col gap-2">
