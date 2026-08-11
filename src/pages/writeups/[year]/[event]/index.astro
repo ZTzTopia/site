@@ -6,7 +6,7 @@ import Chip from '../../../../components/Core/Chip.astro';
 import Link from '../../../../components/Core/Link.astro';
 import Prose from '../../../../components/Core/Prose.astro';
 import PageLayout from '../../../../layouts/PageLayout.astro';
-import { determineCardEdgeClasses } from '../../../../utils/helper';
+import { determineCardEdgeClasses, normalizeCategoryName } from '../../../../utils/helper';
 
 export async function getStaticPaths() {
   const eventCollections = await getCollection('events');
@@ -143,7 +143,7 @@ const description = props.event.data.description || `Writeups for ${props.event.
           {
             categories.map((category) => (
               <Chip id={`filter-${category}`} data-category={category}>
-                {category}
+                {normalizeCategoryName(category)}
               </Chip>
             ))
           }

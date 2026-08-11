@@ -41,7 +41,8 @@ const categoryCounts = challenges.reduce<Record<string, number>>(
         continue;
       }
 
-      acc[cleaned] = (acc[cleaned] || 0) + 1;
+      const key = normalizeCategoryName(cleaned);
+      acc[key] = (acc[key] || 0) + 1;
     }
 
     return acc;
