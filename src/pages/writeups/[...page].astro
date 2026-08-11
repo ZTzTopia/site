@@ -68,7 +68,7 @@ const groupedEvents = page.data.reduce<Record<string, Array<CollectionEntry<'eve
       latestEvent && (
         <div class="flex flex-col gap-2">
           <h2 class="text-lg font-semibold">Latest</h2>
-          <CardEvent event={latestEvent} href={`/writeups/${latestEvent.id}`} />
+          <CardEvent event={latestEvent} href={`/writeups/${latestEvent.id.split('/').slice(0, -1).join('/')}`} />
           {
             latestWriteups.length > 0 && (
               <>
