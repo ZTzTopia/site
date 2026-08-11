@@ -46,7 +46,9 @@ const { headings, depth = 0 } = Astro.props as Props;
     line-height: 1.25;
   }
 
-  a[aria-current='true'] {
-    @apply text-flexoki-cyan-400 hover:text-flexoki-cyan-600 font-semibold;
+  @layer components {
+    a[aria-current='true'] {
+      @apply text-flexoki-cyan-400 hover:text-flexoki-cyan-600 font-semibold;
+    }
   }
 </style>

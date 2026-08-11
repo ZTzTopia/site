@@ -301,9 +301,7 @@
       --astro-code-token-link: var(--color-flexoki-dark-cy);
     }
   }
-}
 
-@layer components {
   .code-wrapper {
     @apply text-xs overflow-y-hidden my-4;
 
@@ -420,10 +418,6 @@
     }
   }
 
-  .selected-filter {
-    @apply bg-flexoki-cyan-400 dark:bg-flexoki-cyan-600;
-  }
-
   .prose a.external-link {
     @apply inline-flex;
 
@@ -440,6 +434,18 @@
 
     &:hover .lucide-arrow-up-right {
       @apply translate-x-0.5 -translate-y-1 text-flexoki-light-cy-2 dark:text-flexoki-dark-cy-2;
+    }
+  }
+}
+
+@layer utilities {
+  .selected-filter {
+    background-color: var(--color-flexoki-cyan-400);
+  }
+
+  @variant dark {
+    .selected-filter {
+      background-color: var(--color-flexoki-cyan-600);
     }
   }
 }
