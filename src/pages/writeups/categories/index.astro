@@ -1,0 +1,80 @@
+---
+import { Icon } from 'astro-icon/components';
+import CardIcon from '../../../components/CardIcon.astro';
+import PageLayout from '../../../layouts/PageLayout.astro';
+import { getChallenges } from '../../../utils/content';
+import {
+  determineCardEdgeClasses,
+  getBackgroundColorByCategory,
+  getIconByCategory,
+  normalizeCategoryName,
+} from '../../../utils/helper';
+
+const challenges = await getChallenges(({ data }) => data.draft !== true);
+
+const categoryStats = new Map<string, { writeups: number; events: Set<string> }>();
+
+for (const challenge of challenges) {
+  const slugs = challenge.id.split('/');
+  const category = slugs[2];
+
+  // `_` is the "no category folder" placeholder, not a real category
+  if (!category || category === '_') {
+    continue;
+  }
+
+  const stats =
+    categoryStats.get(category) ?? { writeups: 0, events: new Set<string>() };
+  stats.writeups += 1;
+  stats.events.add(`${slugs[0]}/${slugs[1]}`);
+  categoryStats.set(category, stats);
+}
+
+const categories = [...categoryStats.keys()].sort(
+  (a, b) =>
+    categoryStats.get(b)!.writeups - categoryStats.get(a)!.writeups ||
+    a.localeCompare(b)
+);
+
+const pageTitle = 'Writeups by Category';
+const pageDescription =
+  'Browse writeups by challenge category — reverse engineering, web exploitation, cryptography, and more.';
+---
+
+<PageLayout title={pageTitle} description={pageDescription} noindex={true}>
+  <div class="flex flex-col gap-2">
+    <h1 class="text-3xl font-bold">Categories</h1>
+    <div class="grid md:grid-cols-3 gap-1">
+      {
+        categories.map((category, index) => {
+          const stats = categoryStats.get(category)!;
+
+          return (
+            <CardIcon
+              href={`/writeups/categories/${category}`}
+              icon={getIconByCategory(category) ?? 'lucide:tag'}
+              class:list={[
+                'transition-colors hover:bg-flexoki-base-100 dark:hover:bg-flexoki-base-900',
+                'rounded-none',
+                determineCardEdgeClasses(index, categories.length, 1),
+                'md:rounded-none',
+                determineCardEdgeClasses(index, categories.length, 3, 'md'),
+              ]}
+            >
+              <div class="flex flex-col flex-1 gap-1">
+                <p class="font-medium">{normalizeCategoryName(category)}</p>
+                <span
+                  class={`flex flex-row items-center gap-x-1 text-xs font-medium px-2.5 py-0.5 rounded w-fit ${getBackgroundColorByCategory(category)}`}
+                >
+                  <Icon name={getIconByCategory(category)} />
+                  {stats.writeups} writeup{stats.writeups === 1 ? '' : 's'} ·{' '}
+                  {stats.events.size} event{stats.events.size === 1 ? '' : 's'}
+                </span>
+              </div>
+            </CardIcon>
+          );
+        })
+      }
+    </div>
+  </div>
+</PageLayout>

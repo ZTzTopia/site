@@ -1,0 +1,87 @@
+---
+import { Icon } from 'astro-icon/components';
+import CardIcon from '../../../components/CardIcon.astro';
+import PageLayout from '../../../layouts/PageLayout.astro';
+import { getChallenges, getEvents } from '../../../utils/content';
+import { determineCardEdgeClasses } from '../../../utils/helper';
+
+const events = await getEvents();
+const challenges = await getChallenges(({ data }) => data.draft !== true);
+
+const yearStats = new Map<string, { events: number; writeups: number }>();
+
+for (const event of events) {
+  const year = event.id.split('/')[0];
+  if (!year) continue;
+  const stats = yearStats.get(year) ?? { events: 0, writeups: 0 };
+  stats.events += 1;
+  yearStats.set(year, stats);
+}
+
+for (const challenge of challenges) {
+  const year = challenge.id.split('/')[0];
+  if (!year) continue;
+  const stats = yearStats.get(year) ?? { events: 0, writeups: 0 };
+  stats.writeups += 1;
+  yearStats.set(year, stats);
+}
+
+// Platforms (`_`) pinned last, dated years newest first
+const years = [...yearStats.keys()].sort((a, b) => {
+  if (a === '_') return 1;
+  if (b === '_') return -1;
+  return b.localeCompare(a);
+});
+
+const newestYear = years.find((year) => year !== '_');
+
+const pageTitle = 'Writeups by Year';
+const pageDescription =
+  'Browse writeups by CTF competition year, from one-off events to always-online platforms.';
+---
+
+<PageLayout title={pageTitle} description={pageDescription} noindex={true}>
+  <div class="flex flex-col gap-2">
+    <h1 class="text-3xl font-bold">Years</h1>
+    <div class="grid md:grid-cols-2 gap-1">
+      {
+        years.map((year, index) => {
+          const stats = yearStats.get(year)!;
+          const isPlatforms = year === '_';
+
+          return (
+            <CardIcon
+              href={isPlatforms ? '/writeups/_' : `/writeups/${year}`}
+              icon={isPlatforms ? 'lucide:globe' : 'lucide:calendar'}
+              class:list={[
+                'transition-colors hover:bg-flexoki-base-100 dark:hover:bg-flexoki-base-900',
+                'rounded-none',
+                determineCardEdgeClasses(index, years.length, 1),
+                'md:rounded-none',
+                determineCardEdgeClasses(index, years.length, 2, 'md'),
+              ]}
+            >
+              <div class="flex flex-col flex-1 gap-1">
+                <div class="flex flex-row items-center justify-between gap-1">
+                  <p class="font-medium">{isPlatforms ? 'Platforms' : year}</p>
+                  {year === newestYear && (
+                    <span
+                      class="flex flex-row items-center gap-x-1 text-xs font-medium px-2.5 py-0.5 rounded text-flexoki-dark-tx dark:text-flexoki-light-tx bg-flexoki-light-cy dark:bg-flexoki-dark-cy"
+                    >
+                      <Icon name="lucide:sparkles" />
+                      Newest
+                    </span>
+                  )}
+                </div>
+                <p class="text-sm text-flexoki-base-600 dark:text-flexoki-base-500">
+                  {stats.events} competition{stats.events === 1 ? '' : 's'} ·{' '}
+                  {stats.writeups} writeup{stats.writeups === 1 ? '' : 's'}
+                </p>
+              </div>
+            </CardIcon>
+          );
+        })
+      }
+    </div>
+  </div>
+</PageLayout>
