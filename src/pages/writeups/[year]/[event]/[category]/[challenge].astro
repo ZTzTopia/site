@@ -95,7 +95,7 @@ const description = props.challenge.data.description || `Writeup for ${props.cha
           // folder already, why need multiple of categories? isn't tags enough?
           <Link href={`/writeups/${params.year}/${params.event}/${params.category}`} class="not-prose">
             <span
-              class={`flex flex-row items-center gap-x-1 text-xs font-medium px-2.5 py-0.5 rounded ${getBackgroundColorByCategory(category)}`}
+              class={`flex flex-row items-center gap-x-1 text-xs font-medium px-2.5 py-0.5 rounded transition-colors hover:brightness-110 ${getBackgroundColorByCategory(category)}`}
             >
               <Icon name={getIconByCategory(category)} />
               {normalizeCategoryName(category)}
@@ -180,7 +180,7 @@ const description = props.challenge.data.description || `Writeup for ${props.cha
         <div class="flex flex-row flex-wrap gap-2">
           {tags.map((tag) => (
             <Link href={`/writeups/tags/${tag?.slice(1)}`} class="not-prose">
-              <span class="flex flex-row items-center gap-x-2 text-xs font-medium px-2.5 py-0.5 rounded bg-flexoki-light-ui dark:bg-flexoki-dark-ui">
+              <span class="flex flex-row items-center gap-x-2 text-xs font-medium px-2.5 py-0.5 rounded bg-flexoki-light-ui dark:bg-flexoki-dark-ui transition-colors hover:bg-flexoki-base-150 hover:dark:bg-flexoki-base-850">
                 {tag}
               </span>
             </Link>

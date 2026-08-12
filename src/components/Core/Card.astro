@@ -20,6 +20,9 @@ const remoteLink = rest.href?.toString().startsWith('http');
       'flex flex-col': !remoteLink,
     },
     {
+      'transition-colors hover:bg-flexoki-base-100 dark:hover:bg-flexoki-base-900': rest.href,
+    },
+    {
       'p-4': Astro.slots.has('content'),
     },
   ]}

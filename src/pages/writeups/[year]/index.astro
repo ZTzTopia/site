@@ -88,17 +88,14 @@ const description = `A collection of writeups from various CTF competitions held
               <p>No events found :(</p>
             ) : (
               events.map((event, index) => (
-                <a
+                <CardEvent
+                  event={event}
                   href={`/writeups/${params.year}/${event.id.split('/').slice(1, -1).join('/')}`}
-                >
-                  <CardEvent
-                    event={event}
-                    class:list={[
-                      'rounded-none',
-                      `${determineCardEdgeClasses(index, events.length, 1)}`,
-                    ]}
-                  />
-                </a>
+                  class:list={[
+                    'rounded-none',
+                    `${determineCardEdgeClasses(index, events.length, 1)}`,
+                  ]}
+                />
               ))
             )
           }
