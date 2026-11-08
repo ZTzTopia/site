@@ -1,6 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import CTFTimeIcon from '../assets/ctftime.png';
+import HTBIcon from '../assets/hackthebox.png';
+import THMIcon from '../assets/tryhackme.png';
 import MusicPresence from '../components/Activity/MusicPresence.astro';
 import Card from '../components/Core/Card.astro';
 import Prose from '../components/Core/Prose.astro';
@@ -33,10 +35,8 @@ import PageLayout from '../layouts/PageLayout.astro';
         ><Image
           src={CTFTimeIcon}
           alt="CTFTime"
-          width={8}
-          height={8}
           loading="eager"
-          class="inline-block mr-1"
+          class="inline-block mr-1 mb-1 w-3 h-3"
         />CTF</a
       > player. I actively participate in a Capture The Flag (CTF) competitions,
       where I sharpen my skills in cybersecurity, reverse engineering, and creative
@@ -46,7 +46,7 @@ import PageLayout from '../layouts/PageLayout.astro';
       Explore my CTF writeups on the <a
         href="/writeups"
         class="not-prose bg-flexoki-base-50 dark:bg-flexoki-base-950 text-xs font-medium px-2.5 py-0.5 rounded"
-        >🚩 Writeups page</a
+        >🚩 Writeups</a
       >. Check out my profiles on
       <a
         href="https://tryhackme.com/p/ztz"
@@ -54,12 +54,10 @@ import PageLayout from '../layouts/PageLayout.astro';
         rel="noopener"
         class="not-prose bg-flexoki-base-50 dark:bg-flexoki-base-950 text-xs font-medium px-2.5 py-0.5 rounded ml-1"
         ><Image
-          src="https://tryhackme.com/favicon-96x96.png"
+          src={THMIcon}
           alt="TryHackMe"
-          width={8}
-          height={8}
           loading="eager"
-          class="inline-block mr-1"
+          class="inline-block mr-1 mb-1 w-3 h-3"
         />TryHackMe</a
       > and
       <a
@@ -68,12 +66,10 @@ import PageLayout from '../layouts/PageLayout.astro';
         rel="noopener"
         class="not-prose bg-flexoki-base-50 dark:bg-flexoki-base-950 text-xs font-medium px-2.5 py-0.5 rounded ml-1"
         ><Image
-          src="https://www.hackthebox.com/images/landingv3/favicon.png"
+          src={HTBIcon}
           alt="HackTheBox"
-          width={8}
-          height={8}
           loading="eager"
-          class="inline-block mr-1"
+          class="inline-block mr-1 mb-1 w-3 h-3"
         />HackTheBox</a
       >.
     </p>
