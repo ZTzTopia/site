@@ -15,7 +15,7 @@ const { ...rest } = Astro.props as Props;
 ---
 
 <BaseLayout {...rest}>
-  <div class="pt-4 px-4 mx-auto max-w-screen-md text-sm">
+  <div class="pt-4 px-4 mx-auto max-w-(--breakpoint-md) text-sm">
     <slot />
   </div>
 </BaseLayout>

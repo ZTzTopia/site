@@ -8,14 +8,14 @@ const { headings } = Astro.props as { headings: MarkdownHeading[] };
 ---
 
 <nav
-  class="block xl:hidden sticky z-10 w-full bg-flexoki-light-bg/[0.75] dark:bg-flexoki-dark-bg/[0.75] backdrop-blur-sm border-dashed border-b-1 border-flexoki-base-100 dark:border-flexoki-base-900"
+  class="block xl:hidden sticky z-10 w-full bg-flexoki-light-bg/75 dark:bg-flexoki-dark-bg/75 backdrop-blur-sm border-dashed border-b border-flexoki-base-100 dark:border-flexoki-base-900"
   id="mobile-toc-nav"
 >
   <z-toc>
-    <div class="mx-auto px-4 max-w-screen-md text-sm items-center min-h-[3.5rem]">
-      <details class="group items-center min-h-[3.5rem]">
-        <summary class="items-center min-h-[3.5rem]">
-          <div class="flex flex-row justify-between items-center min-h-[3.5rem]">
+    <div class="mx-auto px-4 max-w-(--breakpoint-md) text-sm items-center min-h-14">
+      <details class="group items-center min-h-14">
+        <summary class="items-center min-h-14">
+          <div class="flex flex-row justify-between items-center min-h-14">
             On This Page
             <Icon
               name="lucide:chevron-down"

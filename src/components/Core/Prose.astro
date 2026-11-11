@@ -13,7 +13,7 @@ const { class: classList = '', ...rest } = Astro.props as Props;
     'prose-z',
     'prose-sm',
     'max-w-none',
-    'break-words',
+    'wrap-break-word',
 
     'prose-code:not-in-prose-pre:bg-flexoki-light-ui',
     'dark:prose-code:not-in-prose-pre:bg-flexoki-dark-ui',
@@ -27,8 +27,8 @@ const { class: classList = '', ...rest } = Astro.props as Props;
     'prose-blockquote:rounded',
     'prose-blockquote:py-1',
     'prose-blockquote:not-italic',
-    'prose-blockquote:[&>*]:before:content-[""]',
-    'prose-blockquote:[&>*]:after:content-[""]',
+    'prose-blockquote:*:before:content-[""]',
+    'prose-blockquote:*:after:content-[""]',
 
     'prose-a:text-flexoki-light-cy',
     'prose-a:visited:text-flexoki-cyan-300',

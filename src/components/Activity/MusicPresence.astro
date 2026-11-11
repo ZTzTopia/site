@@ -9,7 +9,7 @@ import Link from '../Core/Link.astro';
   <Icon name="lucide:audio-lines" class="h-6 w-6" />
 </div>
 
-<Card id="music-presence" class="w-full rounded-none rounded-t md:rounded-none md:rounded-l">
+<Card id="music-presence" class="w-full rounded-none rounded-t-sm md:rounded-none md:rounded-l">
   <div
     class="relative flex flex-col justify-between gap-2"
     id="music-skeleton"
@@ -20,9 +20,9 @@ import Link from '../Core/Link.astro';
       <div class="flex flex-col gap-1">
         <Skeleton class="w-[calc(1/4.5*100%)] h-6 rounded" />
         <div class="flex flex-row gap-1">
-          <Skeleton class="w-[calc(1/5*100%)] h-5 rounded" />
+          <Skeleton class="w-1/5 h-5 rounded" />
           <Skeleton class="w-[calc(1/4.5*100%)] h-5 rounded" />
-          <Skeleton class="w-[calc(1/6*100%)] h-5 rounded" />
+          <Skeleton class="w-1/6 h-5 rounded" />
         </div>
       </div>
     </div>
@@ -37,7 +37,7 @@ import Link from '../Core/Link.astro';
     slot="content"
   >
     <img
-      class="aspect-square w-16 h-16 flex-shrink bg-cover bg-center rounded border border-flexoki-light-ui dark:border-flexoki-dark-ui"
+      class="aspect-square w-16 h-16 shrink bg-cover bg-center rounded border border-flexoki-light-ui dark:border-flexoki-dark-ui"
       id="album-art"
       title="Album Art"
     >
