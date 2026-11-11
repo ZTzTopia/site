@@ -18,7 +18,7 @@ export default function rehypeExternalLinks() {
         // }
 
         node.properties.target = '_blank';
-        node.properties.rel = 'noopener noreferrer';
+        node.properties.rel = ['noopener', 'noreferrer'];
 
         const existingClass = node.properties.className;
         const newClasses = [/*'flex', 'flex-row', */'gap-0.5', 'items-center', 'group', 'external-link'];

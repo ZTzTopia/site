@@ -6,7 +6,7 @@ import sitemap from '@astrojs/sitemap';
 import compress from 'astro-compress';
 
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import { rehypeHeadingIds } from '@astrojs/markdown-remark';
+import { rehypeHeadingIds, unified } from '@astrojs/markdown-remark';
 // import rehypeUniqueHeadingIds from './src/plugins/rehype/rehype-unique-heading-ids';
 // import rehypeShiftHeading from './src/plugins/rehype/rehype-shift-heading';
 import rehypeExternalLinks from './src/plugins/rehype/rehype-external-links';
@@ -25,24 +25,26 @@ export default defineConfig({
       !page.includes('/components/')
   }), compress()],
   markdown: {
-    rehypePlugins: [
-      rehypeHeadingIds,
-      // rehypeUniqueHeadingIds,
-      // [rehypeShiftHeading, { shift: 1 }],
-      [
-        rehypeAutolinkHeadings,
-        {
-          behavior: "append",
-          properties: {
-            class: "autolink",
-            ariaHidden: true,
-            tabIndex: -1,
+    processor: unified({
+      rehypePlugins: [
+        rehypeHeadingIds,
+        // rehypeUniqueHeadingIds,
+        // [rehypeShiftHeading, { shift: 1 }],
+        [
+          rehypeAutolinkHeadings,
+          {
+            behavior: "append",
+            properties: {
+              class: "autolink",
+              ariaHidden: true,
+              tabIndex: -1,
+            },
+            test: ['h2', 'h3', 'h4', 'h5'],
           },
-          test: ['h2', 'h3', 'h4', 'h5'],
-        },
+        ],
+        rehypeExternalLinks,
       ],
-      rehypeExternalLinks,
-    ],
+    }),
     shikiConfig: {
       theme: 'css-variables',
       transformers: [
